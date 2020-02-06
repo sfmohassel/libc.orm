@@ -1,0 +1,101 @@
+#region License
+
+//
+// Copyright (c) 2007-2018, Sean Chambers <schambers80@gmail.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+#endregion
+
+using System;
+using System.Linq;
+using JetBrains.Annotations;
+using libc.orm.DatabaseMigration.Abstractions;
+using libc.orm.DatabaseMigration.Abstractions.Expressions;
+using libc.orm.DatabaseMigration.Abstractions.Extensions;
+using libc.orm.DatabaseMigration.DdlGeneration;
+namespace libc.orm.mysql.DdlGeneration {
+    public class MySql4Generator : GenericGenerator {
+        public MySql4Generator([NotNull] IColumn column, [NotNull] IQuoter quoter,
+            [NotNull] GeneratorOptions generatorOptions)
+            : base(column, quoter, new EmptyDescriptionGenerator(), generatorOptions) {
+        }
+        public override string AlterColumn => "ALTER TABLE {0} MODIFY COLUMN {1}";
+        public override string DeleteConstraint => "ALTER TABLE {0} DROP {1}{2}";
+        //public override string DeleteConstraint { get { return "ALTER TABLE {0} DROP FOREIGN KEY {1}"; } }
+        public override string Generate(CreateTableExpression expression) {
+            if (string.IsNullOrEmpty(expression.TableName))
+                throw new ArgumentNullException(nameof(expression), @"expression.TableName cannot be empty");
+            if (expression.Columns.Count == 0) throw new ArgumentException("You must specifiy at least one column");
+            var errors =
+                ValidateAdditionalFeatureCompatibility(expression.Columns.SelectMany(x => x.AdditionalFeatures));
+            if (!string.IsNullOrEmpty(errors)) return errors;
+            var quotedTableName = Quoter.QuoteTableName(expression.TableName);
+            var tableDescription = string.IsNullOrEmpty(expression.TableDescription)
+                ? string.Empty
+                : string.Format(" COMMENT {0}", Quoter.QuoteValue(expression.TableDescription));
+            return string.Format("CREATE TABLE {0} ({1}){2} ENGINE = INNODB",
+                quotedTableName,
+                Column.Generate(expression.Columns, quotedTableName),
+                tableDescription);
+        }
+        public override string Generate(AlterTableExpression expression) {
+            if (string.IsNullOrEmpty(expression.TableDescription))
+                return base.Generate(expression);
+            return string.Format("ALTER TABLE {0} COMMENT {1}", Quoter.QuoteTableName(expression.TableName),
+                Quoter.QuoteValue(expression.TableDescription));
+        }
+        public override string Generate(DeleteIndexExpression expression) {
+            return string.Format("DROP INDEX {0} ON {1}", Quoter.QuoteIndexName(expression.Index.Name),
+                Quoter.QuoteTableName(expression.Index.TableName));
+        }
+        public override string Generate(RenameColumnExpression expression) {
+            return string.Format("ALTER TABLE {0} CHANGE {1} {2} ", Quoter.QuoteTableName(expression.TableName),
+                Quoter.QuoteColumnName(expression.OldName), Quoter.QuoteColumnName(expression.NewName));
+        }
+        public override string Generate(AlterDefaultConstraintExpression expression) {
+            // Available since MySQL 4.0.22 (2005)
+            var defaultValue = ((MySqlColumn) Column).FormatDefaultValue(expression.DefaultValue);
+            return string.Format(
+                "ALTER TABLE {0} ALTER {1} SET {2}",
+                Quoter.QuoteTableName(expression.TableName),
+                Quoter.QuoteColumnName(expression.ColumnName),
+                defaultValue);
+        }
+        public override string Generate(CreateSequenceExpression expression) {
+            return CompatibilityMode.HandleCompatibilty("Sequences is not supporteed for MySql");
+        }
+        public override string Generate(DeleteSequenceExpression expression) {
+            return CompatibilityMode.HandleCompatibilty("Sequences is not supporteed for MySql");
+        }
+        public override string Generate(DeleteConstraintExpression expression) {
+            if (expression.Constraint.IsPrimaryKeyConstraint)
+                return string.Format(DeleteConstraint, Quoter.QuoteTableName(expression.Constraint.TableName),
+                    "PRIMARY KEY", "");
+            return string.Format(DeleteConstraint, Quoter.QuoteTableName(expression.Constraint.TableName), "INDEX ",
+                Quoter.Quote(expression.Constraint.ConstraintName));
+        }
+        public override string Generate(DeleteForeignKeyExpression expression) {
+            return string.Format(DeleteConstraint, Quoter.QuoteTableName(expression.ForeignKey.ForeignTable),
+                "FOREIGN KEY ", Quoter.QuoteColumnName(expression.ForeignKey.Name));
+        }
+        public override string Generate(DeleteDefaultConstraintExpression expression) {
+            // Available since MySQL 4.0.22 (2005)
+            return string.Format(
+                "ALTER TABLE {0} ALTER {1} DROP DEFAULT",
+                Quoter.QuoteTableName(expression.TableName),
+                Quoter.QuoteColumnName(expression.ColumnName));
+        }
+    }
+}
