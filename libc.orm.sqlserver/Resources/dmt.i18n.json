@@ -1,0 +1,42 @@
+{
+  "ar": {
+    "ColumnNameCannotBeNullOrEmpty": "لا يمكن أن يكون اسم العمود فارغًا أو خاليًا.",
+    "MethodXMustBeCalledOnObjectImplementingY": "يجب استدعاء الطريقة {0} على كائن يقوم بتنفيذ {1}."
+  },
+  "fa": {
+    "ColumnNameCannotBeNullOrEmpty": "نام ستون نمی تواند تهی یا رشته ای خالی باشد.",
+    "MethodXMustBeCalledOnObjectImplementingY": "روش {0 must باید به شیئی گفته شود که 1 {را پیاده سازی کند."
+  },
+  "en": {
+    "ColumnNameCannotBeNullOrEmpty": "The column's name cannot be null or an empty string.",
+    "MethodXMustBeCalledOnObjectImplementingY": "The {0} method must be called on an object that implements {1}."
+  },
+  "de": {
+    "ColumnNameCannotBeNullOrEmpty": "Der Name der Spalte darf nicht null oder eine leere Zeichenfolge sein.",
+    "MethodXMustBeCalledOnObjectImplementingY": "Die Methode {0} muss für ein Objekt aufgerufen werden, das {1} implementiert."
+  },
+  "fr": {
+    "ColumnNameCannotBeNullOrEmpty": "Le nom de la colonne ne peut pas être null ou une chaîne vide.",
+    "MethodXMustBeCalledOnObjectImplementingY": "La méthode {0} doit être appelée sur un objet qui implémente {1}."
+  },
+  "es": {
+    "ColumnNameCannotBeNullOrEmpty": "El nombre de la columna no puede ser nulo o una cadena vacía.",
+    "MethodXMustBeCalledOnObjectImplementingY": "Se debe invocar el método {0} en un objeto que implemente {1}."
+  },
+  "tr": {
+    "ColumnNameCannotBeNullOrEmpty": "Sütunun adı boş olamaz veya boş bir dize olamaz.",
+    "MethodXMustBeCalledOnObjectImplementingY": "{0} yöntemi, {1} uygulayan bir nesnede çağrılmalıdır."
+  },
+  "ru": {
+    "ColumnNameCannotBeNullOrEmpty": "Имя столбца не может быть нулевым или пустой строкой.",
+    "MethodXMustBeCalledOnObjectImplementingY": "Метод {0} должен быть вызван для объекта, который реализует {1}."
+  },
+  "ur": {
+    "ColumnNameCannotBeNullOrEmpty": "کالم کا نام کالعدم یا خالی تار نہیں ہوسکتا ہے۔",
+    "MethodXMustBeCalledOnObjectImplementingY": "an 0} طریقہ کو کسی ایسی شے پر پکارا جانا چاہئے جو {1} لاگو کرے۔"
+  },
+  "ps": {
+    "ColumnNameCannotBeNullOrEmpty": "د کالم نوم خالي یا خالي مزي کیدلی نشي.",
+    "MethodXMustBeCalledOnObjectImplementingY": "د {0} میتود باید په یوه داسې شي وبلل شي چې {1} پلي کوي."
+  }
+}

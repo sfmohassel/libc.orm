@@ -22,7 +22,7 @@ using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Table;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Insert;
-using libc.orm.Resources;
+using libc.orm.sqlserver.Resources;
 namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
     public static partial class SqlServerExtensions {
         public static readonly string IdentityInsert = "SqlServerIdentityInsert";

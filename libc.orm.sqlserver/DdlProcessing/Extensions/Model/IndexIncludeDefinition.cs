@@ -20,7 +20,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using libc.orm.Resources;
+using libc.orm.sqlserver.Resources;
 namespace libc.orm.sqlserver.DdlProcessing.Extensions.Model {
     public class IndexIncludeDefinition : ICloneable {
         [Required(ErrorMessageResourceType = typeof(Dmt),
