@@ -8,12 +8,25 @@ using libc.orm.Models;
 using SqlKata.Compilers;
 namespace libc.orm.DatabaseConnection {
     public class CompilerHelper {
+        private readonly Compiler c;
         public CompilerHelper(Compiler c) {
+            this.c = c;
             Batch = new CompilerBatchHelper(c);
             Transaction = new CompilerTransactionHelper(c);
             Update = new CompilerUpdateHelper(c);
             Insert = new CompilerInsertHelper(c);
             Select = new CompilerSelectHelper(c);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inQueryOrParameter">this can be @parameterName or a select * from ... query</param>
+        /// <returns></returns>
+        public string ToInQuery(string inQueryOrParameter) {
+            if (c is PostgresCompiler) {
+                return $" ANY ({inQueryOrParameter})";
+            }
+            return $" in {inQueryOrParameter}";
         }
         public CompilerBatchHelper Batch { get; }
         public CompilerTransactionHelper Transaction { get; }
