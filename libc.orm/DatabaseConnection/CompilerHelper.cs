@@ -24,7 +24,7 @@ namespace libc.orm.DatabaseConnection {
         /// <returns></returns>
         public string ToInQuery(string inQueryOrParameter) {
             if (c is PostgresCompiler) {
-                return $" ANY ({inQueryOrParameter})";
+                return $" = ANY ({inQueryOrParameter})";
             }
             return $" in {inQueryOrParameter}";
         }
