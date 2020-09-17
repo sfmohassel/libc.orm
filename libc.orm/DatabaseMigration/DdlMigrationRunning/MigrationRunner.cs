@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
-using libc.models;
-using libc.models.Extensions;
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.DdlMigration;
 using libc.orm.DatabaseMigration.DdlProcessing;
+using libc.orm.Internals;
+using libc.orm.Models;
 using Microsoft.Extensions.Logging;
 using NodaTime;
 using SqlKata;
@@ -28,7 +28,7 @@ namespace libc.orm.DatabaseMigration.DdlMigrationRunning {
         /// </summary>
         /// <param name="upToVersion"></param>
         /// <returns></returns>
-        public FluentResult Up(int? upToVersion = null) {
+        public DbFluentResult Up(int? upToVersion = null) {
             var migrations = GetUpMigrationsToExecute(upToVersion);
             return Up(migrations);
         }
@@ -37,15 +37,15 @@ namespace libc.orm.DatabaseMigration.DdlMigrationRunning {
         /// </summary>
         /// <param name="downToVersion"></param>
         /// <returns></returns>
-        public FluentResult Down(int? downToVersion = null) {
+        public DbFluentResult Down(int? downToVersion = null) {
             var migrations = GetDownMigrationsToExecute(downToVersion);
             return Down(migrations);
         }
-        private FluentResult Up(IEnumerable<IMigration> migrations) {
+        private DbFluentResult Up(IEnumerable<IMigration> migrations) {
             var orderedMigrations = migrations.OrderBy(a => a.Version).ToArray();
             return run(orderedMigrations, (migration, context) => migration.GetUpExpressions(context), UpMigrationDone);
         }
-        private FluentResult Down(IEnumerable<IMigration> migrations) {
+        private DbFluentResult Down(IEnumerable<IMigration> migrations) {
             var orderedMigrations = migrations.OrderByDescending(a => a.Version).ToArray();
             return run(orderedMigrations, (migration, context) => migration.GetDownExpressions(context), DownMigrationDone);
         }
@@ -70,9 +70,9 @@ namespace libc.orm.DatabaseMigration.DdlMigrationRunning {
                 );
             }
         }
-        private FluentResult run(IReadOnlyCollection<IMigration> orderedMigrations,
+        private DbFluentResult run(IReadOnlyCollection<IMigration> orderedMigrations,
             Action<IMigration, MigrationContext> getExpressions, Action<IMigration> onMigrationDone) {
-            var fres = new FluentResult();
+            var fres = new DbFluentResult();
             try {
                 if (orderedMigrations.Count == 0) {
                     info("No migrations to run.");

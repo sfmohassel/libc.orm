@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using libc.models;
 using libc.orm.DatabaseConnection;
+using libc.orm.Models;
 namespace libc.orm.InDatabaseServices {
     public interface IDbOperationEvent {
         DbConn Db { get; set; }
-        List<FluentResult> Results { get; set; }
+        List<DbFluentResult> Results { get; set; }
     }
 }

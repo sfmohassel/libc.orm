@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using libc.models.Extensions;
-using libc.models.Reflection;
+using libc.orm.Internals;
 using libc.orm.Models;
 using SqlKata.Compilers;
 namespace libc.orm.DatabaseConnection {
