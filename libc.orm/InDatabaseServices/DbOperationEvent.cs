@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using libc.orm.DatabaseConnection;
 using libc.orm.Models;
-using Newtonsoft.Json;
 namespace libc.orm.InDatabaseServices {
     public class DbOperationEvent : IDbOperationEvent {
         [JsonIgnore]

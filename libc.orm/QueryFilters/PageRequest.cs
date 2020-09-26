@@ -1,8 +1,6 @@
 ﻿using System;
-using Newtonsoft.Json;
 namespace libc.orm.QueryFilters {
     public class PageRequest {
-        [JsonIgnore]
         public const int MaxRowsPerPage = 1000;
         /// <summary>
         ///     search term
