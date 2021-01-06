@@ -192,8 +192,7 @@ namespace libc.orm.DatabaseMigration.DdlGeneration {
         public virtual string FormatEnum(object value) {
             return ValueQuote + value + ValueQuote;
         }
-        [ContractAnnotation("name:null => false")]
-        protected virtual bool ShouldQuote([CanBeNull] string name) {
+        protected virtual bool ShouldQuote(string name) {
             return (!string.IsNullOrEmpty(OpenQuote) || !string.IsNullOrEmpty(CloseQuote)) && !string.IsNullOrEmpty(name);
         }
         protected virtual string CreateSchemaPrefixedQuotedIdentifier(string quotedSchemaName, string quotedIdentifier) {

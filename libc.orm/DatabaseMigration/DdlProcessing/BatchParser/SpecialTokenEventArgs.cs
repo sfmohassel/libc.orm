@@ -28,19 +28,19 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// </summary>
         /// <param name="token">The found token</param>
         /// <param name="opaque">An opaque (token specific) value</param>
-        public SpecialTokenEventArgs([NotNull] string token, object opaque) {
+        public SpecialTokenEventArgs(string token, object opaque) {
             Token = token;
             Opaque = opaque;
         }
         /// <summary>
         ///     Gets the found token
         /// </summary>
-        [NotNull]
+        
         public string Token { get; }
         /// <summary>
         ///     Gets an opaque (token specific) value
         /// </summary>
-        [CanBeNull]
+        
         public object Opaque { get; }
     }
 }

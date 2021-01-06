@@ -31,8 +31,8 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="rangeSearchers">The range searchers</param>
         /// <param name="specialTokenSearchers">The special token searchers</param>
         /// <param name="stripComments">Should the comments be stripped</param>
-        public SearchContext([NotNull] [ItemNotNull] IEnumerable<IRangeSearcher> rangeSearchers,
-            [NotNull] [ItemNotNull] IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
+        public SearchContext( IEnumerable<IRangeSearcher> rangeSearchers,
+             IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
             bool stripComments) {
             StripComments = stripComments;
             SpecialTokenSearchers = specialTokenSearchers as IList<ISpecialTokenSearcher> ??
@@ -42,14 +42,14 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <summary>
         ///     Gets the special token searchers
         /// </summary>
-        [NotNull]
-        [ItemNotNull]
+        
+        
         public IList<ISpecialTokenSearcher> SpecialTokenSearchers { get; }
         /// <summary>
         ///     Gets the range searchers
         /// </summary>
-        [NotNull]
-        [ItemNotNull]
+        
+        
         public IList<IRangeSearcher> RangeSearchers { get; }
         /// <summary>
         ///     Gets a value indicating whether the comments should be stripped
@@ -63,10 +63,10 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     Event handler that is called when a special token was found
         /// </summary>
         public event EventHandler<SpecialTokenEventArgs> SpecialToken;
-        internal void OnBatchSql([NotNull] SqlBatchCollectorEventArgs e) {
+        internal void OnBatchSql(SqlBatchCollectorEventArgs e) {
             BatchSql?.Invoke(this, e);
         }
-        internal void OnSpecialToken([NotNull] SpecialTokenEventArgs e) {
+        internal void OnSpecialToken(SpecialTokenEventArgs e) {
             SpecialToken?.Invoke(this, e);
         }
     }

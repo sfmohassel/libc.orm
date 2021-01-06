@@ -24,8 +24,8 @@ using Microsoft.Extensions.Logging;
 namespace libc.orm.mysql.DdlProcessing {
     public class MySql4Processor : MySqlProcessor {
         /// <inheritdoc />
-        public MySql4Processor([NotNull] MySql4Generator generator, [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options) : base(generator, logger, options) {
+        public MySql4Processor(MySql4Generator generator, ILogger logger,
+            ProcessorOptions options) : base(generator, logger, options) {
         }
         /// <inheritdoc />
         public override string DatabaseType => "MySql4";

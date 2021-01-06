@@ -36,16 +36,16 @@ namespace libc.orm.sqlite.DdlProcessing.BatchParser {
     ///     and the following token searchers: <see cref="GoSearcher" />.
     /// </remarks>
     public class SQLiteBatchParser : SqlBatchParser {
-        [NotNull]
-        [ItemNotNull]
+        
+        
         private static readonly IEnumerable<IRangeSearcher> _rangeSearchers = new IRangeSearcher[] {
             new MultiLineComment(),
             new DoubleDashSingleLineComment(),
             new AnsiSqlIdentifier(),
             new SqlString()
         };
-        [NotNull]
-        [ItemNotNull]
+        
+        
         private static readonly IEnumerable<ISpecialTokenSearcher> _specialTokenSearchers = new ISpecialTokenSearcher[] {
             new GoSearcher()
         };

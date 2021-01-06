@@ -24,14 +24,14 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
     ///     A <see cref="ITextSource" /> implementation that uses lines as input
     /// </summary>
     public class LinesSource : ITextSource {
-        [NotNull]
-        [ItemNotNull]
+        
+        
         private readonly IEnumerable<string> _batchSource;
         /// <summary>
         ///     Initializes a new instance of the <see cref="LinesSource" /> class.
         /// </summary>
         /// <param name="batchSource">The collection of lines to be used as source</param>
-        public LinesSource([NotNull] [ItemNotNull] IEnumerable<string> batchSource) {
+        public LinesSource( IEnumerable<string> batchSource) {
             _batchSource = batchSource;
         }
         /// <inheritdoc />
@@ -42,9 +42,9 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
             return new LineReader(enumerator, 0);
         }
         private class LineReader : ILineReader {
-            [NotNull]
+            
             private readonly IEnumerator<string> _enumerator;
-            public LineReader([NotNull] IEnumerator<string> enumerator, int index) {
+            public LineReader(IEnumerator<string> enumerator, int index) {
                 _enumerator = enumerator;
                 Index = index;
                 Line = _enumerator.Current ?? throw new InvalidOperationException("The returned line must not be null");

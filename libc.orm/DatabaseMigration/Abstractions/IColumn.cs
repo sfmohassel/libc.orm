@@ -33,39 +33,39 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// </summary>
         /// <param name="column">The column definition</param>
         /// <returns>The SQL fragment</returns>
-        [NotNull]
-        string Generate([NotNull] ColumnDefinition column);
+        
+        string Generate(ColumnDefinition column);
         /// <summary>
         ///     Generate the SQL fragment for all column definitions
         /// </summary>
         /// <param name="columns">The column definitions</param>
         /// <param name="tableName">The table name</param>
         /// <returns>The SQL fragment</returns>
-        [NotNull]
-        string Generate([NotNull] [ItemNotNull] IEnumerable<ColumnDefinition> columns, [NotNull] string tableName);
+        
+        string Generate( IEnumerable<ColumnDefinition> columns, string tableName);
         /// <summary>
         ///     Generates the default foreign key name
         /// </summary>
         /// <param name="foreignKey">The foreign key definition</param>
         /// <returns>The SQL fragment</returns>
-        [NotNull]
-        string GenerateForeignKeyName([NotNull] ForeignKeyDefinition foreignKey);
+        
+        string GenerateForeignKeyName(ForeignKeyDefinition foreignKey);
         /// <summary>
         ///     Formats the foreign key SQL fragment optionally using a custom foreign key name generator
         /// </summary>
         /// <param name="foreignKey">The foreign key definition</param>
         /// <param name="fkNameGeneration">The custom foreign key name generator</param>
         /// <returns>The SQL fragment</returns>
-        [NotNull]
-        string FormatForeignKey([NotNull] ForeignKeyDefinition foreignKey,
-            [NotNull] Func<ForeignKeyDefinition, string> fkNameGeneration);
+        
+        string FormatForeignKey(ForeignKeyDefinition foreignKey,
+            Func<ForeignKeyDefinition, string> fkNameGeneration);
         /// <summary>
         ///     Formats the foreign key cascading SQL fragment
         /// </summary>
         /// <param name="onWhat">The action this cascade clause applies to (update or delete)</param>
         /// <param name="rule">The cascade rule</param>
         /// <returns>The formatted SQL fragment</returns>
-        [NotNull]
-        string FormatCascade([NotNull] string onWhat, Rule rule);
+        
+        string FormatCascade(string onWhat, Rule rule);
     }
 }

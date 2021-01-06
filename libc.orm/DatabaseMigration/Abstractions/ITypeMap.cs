@@ -13,7 +13,6 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <param name="size">The requested size (in DB lingua: precision)</param>
         /// <param name="precision">The requested precision (in DB lingua: scale)</param>
         /// <returns>The SQL type</returns>
-        [NotNull]
         [Obsolete]
         string GetTypeMap(DbType type, int size, int precision);
         /// <summary>
@@ -23,7 +22,7 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <param name="size">The requested size (in DB lingua: precision)</param>
         /// <param name="precision">The requested precision (in DB lingua: scale)</param>
         /// <returns>The SQL type</returns>
-        [NotNull]
+        
         string GetTypeMap(DbType type, int? size, int? precision);
     }
 }

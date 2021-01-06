@@ -25,7 +25,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <summary>
         ///     Gets the current line
         /// </summary>
-        [NotNull]
+        
         string Line { get; }
         /// <summary>
         ///     Gets the current index into the line
@@ -40,7 +40,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// </summary>
         /// <param name="length">The length of the string to read from the <see cref="Line" /></param>
         /// <returns>The read string</returns>
-        [NotNull]
+        
         string ReadString(int length);
         /// <summary>
         ///     Creates a new <see cref="ILineReader" /> while moving the internal <see cref="Index" /> by the given
@@ -48,7 +48,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// </summary>
         /// <param name="length">The number of characters to move the internal <see cref="Index" /></param>
         /// <returns>A new line reader with the new index</returns>
-        [CanBeNull]
+        
         ILineReader Advance(int length);
     }
 }

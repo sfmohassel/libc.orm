@@ -30,8 +30,8 @@ namespace libc.orm.DatabaseMigration.Abstractions.Validation {
         /// </summary>
         /// <param name="expression">The migration expression to validate</param>
         /// <returns>The validation results</returns>
-        [NotNull]
-        [ItemNotNull]
-        IEnumerable<ValidationResult> Validate([NotNull] IMigrationExpression expression);
+        
+        
+        IEnumerable<ValidationResult> Validate(IMigrationExpression expression);
     }
 }

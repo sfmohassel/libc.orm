@@ -33,7 +33,7 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
         /// </summary>
         /// <param name="quoter">The Postgres quoter.</param>
         /// <param name="typeMap">The Postgres type map.</param>
-        public PostgresColumn([NotNull] PostgresQuoter quoter, ITypeMap typeMap)
+        public PostgresColumn(PostgresQuoter quoter, ITypeMap typeMap)
             : base(typeMap, quoter) {
             AlterClauseOrder = new List<Func<ColumnDefinition, string>> {
                 FormatAlterType,

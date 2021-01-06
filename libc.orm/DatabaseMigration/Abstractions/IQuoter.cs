@@ -27,7 +27,7 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <summary>
         ///     Returns a quoted string that has been correctly escaped
         /// </summary>
-        string Quote([CanBeNull] string name);
+        string Quote(string name);
         /// <summary>
         ///     Provides an unquoted, unescaped string
         /// </summary>

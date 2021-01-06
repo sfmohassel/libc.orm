@@ -27,7 +27,7 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
     ///     modified for escaping table description
     /// </summary>
     public class PostgresDescriptionGenerator : GenericDescriptionGenerator {
-        public PostgresDescriptionGenerator([NotNull] PostgresQuoter quoter) {
+        public PostgresDescriptionGenerator(PostgresQuoter quoter) {
             Quoter = quoter;
         }
         protected IQuoter Quoter { get; }

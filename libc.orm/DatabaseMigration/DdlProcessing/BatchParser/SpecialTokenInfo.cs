@@ -36,7 +36,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     line,
         ///     but is instead surrounded by whitespace.
         /// </remarks>
-        public SpecialTokenInfo(int index, int length, [NotNull] string token, object opaque = null) {
+        public SpecialTokenInfo(int index, int length, string token, object opaque = null) {
             Index = index;
             Length = length;
             Token = token;
@@ -53,12 +53,12 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <summary>
         ///     Gets the found token
         /// </summary>
-        [NotNull]
+        
         public string Token { get; }
         /// <summary>
         ///     Gets an opaque (token specific) value
         /// </summary>
-        [CanBeNull]
+        
         public object Opaque { get; }
     }
 }

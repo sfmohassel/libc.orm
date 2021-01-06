@@ -30,8 +30,8 @@ using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlGeneration;
 namespace libc.orm.postgres.DdlGeneration.Postgres {
     public class PostgresGenerator : GenericGenerator {
-        public PostgresGenerator([NotNull] PostgresQuoter quoter,
-            [NotNull] GeneratorOptions generatorOptions,
+        public PostgresGenerator(PostgresQuoter quoter,
+            GeneratorOptions generatorOptions,
             ITypeMap typeMap) : base(new PostgresColumn(quoter, typeMap), quoter, new PostgresDescriptionGenerator(quoter),
             generatorOptions) {
         }

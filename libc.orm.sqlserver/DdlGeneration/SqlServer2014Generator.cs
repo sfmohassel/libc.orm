@@ -20,7 +20,7 @@ using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.DdlGeneration;
 namespace libc.orm.sqlserver.DdlGeneration {
     public class SqlServer2014Generator : SqlServer2012Generator {
-        public SqlServer2014Generator([NotNull] SqlServer2008Quoter quoter, [NotNull] GeneratorOptions options)
+        public SqlServer2014Generator(SqlServer2008Quoter quoter, GeneratorOptions options)
             : base(quoter, options) {
         }
     }

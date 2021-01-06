@@ -21,8 +21,8 @@ using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.postgres.DdlGeneration.Postgres;
 namespace libc.orm.postgres.DdlGeneration.Postgres92 {
     public class Postgres92Generator : PostgresGenerator {
-        public Postgres92Generator([NotNull] PostgresQuoter quoter,
-            [NotNull] GeneratorOptions generatorOptions)
+        public Postgres92Generator(PostgresQuoter quoter,
+            GeneratorOptions generatorOptions)
             : base(quoter, generatorOptions, new Postgres92TypeMap()) {
         }
     }

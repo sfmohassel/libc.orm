@@ -38,7 +38,7 @@ namespace libc.orm.sqlserver.DdlGeneration {
             SqlServerExtensions.RowGuidColumn,
             SqlServerExtensions.SchemaAuthorization
         };
-        public SqlServer2005Generator([NotNull] SqlServer2005Quoter quoter, [NotNull] GeneratorOptions options)
+        public SqlServer2005Generator(SqlServer2005Quoter quoter, GeneratorOptions options)
             : base(quoter, options) {
         }
         public override string AddColumn => "ALTER TABLE {0} ADD {1}";

@@ -30,8 +30,8 @@ using MySql.Data.MySqlClient;
 namespace libc.orm.mysql.DdlProcessing {
     public abstract class MySqlProcessor : GenericProcessorBase {
         private readonly MySqlQuoter _quoter = new MySqlQuoter();
-        protected MySqlProcessor([NotNull] IMigrationGenerator generator, [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options)
+        protected MySqlProcessor(IMigrationGenerator generator, ILogger logger,
+            ProcessorOptions options)
             : base(() => new MySqlClientFactory(), generator, logger, options) {
         }
         public override string DatabaseType => "MySql";

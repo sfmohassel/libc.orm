@@ -25,22 +25,17 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
     ///     The main class to perform SQL batch collection
     /// </summary>
     internal class SearchStatus {
-        [NotNull]
-        [ItemNotNull]
         private readonly Stack<IRangeSearcher> _activeRanges;
-        [NotNull]
         private readonly SearchContext _context;
-        [CanBeNull]
         private readonly SpecialTokenInfo _foundToken;
-        [NotNull]
         private readonly ILineReader _reader;
         /// <summary>
         ///     Initializes a new instance of the <see cref="SearchStatus" /> class.
         /// </summary>
         /// <param name="context">The search context</param>
         /// <param name="reader">The reader to be read from</param>
-        public SearchStatus([NotNull] SearchContext context,
-            [NotNull] ILineReader reader)
+        public SearchStatus(SearchContext context,
+            ILineReader reader)
             : this(context, reader, new Stack<IRangeSearcher>(), null) {
         }
         /// <summary>
@@ -50,10 +45,10 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="reader">The reader to be read from</param>
         /// <param name="activeRanges">The stack of active ranges</param>
         /// <param name="foundToken">The found special token</param>
-        private SearchStatus([NotNull] SearchContext context,
-            [NotNull] ILineReader reader,
-            [NotNull] [ItemNotNull] Stack<IRangeSearcher> activeRanges,
-            [CanBeNull] SpecialTokenInfo foundToken) {
+        private SearchStatus(SearchContext context,
+            ILineReader reader,
+             Stack<IRangeSearcher> activeRanges,
+            SpecialTokenInfo foundToken) {
             _context = context;
             _reader = reader;
             _activeRanges = activeRanges;
@@ -63,7 +58,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     Tries to find the next token or range
         /// </summary>
         /// <returns><c>null</c> when no token or range could be found</returns>
-        [CanBeNull]
+        
         public SearchStatus Process() {
             if (_activeRanges.Count == 0)
                 return FindTokenOrRangeStart();
@@ -75,9 +70,9 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="reader">The reader where the token should be searched in</param>
         /// <param name="searchers">The collection of searchers to test</param>
         /// <returns><c>null</c> when no token could be found</returns>
-        [CanBeNull]
-        private static SpecialTokenInfo FindToken([NotNull] ILineReader reader,
-            [NotNull] [ItemNotNull] IEnumerable<ISpecialTokenSearcher> searchers) {
+        
+        private static SpecialTokenInfo FindToken(ILineReader reader,
+             IEnumerable<ISpecialTokenSearcher> searchers) {
             SpecialTokenInfo result = null;
             foreach (var searcher in searchers) {
                 var searcherResult = searcher.Find(reader);
@@ -92,9 +87,9 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="reader">The reader where the range start token should be searched in</param>
         /// <param name="searchers">The collection of searchers to test</param>
         /// <returns><c>null</c> when no range could be found</returns>
-        [CanBeNull]
-        private static RangeStart FindRangeStart([NotNull] ILineReader reader,
-            [NotNull] [ItemNotNull] IEnumerable<IRangeSearcher> searchers) {
+        
+        private static RangeStart FindRangeStart(ILineReader reader,
+             IEnumerable<IRangeSearcher> searchers) {
             RangeStart result = null;
             foreach (var searcher in searchers) {
                 var index = searcher.FindStartCode(reader);
@@ -106,7 +101,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     Search for the end of a range
         /// </summary>
         /// <returns><c>null</c> when no range end token could be found</returns>
-        [CanBeNull]
+        
         private SearchStatus FindRangeEnd() {
             Debug.Assert(
                 _activeRanges.Count != 0 || _foundToken == null,
@@ -145,7 +140,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     In other words: Search for everything that is allowed outside of a range.
         /// </remarks>
         /// <returns><c>null</c> if neither a token nor a range start sequence could be found</returns>
-        [CanBeNull]
+        
         private SearchStatus FindTokenOrRangeStart() {
             Debug.Assert(_activeRanges.Count == 0, "Operation can only be performed when no range is active");
             var rangeStart = FindRangeStart(_reader, _context.RangeSearchers);
@@ -172,29 +167,29 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="reader">The reader where the sequence was found</param>
         /// <param name="info">Information about the start sequence</param>
         /// <returns>A new search status</returns>
-        [NotNull]
-        private SearchStatus UseNewRange([NotNull] ILineReader reader, [NotNull] RangeStart info) {
+        
+        private SearchStatus UseNewRange(ILineReader reader, RangeStart info) {
             var nextReader = WriteSql(reader, info);
             if (nextReader == null)
                 throw new InvalidOperationException($"Missing end of range ({info.Searcher.GetType().Name})");
             _activeRanges.Push(info.Searcher);
             return new SearchStatus(_context, nextReader, _activeRanges, null);
         }
-        [CanBeNull]
-        private ILineReader WriteSql([NotNull] ILineReader reader) {
+        
+        private ILineReader WriteSql(ILineReader reader) {
             var content = reader.ReadString(reader.Length);
             _context.OnBatchSql(new SqlBatchCollectorEventArgs(content, true));
             return reader.Advance(reader.Length);
         }
-        [CanBeNull]
-        private ILineReader WriteSql([NotNull] ILineReader reader, [NotNull] RangeStart info) {
+        
+        private ILineReader WriteSql(ILineReader reader, RangeStart info) {
             if (info.Searcher.IsComment && _context.StripComments)
                 return WriteSql(reader, info.Index, info.Searcher.StartCodeLength);
             return WriteSql(reader, info.Index + info.Searcher.StartCodeLength);
         }
-        [CanBeNull]
-        private ILineReader WriteSql([NotNull] ILineReader reader, [NotNull] IRangeSearcher searcher,
-            [NotNull] EndCodeSearchResult info) {
+        
+        private ILineReader WriteSql(ILineReader reader, IRangeSearcher searcher,
+            EndCodeSearchResult info) {
             if (searcher.IsComment && _context.StripComments) {
                 var length = info.Index - reader.Index + searcher.EndCodeLength;
                 if (length == reader.Length)
@@ -203,8 +198,8 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
             }
             return WriteSql(_reader, info.Index + searcher.EndCodeLength);
         }
-        [CanBeNull]
-        private ILineReader WriteSql([NotNull] ILineReader reader, int itemIndex, int skipLength = 0) {
+        
+        private ILineReader WriteSql(ILineReader reader, int itemIndex, int skipLength = 0) {
             var readLength = itemIndex - reader.Index;
             var content = reader.ReadString(readLength);
             var isEndOfLine = readLength == reader.Length;
@@ -213,11 +208,11 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
             return reader.Advance(readLength + skipLength);
         }
         private class RangeStart {
-            public RangeStart([NotNull] IRangeSearcher searcher, int index) {
+            public RangeStart(IRangeSearcher searcher, int index) {
                 Searcher = searcher;
                 Index = index;
             }
-            [NotNull]
+            
             public IRangeSearcher Searcher { get; }
             public int Index { get; }
         }

@@ -23,9 +23,9 @@ using Microsoft.Extensions.Logging;
 namespace libc.orm.sqlserver.DdlProcessing {
     public class SqlServer2005Processor : SqlServerProcessor {
         /// <inheritdoc />
-        public SqlServer2005Processor([NotNull] ILogger logger,
-            [NotNull] SqlServer2005Generator generator,
-            [NotNull] ProcessorOptions options)
+        public SqlServer2005Processor(ILogger logger,
+            SqlServer2005Generator generator,
+            ProcessorOptions options)
             : base(new[] {
                 "SqlServer2005",
                 "SqlServer"

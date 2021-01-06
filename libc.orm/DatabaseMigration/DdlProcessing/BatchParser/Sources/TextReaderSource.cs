@@ -33,7 +33,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
         /// <remarks>
         ///     This function doesn't take ownership of the <paramref name="reader" />.
         /// </remarks>
-        public TextReaderSource([NotNull] TextReader reader)
+        public TextReaderSource(TextReader reader)
             : this(reader, false) {
         }
         /// <summary>
@@ -44,7 +44,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
         ///     <c>true</c> when the <see cref="TextReaderSource" /> should become the owner of the
         ///     <paramref name="reader" />
         /// </param>
-        public TextReaderSource([NotNull] TextReader reader, bool takeOwnership) {
+        public TextReaderSource(TextReader reader, bool takeOwnership) {
             _reader = reader;
             _isOwner = takeOwnership;
         }
@@ -59,9 +59,9 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
             return new LineReader(_reader, currentLine, 0);
         }
         private class LineReader : ILineReader {
-            [NotNull]
+            
             private readonly TextReader _reader;
-            public LineReader([NotNull] TextReader reader, [NotNull] string currentLine, int index) {
+            public LineReader(TextReader reader, string currentLine, int index) {
                 _reader = reader;
                 Line = currentLine;
                 Index = index;

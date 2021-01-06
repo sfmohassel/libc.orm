@@ -28,9 +28,9 @@ using Microsoft.Extensions.Logging;
 namespace libc.orm.DatabaseMigration.DdlProcessing {
     public abstract class ProcessorBase : IProcessor {
         protected internal readonly IMigrationGenerator Generator;
-        protected ProcessorBase([NotNull] IMigrationGenerator generator,
-            [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options) {
+        protected ProcessorBase(IMigrationGenerator generator,
+            ILogger logger,
+            ProcessorOptions options) {
             Generator = generator;
             Options = options;
             Logger = logger;

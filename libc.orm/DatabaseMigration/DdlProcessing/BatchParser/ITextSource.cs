@@ -26,7 +26,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     Creates a reader
         /// </summary>
         /// <returns><c>null</c> when no content was available</returns>
-        [CanBeNull]
+        
         ILineReader CreateReader();
     }
 }

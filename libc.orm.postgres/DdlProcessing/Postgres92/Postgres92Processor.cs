@@ -26,10 +26,10 @@ using libc.orm.postgres.DdlProcessing.Postgres;
 using Microsoft.Extensions.Logging;
 namespace libc.orm.postgres.DdlProcessing.Postgres92 {
     public class Postgres92Processor : PostgresProcessor {
-        public Postgres92Processor([NotNull] Postgres92Generator generator,
-            [NotNull] ILogger<PostgresProcessor> logger,
-            [NotNull] ProcessorOptions options,
-            [NotNull] PostgresOptions pgOptions)
+        public Postgres92Processor(Postgres92Generator generator,
+            ILogger<PostgresProcessor> logger,
+            ProcessorOptions options,
+            PostgresOptions pgOptions)
             : base(generator, logger, options, pgOptions) {
         }
         public override string DatabaseType => "Postgres92";

@@ -55,9 +55,9 @@ using Microsoft.Extensions.Logging;
 namespace libc.orm.sqlserver.DdlProcessing {
     public class SqlServer2000Processor : GenericProcessorBase {
         private readonly SqlServerBatchParser batchParser;
-        public SqlServer2000Processor([NotNull] SqlServer2000Generator generator,
-            [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options,
+        public SqlServer2000Processor(SqlServer2000Generator generator,
+            ILogger logger,
+            ProcessorOptions options,
             SqlServerBatchParser batchParser) : base(() => SqlClientFactory.Instance, generator, logger, options) {
             this.batchParser = batchParser;
         }

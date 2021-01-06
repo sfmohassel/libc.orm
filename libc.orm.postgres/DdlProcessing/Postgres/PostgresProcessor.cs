@@ -31,10 +31,10 @@ using Npgsql;
 namespace libc.orm.postgres.DdlProcessing.Postgres {
     public class PostgresProcessor : GenericProcessorBase {
         private readonly PostgresQuoter _quoter;
-        public PostgresProcessor([NotNull] PostgresGenerator generator,
-            [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options,
-            [NotNull] PostgresOptions pgOptions)
+        public PostgresProcessor(PostgresGenerator generator,
+            ILogger logger,
+            ProcessorOptions options,
+            PostgresOptions pgOptions)
             : base(() => NpgsqlFactory.Instance, generator, logger, options) {
             if (pgOptions == null) throw new ArgumentNullException(nameof(pgOptions));
             _quoter = new PostgresQuoter(pgOptions);

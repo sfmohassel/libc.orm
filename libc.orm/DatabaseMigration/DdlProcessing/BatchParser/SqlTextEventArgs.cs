@@ -27,13 +27,13 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     Initializes a new instance of the <see cref="SqlTextEventArgs" /> class.
         /// </summary>
         /// <param name="sqlText">The collected SQL text</param>
-        public SqlTextEventArgs([NotNull] string sqlText) {
+        public SqlTextEventArgs(string sqlText) {
             SqlText = sqlText;
         }
         /// <summary>
         ///     Gets the collected SQL text
         /// </summary>
-        [NotNull]
+        
         public string SqlText { get; }
     }
 }

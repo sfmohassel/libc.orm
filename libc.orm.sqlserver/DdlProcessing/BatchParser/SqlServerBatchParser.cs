@@ -32,16 +32,16 @@ namespace libc.orm.sqlserver.DdlProcessing.BatchParser {
     ///     and the following token searchers: <see cref="GoSearcher" />.
     /// </remarks>
     public class SqlServerBatchParser : SqlBatchParser {
-        [NotNull]
-        [ItemNotNull]
+        
+        
         private static readonly IEnumerable<IRangeSearcher> _rangeSearchers = new IRangeSearcher[] {
             new MultiLineComment(),
             new DoubleDashSingleLineComment(),
             new SqlServerIdentifier(),
             new SqlString()
         };
-        [NotNull]
-        [ItemNotNull]
+        
+        
         private static readonly IEnumerable<ISpecialTokenSearcher> _specialTokenSearchers = new ISpecialTokenSearcher[] {
             new GoSearcher()
         };
@@ -58,8 +58,8 @@ namespace libc.orm.sqlserver.DdlProcessing.BatchParser {
         /// <param name="rangeSearchers">The range searchers to be used</param>
         /// <param name="specialTokenSearchers">The special token searchers to be used</param>
         /// <param name="newLine">The new line sequence to be used for the output</param>
-        protected SqlServerBatchParser([NotNull] [ItemNotNull] IEnumerable<IRangeSearcher> rangeSearchers,
-            [NotNull] [ItemNotNull] IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
+        protected SqlServerBatchParser( IEnumerable<IRangeSearcher> rangeSearchers,
+             IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
             string newLine = null)
             : base(rangeSearchers, specialTokenSearchers, newLine) {
         }

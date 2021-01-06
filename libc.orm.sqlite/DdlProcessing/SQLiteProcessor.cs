@@ -39,9 +39,9 @@ namespace libc.orm.sqlite.DdlProcessing {
         private readonly SQLiteBatchParser batchParser;
         public SQLiteProcessor(
             // ReSharper disable once SuggestBaseTypeForParameter
-            [NotNull] SQLiteGenerator generator,
-            [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options,
+            SQLiteGenerator generator,
+            ILogger logger,
+            ProcessorOptions options,
             SQLiteBatchParser batchParser)
             : base(() => new SQLiteFactory(), generator, logger, options) {
             this.batchParser = batchParser;

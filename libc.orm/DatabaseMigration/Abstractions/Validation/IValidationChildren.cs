@@ -26,8 +26,8 @@ namespace libc.orm.DatabaseMigration.Abstractions.Validation {
         /// <summary>
         ///     Gets the child objects
         /// </summary>
-        [NotNull]
-        [ItemCanBeNull]
+        
+        
         IEnumerable<object> Children { get; }
     }
 }

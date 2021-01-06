@@ -26,7 +26,7 @@ using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.DatabaseMigration.DdlGeneration;
 namespace libc.orm.sqlserver.DdlGeneration {
     public class SqlServer2012Generator : SqlServer2008Generator {
-        public SqlServer2012Generator([NotNull] SqlServer2008Quoter quoter, [NotNull] GeneratorOptions options)
+        public SqlServer2012Generator(SqlServer2008Quoter quoter, GeneratorOptions options)
             : base(quoter, options) {
         }
         public override string Generate(CreateSequenceExpression expression) {

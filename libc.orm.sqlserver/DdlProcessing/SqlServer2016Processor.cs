@@ -22,9 +22,9 @@ using libc.orm.sqlserver.DdlGeneration;
 using Microsoft.Extensions.Logging;
 namespace libc.orm.sqlserver.DdlProcessing {
     public class SqlServer2016Processor : SqlServerProcessor {
-        public SqlServer2016Processor([NotNull] ILogger logger,
-            [NotNull] SqlServer2016Generator generator,
-            [NotNull] ProcessorOptions options)
+        public SqlServer2016Processor(ILogger logger,
+            SqlServer2016Generator generator,
+            ProcessorOptions options)
             : base(new[] {
                 "SqlServer2016",
                 "SqlServer"

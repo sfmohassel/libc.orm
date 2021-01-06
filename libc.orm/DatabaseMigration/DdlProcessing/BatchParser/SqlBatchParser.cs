@@ -25,13 +25,13 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
     ///     This is the base implementation of the SQL batch parser
     /// </summary>
     public class SqlBatchParser {
-        [NotNull]
+        
         private readonly string _newLine;
-        [NotNull]
-        [ItemNotNull]
+        
+        
         private readonly IEnumerable<IRangeSearcher> _rangeSearchers;
-        [NotNull]
-        [ItemNotNull]
+        
+        
         private readonly IEnumerable<ISpecialTokenSearcher> _specialTokenSearchers;
         /// <summary>
         ///     Initializes a new instance of the <see cref="SqlBatchParser" /> class.
@@ -39,8 +39,8 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="rangeSearchers">The range searchers to be used</param>
         /// <param name="specialTokenSearchers">The special token searchers to be used</param>
         /// <param name="newLine">The new line sequence to be used for the output</param>
-        public SqlBatchParser([NotNull] [ItemNotNull] IEnumerable<IRangeSearcher> rangeSearchers,
-            [NotNull] [ItemNotNull] IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
+        public SqlBatchParser( IEnumerable<IRangeSearcher> rangeSearchers,
+             IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
             string newLine = null) {
             _rangeSearchers = rangeSearchers;
             _specialTokenSearchers = specialTokenSearchers;

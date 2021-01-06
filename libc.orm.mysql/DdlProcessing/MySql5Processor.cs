@@ -24,9 +24,9 @@ using Microsoft.Extensions.Logging;
 namespace libc.orm.mysql.DdlProcessing {
     public class MySql5Processor : MySqlProcessor {
         /// <inheritdoc />
-        public MySql5Processor([NotNull] MySql5Generator generator,
-            [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options) : base(
+        public MySql5Processor(MySql5Generator generator,
+            ILogger logger,
+            ProcessorOptions options) : base(
             generator,
             logger,
             options) {

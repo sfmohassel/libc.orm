@@ -28,14 +28,14 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// </summary>
         /// <param name="sqlContent">The SQL text to be collected</param>
         /// <param name="isEndOfLine"><c>true</c> when a new line character should be appended</param>
-        public SqlBatchCollectorEventArgs([NotNull] string sqlContent, bool isEndOfLine = false) {
+        public SqlBatchCollectorEventArgs(string sqlContent, bool isEndOfLine = false) {
             SqlContent = sqlContent;
             IsEndOfLine = isEndOfLine;
         }
         /// <summary>
         ///     Gets the SQL text to be collected
         /// </summary>
-        [NotNull]
+        
         public string SqlContent { get; }
         /// <summary>
         ///     Gets a value indicating whether a new line character should be appended

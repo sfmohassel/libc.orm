@@ -26,7 +26,7 @@ using libc.orm.DatabaseMigration.DdlGeneration;
 namespace libc.orm.sqlite.DdlGeneration {
     // ReSharper disable once InconsistentNaming
     public class SQLiteGenerator : GenericGenerator {
-        public SQLiteGenerator([NotNull] GeneratorOptions generatorOptions)
+        public SQLiteGenerator(GeneratorOptions generatorOptions)
             : base(new SQLiteColumn(), new SQLiteQuoter(), new EmptyDescriptionGenerator(), generatorOptions) {
         }
         public override string RenameTable => "ALTER TABLE {0} RENAME TO {1}";

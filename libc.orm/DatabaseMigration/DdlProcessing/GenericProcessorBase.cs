@@ -25,17 +25,17 @@ using libc.orm.DatabaseMigration.Abstractions;
 using Microsoft.Extensions.Logging;
 namespace libc.orm.DatabaseMigration.DdlProcessing {
     public abstract class GenericProcessorBase : ProcessorBase {
-        [NotNull]
+        
         private readonly Lazy<DbProviderFactory> _dbProviderFactory;
-        [NotNull]
+        
         private readonly Lazy<IDbConnection> _lazyConnection;
-        [CanBeNull]
+        
         private IDbConnection _connection;
         private bool _disposed;
-        protected GenericProcessorBase([NotNull] Func<DbProviderFactory> factoryAccessor,
-            [NotNull] IMigrationGenerator generator,
-            [NotNull] ILogger logger,
-            [NotNull] ProcessorOptions options)
+        protected GenericProcessorBase(Func<DbProviderFactory> factoryAccessor,
+            IMigrationGenerator generator,
+            ILogger logger,
+            ProcessorOptions options)
             : base(generator, logger, options) {
             _dbProviderFactory = new Lazy<DbProviderFactory>(factoryAccessor.Invoke);
             _lazyConnection = new Lazy<IDbConnection>(
@@ -51,9 +51,9 @@ namespace libc.orm.DatabaseMigration.DdlProcessing {
             get => _connection ?? _lazyConnection.Value;
             protected set => _connection = value;
         }
-        [CanBeNull]
+        
         public IDbTransaction Transaction { get; private set; }
-        [NotNull]
+        
         protected DbProviderFactory DbProviderFactory => _dbProviderFactory.Value;
         protected virtual void EnsureConnectionIsOpen() {
             if (Connection != null && Connection.State != ConnectionState.Open) Connection.Open();

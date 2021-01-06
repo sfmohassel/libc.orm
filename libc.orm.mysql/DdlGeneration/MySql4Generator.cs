@@ -27,8 +27,8 @@ using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.DatabaseMigration.DdlGeneration;
 namespace libc.orm.mysql.DdlGeneration {
     public class MySql4Generator : GenericGenerator {
-        public MySql4Generator([NotNull] IColumn column, [NotNull] IQuoter quoter,
-            [NotNull] GeneratorOptions generatorOptions)
+        public MySql4Generator(IColumn column, IQuoter quoter,
+            GeneratorOptions generatorOptions)
             : base(column, quoter, new EmptyDescriptionGenerator(), generatorOptions) {
         }
         public override string AlterColumn => "ALTER TABLE {0} MODIFY COLUMN {1}";

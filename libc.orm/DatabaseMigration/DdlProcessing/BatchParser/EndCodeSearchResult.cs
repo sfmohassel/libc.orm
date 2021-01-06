@@ -35,7 +35,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// </summary>
         /// <param name="index">The index into the <see cref="ILineReader" /> where the nested start code was found</param>
         /// <param name="nestedRangeSearcher">The searcher to be used to find the end of the nested range</param>
-        public EndCodeSearchResult(int index, [NotNull] IRangeSearcher nestedRangeSearcher) {
+        public EndCodeSearchResult(int index, IRangeSearcher nestedRangeSearcher) {
             Index = index;
             NestedRangeSearcher = nestedRangeSearcher;
         }
@@ -50,7 +50,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <summary>
         ///     Gets the searcher to be used to find the end of the nested range
         /// </summary>
-        [CanBeNull]
+        
         public IRangeSearcher NestedRangeSearcher { get; }
         /// <summary>
         ///     Operator to convert an index of the end code into a <see cref="EndCodeSearchResult" />

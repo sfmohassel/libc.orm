@@ -27,7 +27,7 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// </summary>
         /// <param name="reader">The reader used to search the token</param>
         /// <returns><c>null</c> when the token couldn't be found</returns>
-        [CanBeNull]
-        SpecialTokenInfo Find([NotNull] ILineReader reader);
+        
+        SpecialTokenInfo Find(ILineReader reader);
     }
 }
