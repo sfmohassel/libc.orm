@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Insert {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Insert
+{
     /// <summary>
     ///     The root of the INSERT expression
     /// </summary>
-    public interface IInsertExpressionRoot : IFluentSyntax {
+    public interface IInsertExpressionRoot : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the table name to insert data to
         /// </summary>

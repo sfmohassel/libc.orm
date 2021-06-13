@@ -19,25 +19,37 @@
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.mysql.DdlGeneration {
-    internal class MySqlColumn : ColumnBase {
+
+namespace libc.orm.mysql.DdlGeneration
+{
+    internal class MySqlColumn : ColumnBase
+    {
         public MySqlColumn(ITypeMap typeMap, IQuoter quoter)
-            : base(typeMap, quoter) {
+            : base(typeMap, quoter)
+        {
             ClauseOrder.Add(FormatDescription);
         }
-        internal string FormatDefaultValue(object defaultValue) {
-            var formatDefaultValue = base.FormatDefaultValue(new ColumnDefinition {
+
+        internal string FormatDefaultValue(object defaultValue)
+        {
+            var formatDefaultValue = base.FormatDefaultValue(new ColumnDefinition
+            {
                 DefaultValue = defaultValue
             });
+
             return formatDefaultValue;
         }
-        protected string FormatDescription(ColumnDefinition column) {
+
+        protected string FormatDescription(ColumnDefinition column)
+        {
             return string.IsNullOrEmpty(column.ColumnDescription)
                 ? string.Empty
                 : string.Format("COMMENT {0}", Quoter.QuoteValue(column.ColumnDescription));
         }
+
         /// <inheritdoc />
-        protected override string FormatIdentity(ColumnDefinition column) {
+        protected override string FormatIdentity(ColumnDefinition column)
+        {
             return column.IsIdentity ? "AUTO_INCREMENT" : string.Empty;
         }
     }

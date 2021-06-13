@@ -25,7 +25,9 @@ using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.Abstractions.Validation;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to create a table
     /// </summary>
@@ -33,45 +35,63 @@ namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
         : MigrationExpressionBase,
             ISchemaExpression,
             IColumnsExpression,
-            IValidationChildren {
+            IValidationChildren
+    {
         /// <summary>
         ///     Gets or sets the current column definition
         /// </summary>
-        public virtual ColumnDefinition Column { get; set; } = new ColumnDefinition {
+        public virtual ColumnDefinition Column { get; set; } = new ColumnDefinition
+        {
             ModificationType = ColumnModificationType.Create
         };
+
         /// <inheritdoc />
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "TableNameCannotBeNullOrEmpty")]
         public virtual string TableName { get; set; }
+
         /// <inheritdoc />
-        IEnumerable<ColumnDefinition> IColumnsExpression.Columns => new[] {
+        IEnumerable<ColumnDefinition> IColumnsExpression.Columns => new[]
+        {
             Column
         };
+
         /// <inheritdoc />
         public virtual string SchemaName { get; set; }
+
         /// <inheritdoc />
-        IEnumerable<object> IValidationChildren.Children {
-            get {
+        IEnumerable<object> IValidationChildren.Children
+        {
+            get
+            {
                 yield return Column;
             }
         }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             Column.TableName = TableName;
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override IMigrationExpression Reverse() {
-            return new DeleteColumnExpression {
+        public override IMigrationExpression Reverse()
+        {
+            return new DeleteColumnExpression
+            {
                 SchemaName = SchemaName,
                 TableName = TableName,
-                ColumnNames = {
+                ColumnNames =
+                {
                     Column.Name
                 }
             };
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             var typeName = Column.Type == null ? Column.CustomType : Column.Type.ToString();
+
             return base.ToString() + TableName + " " + Column.Name + " " + typeName;
         }
     }

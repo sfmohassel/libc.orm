@@ -20,17 +20,21 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Column;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Table;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter
+{
     /// <summary>
     ///     The root expression interface for the alterations
     /// </summary>
-    public interface IAlterExpressionRoot : IFluentSyntax {
+    public interface IAlterExpressionRoot : IFluentSyntax
+    {
         /// <summary>
         ///     Alter the table or its columns/options
         /// </summary>
         /// <param name="tableName">The table name</param>
         /// <returns>The interface for the modifications</returns>
         IAlterTableAddColumnOrAlterColumnOrSchemaOrDescriptionSyntax Table(string tableName);
+
         /// <summary>
         ///     Alter the column for a given table
         /// </summary>

@@ -20,20 +20,26 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Table {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Table
+{
     /// <summary>
     ///     An expression builder for a <see cref="DeleteTableExpression" />
     /// </summary>
-    public class DeleteTableExpressionBuilder : ExpressionBuilderBase<DeleteTableExpression>, IInSchemaSyntax {
+    public class DeleteTableExpressionBuilder : ExpressionBuilderBase<DeleteTableExpression>, IInSchemaSyntax
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DeleteTableExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public DeleteTableExpressionBuilder(DeleteTableExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
-        public void InSchema(string schemaName) {
+        public void InSchema(string schemaName)
+        {
             Expression.SchemaName = schemaName;
         }
     }

@@ -18,15 +18,18 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     The direction for an index column
     /// </summary>
-    public enum Direction {
+    public enum Direction
+    {
         /// <summary>
         ///     The order direction of the index column should be <c>Ascending</c>
         /// </summary>
         Ascending = 0,
+
         /// <summary>
         ///     The order direction of the index column should be <c>Descending</c>
         /// </summary>

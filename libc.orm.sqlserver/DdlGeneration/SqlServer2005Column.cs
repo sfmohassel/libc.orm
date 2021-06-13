@@ -19,24 +19,35 @@
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer;
-namespace libc.orm.sqlserver.DdlGeneration {
-    internal class SqlServer2005Column : SqlServer2000Column {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    internal class SqlServer2005Column : SqlServer2000Column
+    {
         public SqlServer2005Column(ITypeMap typeMap, IQuoter quoter)
-            : base(typeMap, quoter) {
+            : base(typeMap, quoter)
+        {
             ClauseOrder.Add(FormatRowGuid);
         }
+
         /// <inheritdoc />
-        protected override string FormatNullable(ColumnDefinition column) {
-            if (column.IsNullable == true && column.Type == null && !string.IsNullOrEmpty(column.CustomType)) return "NULL";
+        protected override string FormatNullable(ColumnDefinition column)
+        {
+            if (column.IsNullable == true && column.Type == null && !string.IsNullOrEmpty(column.CustomType))
+                return "NULL";
+
             return base.FormatNullable(column);
         }
+
         /// <summary>
         ///     Add <c>ROWGUIDCOL</c> when <see cref="SqlServerExtensions.RowGuidColumn" /> is set.
         /// </summary>
         /// <param name="column">The column to create the definition part for</param>
         /// <returns>The generated SQL string part</returns>
-        protected virtual string FormatRowGuid(ColumnDefinition column) {
+        protected virtual string FormatRowGuid(ColumnDefinition column)
+        {
             if (column.AdditionalFeatures.ContainsKey(SqlServerExtensions.RowGuidColumn)) return "ROWGUIDCOL";
+
             return string.Empty;
         }
     }

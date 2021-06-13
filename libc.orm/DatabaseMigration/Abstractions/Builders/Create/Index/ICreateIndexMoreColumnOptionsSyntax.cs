@@ -17,11 +17,14 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index
+{
     /// <summary>
     ///     Extension point for additional index column options
     /// </summary>
-    public interface ICreateIndexMoreColumnOptionsSyntax : ICreateIndexOnColumnSyntax {
+    public interface ICreateIndexMoreColumnOptionsSyntax : ICreateIndexOnColumnSyntax
+    {
         /// <summary>
         ///     Access to the current index column definition
         /// </summary>

@@ -16,11 +16,13 @@
 
 #endregion
 
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.Builders.Create.Index {
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.Builders.Create.Index
+{
     /// <summary>
     ///     The interface to add a column to a non-key column index
     /// </summary>
-    public interface ICreateIndexNonKeyColumnSyntax {
+    public interface ICreateIndexNonKeyColumnSyntax
+    {
         /// <summary>
         ///     Define the column to add to the non-key column index
         /// </summary>

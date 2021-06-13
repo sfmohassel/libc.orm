@@ -36,111 +36,168 @@ using libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Schema;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Sequence;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Table;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create
+{
     /// <summary>
     ///     The <see cref="ICreateExpressionRoot" /> implementation
     /// </summary>
-    public class CreateExpressionRoot : ICreateExpressionRoot {
+    public class CreateExpressionRoot : ICreateExpressionRoot
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="CreateExpressionRoot" /> class.
         /// </summary>
         /// <param name="context">The migration context</param>
-        public CreateExpressionRoot(MigrationContext context) {
+        public CreateExpressionRoot(MigrationContext context)
+        {
             _context = context;
         }
+
         /// <inheritdoc />
-        public ICreateSchemaOptionsSyntax Schema(string schemaName) {
-            var expression = new CreateSchemaExpression {
+        public ICreateSchemaOptionsSyntax Schema(string schemaName)
+        {
+            var expression = new CreateSchemaExpression
+            {
                 SchemaName = schemaName
             };
+
             _context.Expressions.Add(expression);
+
             return new CreateSchemaExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateTableWithColumnOrSchemaOrDescriptionSyntax Table(string tableName) {
-            var expression = new CreateTableExpression {
+        public ICreateTableWithColumnOrSchemaOrDescriptionSyntax Table(string tableName)
+        {
+            var expression = new CreateTableExpression
+            {
                 TableName = tableName
             };
+
             _context.Expressions.Add(expression);
+
             return new CreateTableExpressionBuilder(expression, _context);
         }
+
         /// <inheritdoc />
-        public ICreateColumnOnTableSyntax Column(string columnName) {
-            var expression = new CreateColumnExpression {
-                Column = {
+        public ICreateColumnOnTableSyntax Column(string columnName)
+        {
+            var expression = new CreateColumnExpression
+            {
+                Column =
+                {
                     Name = columnName
                 }
             };
+
             _context.Expressions.Add(expression);
+
             return new CreateColumnExpressionBuilder(expression, _context);
         }
+
         /// <inheritdoc />
-        public ICreateForeignKeyFromTableSyntax ForeignKey() {
+        public ICreateForeignKeyFromTableSyntax ForeignKey()
+        {
             var expression = new CreateForeignKeyExpression();
             _context.Expressions.Add(expression);
+
             return new CreateForeignKeyExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateForeignKeyFromTableSyntax ForeignKey(string foreignKeyName) {
-            var expression = new CreateForeignKeyExpression {
-                ForeignKey = {
+        public ICreateForeignKeyFromTableSyntax ForeignKey(string foreignKeyName)
+        {
+            var expression = new CreateForeignKeyExpression
+            {
+                ForeignKey =
+                {
                     Name = foreignKeyName
                 }
             };
+
             _context.Expressions.Add(expression);
+
             return new CreateForeignKeyExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateIndexForTableSyntax Index() {
+        public ICreateIndexForTableSyntax Index()
+        {
             var expression = new CreateIndexExpression();
             _context.Expressions.Add(expression);
+
             return new CreateIndexExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateIndexForTableSyntax Index(string indexName) {
-            var expression = new CreateIndexExpression {
-                Index = {
+        public ICreateIndexForTableSyntax Index(string indexName)
+        {
+            var expression = new CreateIndexExpression
+            {
+                Index =
+                {
                     Name = indexName
                 }
             };
+
             _context.Expressions.Add(expression);
+
             return new CreateIndexExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateSequenceInSchemaSyntax Sequence(string sequenceName) {
-            var expression = new CreateSequenceExpression {
-                Sequence = {
+        public ICreateSequenceInSchemaSyntax Sequence(string sequenceName)
+        {
+            var expression = new CreateSequenceExpression
+            {
+                Sequence =
+                {
                     Name = sequenceName
                 }
             };
+
             _context.Expressions.Add(expression);
+
             return new CreateSequenceExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateConstraintOnTableSyntax UniqueConstraint() {
+        public ICreateConstraintOnTableSyntax UniqueConstraint()
+        {
             var expression = new CreateConstraintExpression(ConstraintType.Unique);
             _context.Expressions.Add(expression);
+
             return new CreateConstraintExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateConstraintOnTableSyntax UniqueConstraint(string constraintName) {
+        public ICreateConstraintOnTableSyntax UniqueConstraint(string constraintName)
+        {
             var expression = new CreateConstraintExpression(ConstraintType.Unique);
             expression.Constraint.ConstraintName = constraintName;
             _context.Expressions.Add(expression);
+
             return new CreateConstraintExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateConstraintOnTableSyntax PrimaryKey() {
+        public ICreateConstraintOnTableSyntax PrimaryKey()
+        {
             var expression = new CreateConstraintExpression(ConstraintType.PrimaryKey);
             _context.Expressions.Add(expression);
+
             return new CreateConstraintExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public ICreateConstraintOnTableSyntax PrimaryKey(string primaryKeyName) {
+        public ICreateConstraintOnTableSyntax PrimaryKey(string primaryKeyName)
+        {
             var expression = new CreateConstraintExpression(ConstraintType.PrimaryKey);
             expression.Constraint.ConstraintName = primaryKeyName;
             _context.Expressions.Add(expression);
+
             return new CreateConstraintExpressionBuilder(expression);
         }
     }

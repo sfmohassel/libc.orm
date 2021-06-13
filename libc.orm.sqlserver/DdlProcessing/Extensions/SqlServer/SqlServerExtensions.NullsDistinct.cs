@@ -19,17 +19,22 @@
 using System;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
-    public static partial class SqlServerExtensions {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer
+{
+    public static partial class SqlServerExtensions
+    {
         /// <summary>
         ///     Column should have unique values, but multiple rows with null values should be accepted.
         /// </summary>
         /// <param name="expression">The expression to set this option for</param>
         /// <returns>The <paramref name="expression" /></returns>
         public static ICreateIndexColumnUniqueOptionsSyntax NullsNotDistinct(
-            this ICreateIndexColumnUniqueOptionsSyntax expression) {
+            this ICreateIndexColumnUniqueOptionsSyntax expression)
+        {
             return NullsDistinct(expression, false);
         }
+
         /// <summary>
         ///     Column should have unique values. Only one row with null value should be accepted (default for most known database
         ///     engines).
@@ -37,19 +42,25 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         /// <param name="expression">The expression to set this option for</param>
         /// <param name="nullsAreDistinct"><c>true</c> when nulls should be distinct</param>
         /// <returns>The <paramref name="expression" /></returns>
-        public static ICreateIndexColumnUniqueOptionsSyntax NullsDistinct(this ICreateIndexColumnUniqueOptionsSyntax expression,
-            bool nullsAreDistinct = true) {
+        public static ICreateIndexColumnUniqueOptionsSyntax NullsDistinct(
+            this ICreateIndexColumnUniqueOptionsSyntax expression,
+            bool nullsAreDistinct = true)
+        {
             expression.CurrentColumn.AdditionalFeatures[IndexColumnNullsDistinct] = nullsAreDistinct;
+
             return expression;
         }
+
         /// <summary>
         ///     Column should have unique values, but multiple rows with null values should be accepted.
         /// </summary>
         /// <param name="expression">The expression to set this option for</param>
         /// <returns>The <paramref name="expression" /></returns>
-        public static ICreateIndexOnColumnSyntax NullsNotDistinct(this ICreateIndexMoreColumnOptionsSyntax expression) {
+        public static ICreateIndexOnColumnSyntax NullsNotDistinct(this ICreateIndexMoreColumnOptionsSyntax expression)
+        {
             return NullsDistinct(expression, false);
         }
+
         /// <summary>
         ///     Column should have unique values. Only one row with null value should be accepted (default for most known database
         ///     engines).
@@ -58,18 +69,23 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         /// <param name="nullsAreDistinct"><c>true</c> when nulls should be distinct</param>
         /// <returns>The <paramref name="expression" /></returns>
         public static ICreateIndexOnColumnSyntax NullsDistinct(this ICreateIndexMoreColumnOptionsSyntax expression,
-            bool nullsAreDistinct = true) {
+            bool nullsAreDistinct = true)
+        {
             expression.CurrentColumn.AdditionalFeatures[IndexColumnNullsDistinct] = nullsAreDistinct;
+
             return expression;
         }
+
         /// <summary>
         ///     Index should have unique values, but multiple rows with null values should be accepted.
         /// </summary>
         /// <param name="expression">The expression to set this option for</param>
         /// <returns>The <paramref name="expression" /></returns>
-        public static ICreateIndexOnColumnSyntax UniqueNullsNotDistinct(this ICreateIndexOptionsSyntax expression) {
+        public static ICreateIndexOnColumnSyntax UniqueNullsNotDistinct(this ICreateIndexOptionsSyntax expression)
+        {
             return UniqueNullsDistinct(expression, false);
         }
+
         /// <summary>
         ///     Index should have unique values. Only one row with null value should be accepted (default for most known database
         ///     engines).
@@ -78,11 +94,14 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         /// <param name="nullsAreDistinct"><c>true</c> when nulls should be distinct</param>
         /// <returns>The <paramref name="expression" /></returns>
         public static ICreateIndexOnColumnSyntax UniqueNullsDistinct(this ICreateIndexOptionsSyntax expression,
-            bool nullsAreDistinct = true) {
+            bool nullsAreDistinct = true)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures ??
                                      throw new InvalidOperationException(UnsupportedMethodMessage("Nulls(Not)Distinct",
                                          nameof(ISupportAdditionalFeatures)));
+
             additionalFeatures.AdditionalFeatures[IndexColumnNullsDistinct] = nullsAreDistinct;
+
             return expression.Unique();
         }
     }

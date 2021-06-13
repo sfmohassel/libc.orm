@@ -23,12 +23,17 @@ using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.sqlite.DdlGeneration;
 using libc.orm.sqlite.DdlProcessing.BatchParser;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.sqlite.DdlProcessing {
+
+namespace libc.orm.sqlite.DdlProcessing
+{
     // ReSharper disable once InconsistentNaming
-    public class SQLiteProcessorFactory : IProcessorFactory {
-        public IProcessor Create(ProcessorOptions options, ILogger logger) {
+    public class SQLiteProcessorFactory : IProcessorFactory
+    {
+        public IProcessor Create(ProcessorOptions options, ILogger logger)
+        {
             var generatorOptions = new GeneratorOptions();
             var generator = new SQLiteGenerator(generatorOptions);
+
             return new SQLiteProcessor(generator, logger, options, new SQLiteBatchParser());
         }
     }

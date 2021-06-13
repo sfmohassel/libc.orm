@@ -16,12 +16,13 @@
 
 #endregion
 
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser
+{
     /// <summary>
     ///     Provides special information about the found token
     /// </summary>
-    public class SpecialTokenInfo {
+    public class SpecialTokenInfo
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SpecialTokenInfo" /> class.
         /// </summary>
@@ -36,29 +37,32 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     line,
         ///     but is instead surrounded by whitespace.
         /// </remarks>
-        public SpecialTokenInfo(int index, int length, string token, object opaque = null) {
+        public SpecialTokenInfo(int index, int length, string token, object opaque = null)
+        {
             Index = index;
             Length = length;
             Token = token;
             Opaque = opaque;
         }
+
         /// <summary>
         ///     Gets the index to the first character that is assigned to the <see cref="Token" />
         /// </summary>
         public int Index { get; }
+
         /// <summary>
         ///     Gets the content length that is assigned to the <see cref="Token" />
         /// </summary>
         public int Length { get; }
+
         /// <summary>
         ///     Gets the found token
         /// </summary>
-        
         public string Token { get; }
+
         /// <summary>
         ///     Gets an opaque (token specific) value
         /// </summary>
-        
         public object Opaque { get; }
     }
 }

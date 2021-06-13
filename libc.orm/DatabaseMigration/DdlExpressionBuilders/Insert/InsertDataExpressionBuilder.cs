@@ -24,42 +24,62 @@ using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Insert;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Insert {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Insert
+{
     /// <summary>
     ///     An expression builder for a <see cref="InsertDataExpression" />
     /// </summary>
-    public class InsertDataExpressionBuilder : IInsertDataOrInSchemaSyntax, ISupportAdditionalFeatures {
+    public class InsertDataExpressionBuilder : IInsertDataOrInSchemaSyntax, ISupportAdditionalFeatures
+    {
         private readonly InsertDataExpression _expression;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="InsertDataExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
-        public InsertDataExpressionBuilder(InsertDataExpression expression) {
+        public InsertDataExpressionBuilder(InsertDataExpression expression)
+        {
             _expression = expression;
         }
+
         /// <inheritdoc />
-        public IInsertDataSyntax Row(object dataAsAnonymousType) {
+        public IInsertDataSyntax Row(object dataAsAnonymousType)
+        {
             var data = ExtractData(dataAsAnonymousType);
+
             return Row(data);
         }
+
         /// <inheritdoc />
-        public IInsertDataSyntax Row(IDictionary<string, object> data) {
+        public IInsertDataSyntax Row(IDictionary<string, object> data)
+        {
             var dataDefinition = new InsertionDataDefinition();
             dataDefinition.AddRange(data);
             _expression.Rows.Add(dataDefinition);
+
             return this;
         }
+
         /// <inheritdoc />
-        public IInsertDataSyntax InSchema(string schemaName) {
+        public IInsertDataSyntax InSchema(string schemaName)
+        {
             _expression.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures => _expression.AdditionalFeatures;
-        private static IDictionary<string, object> ExtractData(object dataAsAnonymousType) {
+
+        private static IDictionary<string, object> ExtractData(object dataAsAnonymousType)
+        {
             var data = new Dictionary<string, object>();
             var properties = TypeDescriptor.GetProperties(dataAsAnonymousType);
-            foreach (PropertyDescriptor property in properties) data.Add(property.Name, property.GetValue(dataAsAnonymousType));
+
+            foreach (PropertyDescriptor property in properties)
+                data.Add(property.Name, property.GetValue(dataAsAnonymousType));
+
             return data;
         }
     }

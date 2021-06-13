@@ -20,7 +20,9 @@
 
 using System;
 using System.ComponentModel;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders
+{
     /// <summary>
     ///     The base interface for the fluent API
     /// </summary>
@@ -28,25 +30,29 @@ namespace libc.orm.DatabaseMigration.Abstractions.Builders {
     ///     This is just here to suppress the default members of <see cref="object" />
     /// </remarks>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public interface IFluentSyntax {
+    public interface IFluentSyntax
+    {
         /// <summary>
         ///     Gets the objects type
         /// </summary>
         /// <returns>The objects type</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         Type GetType();
+
         /// <summary>
         ///     Gets the objects hash code
         /// </summary>
         /// <returns>The objects hash code</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         int GetHashCode();
+
         /// <summary>
         ///     Gets the objects string representation
         /// </summary>
         /// <returns>The objects string representation</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         string ToString();
+
         /// <summary>
         ///     Compares if two objects of the same type are equal
         /// </summary>

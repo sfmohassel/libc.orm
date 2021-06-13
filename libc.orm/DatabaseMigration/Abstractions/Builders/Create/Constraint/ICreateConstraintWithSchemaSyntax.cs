@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint
+{
     /// <summary>
     ///     Specify the constraint schema
     /// </summary>
-    public interface ICreateConstraintWithSchemaSyntax : IFluentSyntax {
+    public interface ICreateConstraintWithSchemaSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     The constraint schema
         /// </summary>

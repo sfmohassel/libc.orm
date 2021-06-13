@@ -16,14 +16,17 @@
 
 #endregion
 
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.mysql.DdlGeneration {
-    public class MySql5Generator : MySql4Generator {
+
+namespace libc.orm.mysql.DdlGeneration
+{
+    public class MySql5Generator : MySql4Generator
+    {
         public MySql5Generator(IColumn column, IQuoter quoter,
             GeneratorOptions generatorOptions)
-            : base(column, quoter, generatorOptions) {
+            : base(column, quoter, generatorOptions)
+        {
         }
     }
 }

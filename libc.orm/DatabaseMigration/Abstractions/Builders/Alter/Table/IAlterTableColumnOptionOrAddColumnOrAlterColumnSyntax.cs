@@ -18,14 +18,16 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Table {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Table
+{
     /// <summary>
     ///     Interface for adding/altering columns or column options
     /// </summary>
     public interface IAlterTableColumnOptionOrAddColumnOrAlterColumnSyntax :
         IColumnOptionSyntax<IAlterTableColumnOptionOrAddColumnOrAlterColumnSyntax,
             IAlterTableColumnOptionOrAddColumnOrAlterColumnOrForeignKeyCascadeSyntax>,
-        IAlterTableAddColumnOrAlterColumnSyntax {
+        IAlterTableAddColumnOrAlterColumnSyntax
+    {
         /// <summary>
         ///     The value to set against existing rows for the new column.  Only used for creating columns, not altering them.
         /// </summary>

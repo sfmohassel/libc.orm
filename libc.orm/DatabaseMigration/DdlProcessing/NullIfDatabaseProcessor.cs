@@ -21,41 +21,59 @@
 
 using System.Collections.Generic;
 using libc.orm.DatabaseMigration.Abstractions;
-namespace libc.orm.DatabaseMigration.DdlProcessing {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing
+{
     /// <summary>
     ///     Provides a null implmentation of a procesor that does not do any work
     /// </summary>
-    public class NullIfDatabaseProcessor : IQuerySchema {
+    public class NullIfDatabaseProcessor : IQuerySchema
+    {
         /// <inheritdoc />
         public string DatabaseType => "Unknown";
+
         /// <inheritdoc />
         public IList<string> DatabaseTypeAliases { get; } = new List<string>();
+
         /// <inheritdoc />
-        public bool SequenceExists(string schemaName, string sequenceName) {
+        public bool SequenceExists(string schemaName, string sequenceName)
+        {
             return false;
         }
+
         /// <inheritdoc />
-        public bool DefaultValueExists(string schemaName, string tableName, string columnName, object defaultValue) {
+        public bool DefaultValueExists(string schemaName, string tableName, string columnName, object defaultValue)
+        {
             return false;
         }
+
         /// <inheritdoc />
-        public bool SchemaExists(string schemaName) {
+        public bool SchemaExists(string schemaName)
+        {
             return false;
         }
+
         /// <inheritdoc />
-        public bool TableExists(string schemaName, string tableName) {
+        public bool TableExists(string schemaName, string tableName)
+        {
             return false;
         }
+
         /// <inheritdoc />
-        public bool ColumnExists(string schemaName, string tableName, string columnName) {
+        public bool ColumnExists(string schemaName, string tableName, string columnName)
+        {
             return false;
         }
+
         /// <inheritdoc />
-        public bool ConstraintExists(string schemaName, string tableName, string constraintName) {
+        public bool ConstraintExists(string schemaName, string tableName, string constraintName)
+        {
             return false;
         }
+
         /// <inheritdoc />
-        public bool IndexExists(string schemaName, string tableName, string indexName) {
+        public bool IndexExists(string schemaName, string tableName, string indexName)
+        {
             return false;
         }
     }

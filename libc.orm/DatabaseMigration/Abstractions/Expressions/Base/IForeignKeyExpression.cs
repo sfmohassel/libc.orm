@@ -17,11 +17,14 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     Opt-in into the foreign key expressions conventions
     /// </summary>
-    public interface IForeignKeyExpression {
+    public interface IForeignKeyExpression
+    {
         /// <summary>
         ///     Gets the foreign key defintion
         /// </summary>

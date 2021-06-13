@@ -23,44 +23,64 @@ using System.ComponentModel;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Delete;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete
+{
     /// <summary>
     ///     An expression builder for a <see cref="DeleteDataExpression" />
     /// </summary>
-    public class DeleteDataExpressionBuilder : IDeleteDataOrInSchemaSyntax {
+    public class DeleteDataExpressionBuilder : IDeleteDataOrInSchemaSyntax
+    {
         private readonly DeleteDataExpression _expression;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="DeleteDataExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
-        public DeleteDataExpressionBuilder(DeleteDataExpression expression) {
+        public DeleteDataExpressionBuilder(DeleteDataExpression expression)
+        {
             _expression = expression;
         }
+
         /// <inheritdoc />
-        public void IsNull(string columnName) {
-            _expression.Rows.Add(new DeletionDataDefinition {
+        public void IsNull(string columnName)
+        {
+            _expression.Rows.Add(new DeletionDataDefinition
+            {
                 new KeyValuePair<string, object>(columnName, null)
             });
         }
+
         /// <inheritdoc />
-        public IDeleteDataSyntax Row(object dataAsAnonymousType) {
+        public IDeleteDataSyntax Row(object dataAsAnonymousType)
+        {
             _expression.Rows.Add(GetData(dataAsAnonymousType));
+
             return this;
         }
+
         /// <inheritdoc />
-        public IDeleteDataSyntax InSchema(string schemaName) {
+        public IDeleteDataSyntax InSchema(string schemaName)
+        {
             _expression.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public void AllRows() {
+        public void AllRows()
+        {
             _expression.IsAllRows = true;
         }
-        private static DeletionDataDefinition GetData(object dataAsAnonymousType) {
+
+        private static DeletionDataDefinition GetData(object dataAsAnonymousType)
+        {
             var data = new DeletionDataDefinition();
             var properties = TypeDescriptor.GetProperties(dataAsAnonymousType);
+
             foreach (PropertyDescriptor property in properties)
                 data.Add(new KeyValuePair<string, object>(property.Name, property.GetValue(dataAsAnonymousType)));
+
             return data;
         }
     }

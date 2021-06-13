@@ -18,32 +18,44 @@
 
 #endregion
 
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.postgres.DdlGeneration.Postgres {
+
+namespace libc.orm.postgres.DdlGeneration.Postgres
+{
     /// <summary>
     ///     almost copied from OracleDescriptionGenerator,
     ///     modified for escaping table description
     /// </summary>
-    public class PostgresDescriptionGenerator : GenericDescriptionGenerator {
-        public PostgresDescriptionGenerator(PostgresQuoter quoter) {
+    public class PostgresDescriptionGenerator : GenericDescriptionGenerator
+    {
+        public PostgresDescriptionGenerator(PostgresQuoter quoter)
+        {
             Quoter = quoter;
         }
+
         protected IQuoter Quoter { get; }
-        private string GetFullTableName(string schemaName, string tableName) {
+
+        private string GetFullTableName(string schemaName, string tableName)
+        {
             return Quoter.QuoteTableName(tableName, schemaName);
         }
-        protected override string GenerateTableDescription(string schemaName, string tableName, string tableDescription) {
+
+        protected override string GenerateTableDescription(string schemaName, string tableName, string tableDescription)
+        {
             if (string.IsNullOrEmpty(tableDescription))
                 return string.Empty;
+
             return string.Format(TableDescriptionTemplate, GetFullTableName(schemaName, tableName),
                 tableDescription.Replace("'", "''"));
         }
+
         protected override string GenerateColumnDescription(string schemaName, string tableName, string columnName,
-            string columnDescription) {
+            string columnDescription)
+        {
             if (string.IsNullOrEmpty(columnDescription))
                 return string.Empty;
+
             return string.Format(
                 ColumnDescriptionTemplate,
                 GetFullTableName(schemaName, tableName),

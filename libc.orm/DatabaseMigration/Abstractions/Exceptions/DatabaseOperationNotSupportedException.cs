@@ -18,38 +18,48 @@
 
 using System;
 using System.Runtime.Serialization;
-namespace libc.orm.DatabaseMigration.Abstractions.Exceptions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Exceptions
+{
     /// <summary>
     ///     Exception to be thrown when a database operation is not supported
     /// </summary>
     [Serializable]
-    public class DatabaseOperationNotSupportedException : FluentMigratorException {
+    public class DatabaseOperationNotSupportedException : FluentMigratorException
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DatabaseOperationNotSupportedException" /> class.
         /// </summary>
-        public DatabaseOperationNotSupportedException() {
+        public DatabaseOperationNotSupportedException()
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="DatabaseOperationNotSupportedException" /> class.
         /// </summary>
         /// <param name="message">The exception message</param>
-        public DatabaseOperationNotSupportedException(string message) : base(message) {
+        public DatabaseOperationNotSupportedException(string message) : base(message)
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="DatabaseOperationNotSupportedException" /> class.
         /// </summary>
         /// <param name="message">The exception message</param>
         /// <param name="innerException">The inner exception</param>
         public DatabaseOperationNotSupportedException(string message, Exception innerException)
-            : base(message, innerException) {
+            : base(message, innerException)
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="DatabaseOperationNotSupportedException" /> class.
         /// </summary>
         /// <param name="info">The serialization information</param>
         /// <param name="context">The streaming context</param>
         public DatabaseOperationNotSupportedException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(info, context)
+        {
         }
     }
 }

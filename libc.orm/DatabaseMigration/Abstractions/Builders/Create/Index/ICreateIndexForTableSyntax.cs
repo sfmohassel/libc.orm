@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index
+{
     /// <summary>
     ///     Definition of the table the index belongs to
     /// </summary>
-    public interface ICreateIndexForTableSyntax : IFluentSyntax {
+    public interface ICreateIndexForTableSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Defines the table the new index belongs to
         /// </summary>

@@ -1,5 +1,7 @@
-namespace libc.orm.DatabaseManagementSystems {
-    public enum Dbms {
+namespace libc.orm.DatabaseManagementSystems
+{
+    public enum Dbms
+    {
         Sqlite,
         SqlServer,
         MySql,

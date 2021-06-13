@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint
+{
     /// <summary>
     ///     Delete the constraint from the given table
     /// </summary>
-    public interface IDeleteConstraintOnTableSyntax : IFluentSyntax {
+    public interface IDeleteConstraintOnTableSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the table to delete the constraint from
         /// </summary>

@@ -24,34 +24,46 @@ using System.Linq;
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to delete a column
     /// </summary>
-    public class DeleteColumnExpression : MigrationExpressionBase, ISchemaExpression, IValidatableObject {
+    public class DeleteColumnExpression : MigrationExpressionBase, ISchemaExpression, IValidatableObject
+    {
         /// <summary>
         ///     Gets or sets a table name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "TableNameCannotBeNullOrEmpty")]
         public virtual string TableName { get; set; }
+
         /// <summary>
         ///     Gets or sets the column names
         /// </summary>
         public ICollection<string> ColumnNames { get; set; } = new List<string>();
+
         /// <inheritdoc />
         public virtual string SchemaName { get; set; }
+
         /// <inheritdoc />
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
             if (ColumnNames == null || !ColumnNames.Any() || ColumnNames.Any(string.IsNullOrEmpty))
                 yield return new ValidationResult(Dmt.ColumnNameCannotBeNullOrEmpty);
+
             if (ColumnNames != null && ColumnNames.GroupBy(x => x).Any(x => x.Count() > 1))
                 yield return new ValidationResult(Dmt.ColumnNamesMustBeUnique);
         }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return base.ToString() + TableName + " " + ColumnNames.Aggregate((a, b) => a + ", " + b);
         }
     }

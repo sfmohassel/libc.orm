@@ -24,17 +24,22 @@ using System.Data;
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression that allows the execution of DB operations
     /// </summary>
-    public class PerformDBOperationExpression : MigrationExpressionBase {
+    public class PerformDBOperationExpression : MigrationExpressionBase
+    {
         /// <summary>
         ///     Gets or sets the operation to be executed for a given database connection
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = nameof(Dmt.OperationCannotBeNull))]
         public Action<IDbConnection, IDbTransaction> Operation { get; set; }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
     }

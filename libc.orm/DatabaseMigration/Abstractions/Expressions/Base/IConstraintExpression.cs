@@ -17,11 +17,14 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     Opt-in into constraint expression conventions
     /// </summary>
-    public interface IConstraintExpression {
+    public interface IConstraintExpression
+    {
         /// <summary>
         ///     Gets the constraint definition
         /// </summary>

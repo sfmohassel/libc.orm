@@ -25,26 +25,38 @@ using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to delete an index
     /// </summary>
     public class DeleteIndexExpression : MigrationExpressionBase, ISupportAdditionalFeatures, IIndexExpression,
-        IValidatableObject {
+        IValidatableObject
+    {
         /// <inheritdoc />
         public virtual IndexDefinition Index { get; set; } = new IndexDefinition();
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures => Index.AdditionalFeatures;
+
         /// <inheritdoc />
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
             if (string.IsNullOrEmpty(Index.Name)) yield return new ValidationResult(Dmt.IndexNameCannotBeNullOrEmpty);
-            if (string.IsNullOrEmpty(Index.TableName)) yield return new ValidationResult(Dmt.TableNameCannotBeNullOrEmpty);
+
+            if (string.IsNullOrEmpty(Index.TableName))
+                yield return new ValidationResult(Dmt.TableNameCannotBeNullOrEmpty);
         }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return base.ToString() + Index.TableName + " (" +
                    string.Join(", ", Index.Columns.Select(x => x.Name).ToArray()) + ")";
         }

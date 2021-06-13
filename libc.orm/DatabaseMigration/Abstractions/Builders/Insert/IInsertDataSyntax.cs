@@ -19,11 +19,14 @@
 #endregion
 
 using System.Collections.Generic;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Insert {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Insert
+{
     /// <summary>
     ///     Specify the data to insert
     /// </summary>
-    public interface IInsertDataSyntax : IFluentSyntax {
+    public interface IInsertDataSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the data to insert
         /// </summary>
@@ -33,6 +36,7 @@ namespace libc.orm.DatabaseMigration.Abstractions.Builders.Insert {
         /// </remarks>
         /// <returns>The next step</returns>
         IInsertDataSyntax Row(object dataAsAnonymousType);
+
         /// <summary>
         ///     Specify the data to insert
         /// </summary>

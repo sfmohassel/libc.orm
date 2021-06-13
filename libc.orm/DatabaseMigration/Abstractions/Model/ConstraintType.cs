@@ -16,15 +16,18 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     The constraint type
     /// </summary>
-    public enum ConstraintType {
+    public enum ConstraintType
+    {
         /// <summary>
         ///     A primary key constraint
         /// </summary>
         PrimaryKey,
+
         /// <summary>
         ///     A unique constraint
         /// </summary>

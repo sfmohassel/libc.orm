@@ -22,7 +22,9 @@ using System.Collections.Generic;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Constraint {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Constraint
+{
     /// <summary>
     ///     An expression builder for a <see cref="DeleteColumnExpression" />
     /// </summary>
@@ -30,32 +32,45 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Constraint {
         : ExpressionBuilderBase<DeleteConstraintExpression>,
             IDeleteConstraintOnTableSyntax,
             IDeleteConstraintInSchemaOptionsSyntax,
-            ISupportAdditionalFeatures {
+            ISupportAdditionalFeatures
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:CreateConstraintExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public DeleteConstraintExpressionBuilder(DeleteConstraintExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
-        public IDeleteConstraintInSchemaOptionsSyntax InSchema(string schemaName) {
+        public IDeleteConstraintInSchemaOptionsSyntax InSchema(string schemaName)
+        {
             Expression.Constraint.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public void Column(string columnName) {
+        public void Column(string columnName)
+        {
             Expression.Constraint.Columns.Add(columnName);
         }
+
         /// <inheritdoc />
-        public void Columns(params string[] columnNames) {
+        public void Columns(params string[] columnNames)
+        {
             foreach (var columnName in columnNames) Expression.Constraint.Columns.Add(columnName);
         }
+
         /// <inheritdoc />
-        public IDeleteConstraintInSchemaOptionsSyntax FromTable(string tableName) {
+        public IDeleteConstraintInSchemaOptionsSyntax FromTable(string tableName)
+        {
             Expression.Constraint.TableName = tableName;
+
             return this;
         }
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures => Expression.AdditionalFeatures;
     }

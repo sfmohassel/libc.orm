@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column
+{
     /// <summary>
     ///     Interface to specify the table for a column
     /// </summary>
-    public interface ICreateColumnOnTableSyntax : IFluentSyntax {
+    public interface ICreateColumnOnTableSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the table for the column
         /// </summary>

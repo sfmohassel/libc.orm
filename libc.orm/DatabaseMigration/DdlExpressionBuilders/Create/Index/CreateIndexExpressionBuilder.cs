@@ -23,7 +23,9 @@ using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Index {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Index
+{
     /// <summary>
     ///     An expression builder for a <see cref="CreateIndexExpression" />
     /// </summary>
@@ -34,70 +36,105 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Index {
         ICreateIndexOptionsSyntax,
         ISupportAdditionalFeatures,
         ICreateIndexColumnUniqueOptionsSyntax,
-        ICreateIndexMoreColumnOptionsSyntax {
+        ICreateIndexMoreColumnOptionsSyntax
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CreateIndexExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public CreateIndexExpressionBuilder(CreateIndexExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
-        public ICreateIndexMoreColumnOptionsSyntax Ascending() {
+        public ICreateIndexMoreColumnOptionsSyntax Ascending()
+        {
             CurrentColumn.Direction = Direction.Ascending;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateIndexMoreColumnOptionsSyntax Descending() {
+        public ICreateIndexMoreColumnOptionsSyntax Descending()
+        {
             CurrentColumn.Direction = Direction.Descending;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateIndexColumnUniqueOptionsSyntax Unique() {
+        public ICreateIndexColumnUniqueOptionsSyntax Unique()
+        {
             Expression.Index.IsUnique = true;
+
             return this;
         }
+
         /// <summary>
         ///     Gets or sets the current index column definition
         /// </summary>
         public IndexColumnDefinition CurrentColumn { get; set; }
+
         /// <inheritdoc />
-        public ICreateIndexOnColumnOrInSchemaSyntax OnTable(string tableName) {
+        public ICreateIndexOnColumnOrInSchemaSyntax OnTable(string tableName)
+        {
             Expression.Index.TableName = tableName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateIndexColumnOptionsSyntax OnColumn(string columnName) {
-            CurrentColumn = new IndexColumnDefinition {
+        public ICreateIndexColumnOptionsSyntax OnColumn(string columnName)
+        {
+            CurrentColumn = new IndexColumnDefinition
+            {
                 Name = columnName
             };
+
             Expression.Index.Columns.Add(CurrentColumn);
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateIndexOptionsSyntax WithOptions() {
+        public ICreateIndexOptionsSyntax WithOptions()
+        {
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateIndexOnColumnSyntax InSchema(string schemaName) {
+        public ICreateIndexOnColumnSyntax InSchema(string schemaName)
+        {
             Expression.Index.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
-        ICreateIndexOnColumnSyntax ICreateIndexOptionsSyntax.Unique() {
+        ICreateIndexOnColumnSyntax ICreateIndexOptionsSyntax.Unique()
+        {
             Expression.Index.IsUnique = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateIndexOnColumnSyntax NonClustered() {
+        public ICreateIndexOnColumnSyntax NonClustered()
+        {
             Expression.Index.IsClustered = false;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateIndexOnColumnSyntax Clustered() {
+        public ICreateIndexOnColumnSyntax Clustered()
+        {
             Expression.Index.IsClustered = true;
+
             return this;
         }
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures => Expression.Index.AdditionalFeatures;
     }

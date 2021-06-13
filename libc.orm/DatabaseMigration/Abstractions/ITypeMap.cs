@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.Abstractions {
+
+namespace libc.orm.DatabaseMigration.Abstractions
+{
     /// <summary>
     ///     A map of <see cref="DbType" /> to an SQL type
     /// </summary>
-    public interface ITypeMap {
+    public interface ITypeMap
+    {
         /// <summary>
         ///     Get the SQL type for a <see cref="DbType" />
         /// </summary>
@@ -15,6 +17,7 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <returns>The SQL type</returns>
         [Obsolete]
         string GetTypeMap(DbType type, int size, int precision);
+
         /// <summary>
         ///     Get the SQL type for a <see cref="DbType" />
         /// </summary>
@@ -22,7 +25,6 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <param name="size">The requested size (in DB lingua: precision)</param>
         /// <param name="precision">The requested precision (in DB lingua: scale)</param>
         /// <returns>The SQL type</returns>
-        
         string GetTypeMap(DbType type, int? size, int? precision);
     }
 }

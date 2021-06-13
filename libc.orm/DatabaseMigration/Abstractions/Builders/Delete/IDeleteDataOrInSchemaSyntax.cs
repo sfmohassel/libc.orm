@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete
+{
     /// <summary>
     ///     Specify the schema or the condition of the data to delete
     /// </summary>
-    public interface IDeleteDataOrInSchemaSyntax : IDeleteDataSyntax {
+    public interface IDeleteDataOrInSchemaSyntax : IDeleteDataSyntax
+    {
         /// <summary>
         ///     Specify the schema of the table to delete from
         /// </summary>

@@ -21,25 +21,35 @@
 using libc.orm.DatabaseMigration.Abstractions.Builders.Insert;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Insert {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Insert
+{
     /// <summary>
     ///     The implementation of the <see cref="IInsertExpressionRoot" /> interface.
     /// </summary>
-    public class InsertExpressionRoot : IInsertExpressionRoot {
+    public class InsertExpressionRoot : IInsertExpressionRoot
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="InsertExpressionRoot" /> class.
         /// </summary>
         /// <param name="context">The migration context</param>
-        public InsertExpressionRoot(MigrationContext context) {
+        public InsertExpressionRoot(MigrationContext context)
+        {
             _context = context;
         }
+
         /// <inheritdoc />
-        public IInsertDataOrInSchemaSyntax IntoTable(string tableName) {
-            var expression = new InsertDataExpression {
+        public IInsertDataOrInSchemaSyntax IntoTable(string tableName)
+        {
+            var expression = new InsertDataExpression
+            {
                 TableName = tableName
             };
+
             _context.Expressions.Add(expression);
+
             return new InsertDataExpressionBuilder(expression);
         }
     }

@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Extensions;
@@ -30,77 +29,119 @@ using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.sqlserver.DdlProcessing.Extensions.Model;
 using libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer;
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2005Generator : SqlServer2000Generator {
-        private static readonly HashSet<string> _supportedAdditionalFeatures = new HashSet<string> {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2005Generator : SqlServer2000Generator
+    {
+        private static readonly HashSet<string> _supportedAdditionalFeatures = new HashSet<string>
+        {
             SqlServerExtensions.IncludesList,
             SqlServerExtensions.OnlineIndex,
             SqlServerExtensions.RowGuidColumn,
             SqlServerExtensions.SchemaAuthorization
         };
+
         public SqlServer2005Generator(SqlServer2005Quoter quoter, GeneratorOptions options)
-            : base(quoter, options) {
+            : base(quoter, options)
+        {
         }
+
         public override string AddColumn => "ALTER TABLE {0} ADD {1}";
         public override string CreateSchema => "CREATE SCHEMA {0}{1}";
         public override string CreateIndex => "CREATE {0}{1}INDEX {2} ON {3} ({4}{5}{6}){7}";
         public override string DropIndex => "DROP INDEX {0} ON {1}{2}";
         public override string IdentityInsert => "SET IDENTITY_INSERT {0} {1}";
+
         public override string CreateForeignKeyConstraint =>
             "ALTER TABLE {0} ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES {3} ({4}){5}{6}";
-        public virtual string GetIncludeString(CreateIndexExpression column) {
+
+        public virtual string GetIncludeString(CreateIndexExpression column)
+        {
             var includes = column.GetAdditionalFeature<IList<IndexIncludeDefinition>>(SqlServerExtensions.IncludesList);
+
             return includes?.Count > 0 ? ") INCLUDE (" : string.Empty;
         }
-        public virtual string GetWithOptions(ISupportAdditionalFeatures expression) {
+
+        public virtual string GetWithOptions(ISupportAdditionalFeatures expression)
+        {
             var items = new List<string>();
             var isOnline = expression.GetAdditionalFeature(SqlServerExtensions.OnlineIndex, (bool?) null);
             if (isOnline.HasValue) items.Add($"ONLINE={(isOnline.Value ? "ON" : "OFF")}");
+
             return string.Join(", ", items);
         }
-        public override bool IsAdditionalFeatureSupported(string feature) {
+
+        public override bool IsAdditionalFeatureSupported(string feature)
+        {
             return _supportedAdditionalFeatures.Contains(feature)
                    || base.IsAdditionalFeatureSupported(feature);
         }
-        public override string Generate(CreateTableExpression expression) {
+
+        public override string Generate(CreateTableExpression expression)
+        {
             var descriptionStatements = DescriptionGenerator.GenerateDescriptionStatements(expression);
             var createTableStatement = base.Generate(expression);
             var descriptionStatementsArray = descriptionStatements as string[] ?? descriptionStatements.ToArray();
+
             if (!descriptionStatementsArray.Any())
                 return createTableStatement;
+
             return ComposeStatements(createTableStatement, descriptionStatementsArray);
         }
-        public override string Generate(AlterTableExpression expression) {
+
+        public override string Generate(AlterTableExpression expression)
+        {
             var descriptionStatement = DescriptionGenerator.GenerateDescriptionStatement(expression);
+
             if (string.IsNullOrEmpty(descriptionStatement))
                 return base.Generate(expression);
+
             return descriptionStatement;
         }
-        public override string Generate(CreateColumnExpression expression) {
+
+        public override string Generate(CreateColumnExpression expression)
+        {
             var alterTableStatement = base.Generate(expression);
             var descriptionStatement = DescriptionGenerator.GenerateDescriptionStatement(expression);
+
             if (string.IsNullOrEmpty(descriptionStatement))
                 return alterTableStatement;
-            return ComposeStatements(alterTableStatement, new[] {
+
+            return ComposeStatements(alterTableStatement, new[]
+            {
                 descriptionStatement
             });
         }
-        public override string Generate(AlterColumnExpression expression) {
+
+        public override string Generate(AlterColumnExpression expression)
+        {
             var alterTableStatement = base.Generate(expression);
             var descriptionStatement = DescriptionGenerator.GenerateDescriptionStatement(expression);
+
             if (string.IsNullOrEmpty(descriptionStatement))
                 return alterTableStatement;
-            return ComposeStatements(alterTableStatement, new[] {
+
+            return ComposeStatements(alterTableStatement, new[]
+            {
                 descriptionStatement
             });
         }
-        public override string Generate(CreateForeignKeyExpression expression) {
+
+        public override string Generate(CreateForeignKeyExpression expression)
+        {
             if (expression.ForeignKey.PrimaryColumns.Count != expression.ForeignKey.ForeignColumns.Count)
                 throw new ArgumentException("Number of primary columns and secondary columns must be equal");
+
             var primaryColumns = new List<string>();
             var foreignColumns = new List<string>();
-            foreach (var column in expression.ForeignKey.PrimaryColumns) primaryColumns.Add(Quoter.QuoteColumnName(column));
-            foreach (var column in expression.ForeignKey.ForeignColumns) foreignColumns.Add(Quoter.QuoteColumnName(column));
+
+            foreach (var column in expression.ForeignKey.PrimaryColumns)
+                primaryColumns.Add(Quoter.QuoteColumnName(column));
+
+            foreach (var column in expression.ForeignKey.ForeignColumns)
+                foreignColumns.Add(Quoter.QuoteColumnName(column));
+
             return string.Format(
                 CreateForeignKeyConstraint,
                 Quoter.QuoteTableName(expression.ForeignKey.ForeignTable, expression.ForeignKey.ForeignTableSchema),
@@ -112,28 +153,40 @@ namespace libc.orm.sqlserver.DdlGeneration {
                 Column.FormatCascade("UPDATE", expression.ForeignKey.OnUpdate)
             );
         }
-        public override string Generate(CreateIndexExpression expression) {
+
+        public override string Generate(CreateIndexExpression expression)
+        {
             var indexColumns = new string[expression.Index.Columns.Count];
             IndexColumnDefinition columnDef;
-            for (var i = 0; i < expression.Index.Columns.Count; i++) {
+
+            for (var i = 0; i < expression.Index.Columns.Count; i++)
+            {
                 columnDef = expression.Index.Columns.ElementAt(i);
+
                 if (columnDef.Direction == Direction.Ascending)
                     indexColumns[i] = Quoter.QuoteColumnName(columnDef.Name) + " ASC";
                 else
                     indexColumns[i] = Quoter.QuoteColumnName(columnDef.Name) + " DESC";
             }
+
             var includes =
                 expression.Index.GetAdditionalFeature<IList<IndexIncludeDefinition>>(SqlServerExtensions.IncludesList);
+
             var indexIncludes = new string[includes?.Count ?? 0];
+
             if (includes != null)
-                for (var i = 0; i != includes.Count; i++) {
+                for (var i = 0; i != includes.Count; i++)
+                {
                     var includeDef = includes[i];
                     indexIncludes[i] = Quoter.QuoteColumnName(includeDef.Name);
                 }
+
             var withParts = GetWithOptions(expression);
+
             var withPart = !string.IsNullOrEmpty(withParts)
                 ? $" WITH ({withParts})"
                 : string.Empty;
+
             var result = string.Format(
                 CreateIndex,
                 GetUniqueString(expression),
@@ -144,27 +197,38 @@ namespace libc.orm.sqlserver.DdlGeneration {
                 GetIncludeString(expression),
                 string.Join(", ", indexIncludes),
                 withPart);
+
             return result;
         }
-        public override string Generate(DeleteIndexExpression expression) {
+
+        public override string Generate(DeleteIndexExpression expression)
+        {
             var withParts = GetWithOptions(expression);
+
             var withPart = !string.IsNullOrEmpty(withParts)
                 ? $" WITH ({withParts})"
                 : string.Empty;
+
             return string.Format(
                 DropIndex,
                 Quoter.QuoteIndexName(expression.Index.Name),
                 Quoter.QuoteTableName(expression.Index.TableName, expression.Index.SchemaName),
                 withPart);
         }
-        public override string Generate(CreateConstraintExpression expression) {
+
+        public override string Generate(CreateConstraintExpression expression)
+        {
             var withParts = GetWithOptions(expression);
+
             var withPart = !string.IsNullOrEmpty(withParts)
                 ? $" WITH ({withParts})"
                 : string.Empty;
+
             return $"{base.Generate(expression)}{withPart}";
         }
-        public override string Generate(DeleteDefaultConstraintExpression expression) {
+
+        public override string Generate(DeleteDefaultConstraintExpression expression)
+        {
             var sql =
                 "DECLARE @default sysname, @sql nvarchar(max);" + Environment.NewLine + Environment.NewLine +
                 "-- get name of default constraint" + Environment.NewLine +
@@ -181,37 +245,54 @@ namespace libc.orm.sqlserver.DdlGeneration {
                 "-- create alter table command to drop constraint as string and run it" + Environment.NewLine +
                 "SET @sql = N'ALTER TABLE {0} DROP CONSTRAINT ' + QUOTENAME(@default);" + Environment.NewLine +
                 "EXEC sp_executesql @sql;";
+
             return string.Format(sql, Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
                 expression.ColumnName);
         }
-        public override string Generate(DeleteConstraintExpression expression) {
+
+        public override string Generate(DeleteConstraintExpression expression)
+        {
             var withParts = GetWithOptions(expression);
+
             var withPart = !string.IsNullOrEmpty(withParts)
                 ? $" WITH ({withParts})"
                 : string.Empty;
+
             return $"{base.Generate(expression)}{withPart}";
         }
-        public override string Generate(CreateSchemaExpression expression) {
+
+        public override string Generate(CreateSchemaExpression expression)
+        {
             string authFragment;
-            if (expression.AdditionalFeatures.TryGetValue(SqlServerExtensions.SchemaAuthorization, out var authorization))
+
+            if (expression.AdditionalFeatures.TryGetValue(SqlServerExtensions.SchemaAuthorization,
+                out var authorization))
                 authFragment = $" AUTHORIZATION {Quoter.QuoteSchemaName((string) authorization)}";
             else
                 authFragment = string.Empty;
+
             return string.Format(CreateSchema, Quoter.QuoteSchemaName(expression.SchemaName), authFragment);
         }
-        public override string Generate(DeleteSchemaExpression expression) {
+
+        public override string Generate(DeleteSchemaExpression expression)
+        {
             return string.Format(DropSchema, Quoter.QuoteSchemaName(expression.SchemaName));
         }
-        public override string Generate(AlterSchemaExpression expression) {
+
+        public override string Generate(AlterSchemaExpression expression)
+        {
             return string.Format(AlterSchema, Quoter.QuoteSchemaName(expression.DestinationSchemaName),
                 Quoter.QuoteTableName(expression.TableName, expression.SourceSchemaName));
         }
-        private string ComposeStatements(string ddlStatement, IEnumerable<string> otherStatements) {
+
+        private string ComposeStatements(string ddlStatement, IEnumerable<string> otherStatements)
+        {
             var otherStatementsArray = otherStatements.ToArray();
             var statementsBuilder = new StringBuilder();
             statementsBuilder.AppendLine(ddlStatement);
             statementsBuilder.AppendLine("GO");
             statementsBuilder.AppendLine(string.Join(";", otherStatementsArray));
+
             return statementsBuilder.ToString();
         }
     }

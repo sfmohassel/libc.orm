@@ -17,11 +17,14 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     Opt-in into the sequence expression conventions
     /// </summary>
-    public interface ISequenceExpression {
+    public interface ISequenceExpression
+    {
         /// <summary>
         ///     Gets the sequence definition
         /// </summary>

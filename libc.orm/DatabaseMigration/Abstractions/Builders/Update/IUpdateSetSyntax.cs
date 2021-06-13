@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Update {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Update
+{
     /// <summary>
     ///     Specify the data to update
     /// </summary>
-    public interface IUpdateSetSyntax : IFluentSyntax {
+    public interface IUpdateSetSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the values to be set
         /// </summary>

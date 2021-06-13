@@ -20,17 +20,21 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Schema;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Table;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema
+{
     /// <summary>
     ///     The expression root to query the existence of database objects
     /// </summary>
-    public interface ISchemaExpressionRoot : IFluentSyntax {
+    public interface ISchemaExpressionRoot : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the table as base to query a database objects existence
         /// </summary>
         /// <param name="tableName">The table name</param>
         /// <returns>The next step</returns>
         ISchemaTableSyntax Table(string tableName);
+
         /// <summary>
         ///     Specify the schema as base to query a database objects existence
         /// </summary>

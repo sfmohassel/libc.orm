@@ -17,17 +17,22 @@
 #endregion
 
 using System.Text.RegularExpressions;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers
+{
     /// <summary>
     ///     An example implementation of a nested multi-line comment (e.g. <c>/* comment /* nested */ */</c>)
     /// </summary>
-    public sealed class NestingMultiLineComment : IRangeSearcher {
+    public sealed class NestingMultiLineComment : IRangeSearcher
+    {
         private readonly Regex _endCodeRegex;
         private readonly Regex _startCodeRegex;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="NestingMultiLineComment" /> class.
         /// </summary>
-        public NestingMultiLineComment() {
+        public NestingMultiLineComment()
+        {
             var startCode = "/*";
             var endCode = "*/";
             StartCodeLength = startCode.Length;
@@ -37,31 +42,45 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers {
             _startCodeRegex = new Regex(startCodePattern, RegexOptions.CultureInvariant | RegexOptions.Compiled);
             _endCodeRegex = new Regex(endCodePattern, RegexOptions.CultureInvariant | RegexOptions.Compiled);
         }
+
         /// <inheritdoc />
         public int StartCodeLength { get; }
+
         /// <inheritdoc />
         public int EndCodeLength { get; }
+
         /// <inheritdoc />
         public bool IsComment => true;
+
         /// <inheritdoc />
-        public int FindStartCode(ILineReader reader) {
+        public int FindStartCode(ILineReader reader)
+        {
             var match = _startCodeRegex.Match(reader.Line, reader.Index);
+
             if (!match.Success)
                 return -1;
+
             return match.Index;
         }
+
         /// <inheritdoc />
-        public EndCodeSearchResult FindEndCode(ILineReader reader) {
+        public EndCodeSearchResult FindEndCode(ILineReader reader)
+        {
             var matchStart = _startCodeRegex.Match(reader.Line, reader.Index);
             var matchEnd = _endCodeRegex.Match(reader.Line, reader.Index);
+
             if (!matchEnd.Success && !matchStart.Success)
                 return null;
+
             if (!matchStart.Success)
                 return matchEnd.Index;
+
             if (!matchEnd.Success)
                 return new EndCodeSearchResult(matchStart.Index, this);
+
             if (matchStart.Index < matchEnd.Index)
                 return new EndCodeSearchResult(matchStart.Index, this);
+
             return matchEnd.Index;
         }
     }

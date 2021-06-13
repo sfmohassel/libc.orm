@@ -24,20 +24,26 @@ using System.ComponentModel;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Update;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Update {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Update
+{
     /// <summary>
     ///     An expression builder for a <see cref="UpdateDataExpression" />
     /// </summary>
     public class UpdateDataExpressionBuilder : IUpdateSetOrInSchemaSyntax,
-        IUpdateWhereSyntax {
+        IUpdateWhereSyntax
+    {
         private readonly UpdateDataExpression _expression;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="UpdateDataExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
-        public UpdateDataExpressionBuilder(UpdateDataExpression expression) {
+        public UpdateDataExpressionBuilder(UpdateDataExpression expression)
+        {
             _expression = expression;
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="UpdateDataExpressionBuilder" /> class.
         /// </summary>
@@ -45,32 +51,47 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Update {
         /// <param name="context">The migration context</param>
         [Obsolete]
         // ReSharper disable once UnusedParameter.Local
-        public UpdateDataExpressionBuilder(UpdateDataExpression expression, MigrationContext context) {
+        public UpdateDataExpressionBuilder(UpdateDataExpression expression, MigrationContext context)
+        {
             _expression = expression;
         }
+
         /// <inheritdoc />
-        public IUpdateSetSyntax InSchema(string schemaName) {
+        public IUpdateSetSyntax InSchema(string schemaName)
+        {
             _expression.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IUpdateWhereSyntax Set(object dataAsAnonymousType) {
+        public IUpdateWhereSyntax Set(object dataAsAnonymousType)
+        {
             _expression.Set = GetData(dataAsAnonymousType);
+
             return this;
         }
+
         /// <inheritdoc />
-        public void Where(object dataAsAnonymousType) {
+        public void Where(object dataAsAnonymousType)
+        {
             _expression.Where = GetData(dataAsAnonymousType);
         }
+
         /// <inheritdoc />
-        public void AllRows() {
+        public void AllRows()
+        {
             _expression.IsAllRows = true;
         }
-        private static List<KeyValuePair<string, object>> GetData(object dataAsAnonymousType) {
+
+        private static List<KeyValuePair<string, object>> GetData(object dataAsAnonymousType)
+        {
             var data = new List<KeyValuePair<string, object>>();
             var properties = TypeDescriptor.GetProperties(dataAsAnonymousType);
+
             foreach (PropertyDescriptor property in properties)
                 data.Add(new KeyValuePair<string, object>(property.Name, property.GetValue(dataAsAnonymousType)));
+
             return data;
         }
     }

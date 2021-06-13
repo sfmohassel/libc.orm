@@ -21,124 +21,201 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.DatabaseMigration.DdlProcessing {
-    public abstract class ProcessorBase : IProcessor {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing
+{
+    public abstract class ProcessorBase : IProcessor
+    {
         protected internal readonly IMigrationGenerator Generator;
+
         protected ProcessorBase(IMigrationGenerator generator,
             ILogger logger,
-            ProcessorOptions options) {
+            ProcessorOptions options)
+        {
             Generator = generator;
             Options = options;
             Logger = logger;
         }
+
         public bool WasCommitted { get; protected set; }
         protected ILogger Logger { get; }
         public ProcessorOptions Options { get; }
         public abstract string DatabaseType { get; }
         public abstract IList<string> DatabaseTypeAliases { get; }
-        public virtual void Process(CreateSchemaExpression expression) {
+
+        public virtual void Process(CreateSchemaExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteSchemaExpression expression) {
+
+        public virtual void Process(DeleteSchemaExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(CreateTableExpression expression) {
+
+        public virtual void Process(CreateTableExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(AlterTableExpression expression) {
+
+        public virtual void Process(AlterTableExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(AlterColumnExpression expression) {
+
+        public virtual void Process(AlterColumnExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(CreateColumnExpression expression) {
+
+        public virtual void Process(CreateColumnExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteTableExpression expression) {
+
+        public virtual void Process(DeleteTableExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteColumnExpression expression) {
+
+        public virtual void Process(DeleteColumnExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(CreateForeignKeyExpression expression) {
+
+        public virtual void Process(CreateForeignKeyExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteForeignKeyExpression expression) {
+
+        public virtual void Process(DeleteForeignKeyExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(CreateIndexExpression expression) {
+
+        public virtual void Process(CreateIndexExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteIndexExpression expression) {
+
+        public virtual void Process(DeleteIndexExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(RenameTableExpression expression) {
+
+        public virtual void Process(RenameTableExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(RenameColumnExpression expression) {
+
+        public virtual void Process(RenameColumnExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(InsertDataExpression expression) {
+
+        public virtual void Process(InsertDataExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteDataExpression expression) {
+
+        public virtual void Process(DeleteDataExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(AlterDefaultConstraintExpression expression) {
+
+        public virtual void Process(AlterDefaultConstraintExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(UpdateDataExpression expression) {
+
+        public virtual void Process(UpdateDataExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
+
         public abstract void Process(PerformDBOperationExpression expression);
-        public virtual void Process(AlterSchemaExpression expression) {
+
+        public virtual void Process(AlterSchemaExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(CreateSequenceExpression expression) {
+
+        public virtual void Process(CreateSequenceExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteSequenceExpression expression) {
+
+        public virtual void Process(DeleteSequenceExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(CreateConstraintExpression expression) {
+
+        public virtual void Process(CreateConstraintExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteConstraintExpression expression) {
+
+        public virtual void Process(DeleteConstraintExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void Process(DeleteDefaultConstraintExpression expression) {
+
+        public virtual void Process(DeleteDefaultConstraintExpression expression)
+        {
             Process(Generator.Generate(expression));
         }
-        public virtual void BeginTransaction() {
+
+        public virtual void BeginTransaction()
+        {
         }
-        public virtual void CommitTransaction() {
+
+        public virtual void CommitTransaction()
+        {
         }
-        public virtual void RollbackTransaction() {
+
+        public virtual void RollbackTransaction()
+        {
         }
+
         public abstract DataSet ReadTableData(string schemaName, string tableName);
+
         public abstract DataSet Read(string template, params object[] args);
+
         public abstract bool Exists(string template, params object[] args);
+
         /// <inheritdoc />
-        public virtual void Execute(string sql) {
+        public virtual void Execute(string sql)
+        {
             Execute(sql.Replace("{", "{{").Replace("}", "}}"), Array.Empty<object>());
         }
+
         public abstract void Execute(string template, params object[] args);
+
         public abstract bool SchemaExists(string schemaName);
+
         public abstract bool TableExists(string schemaName, string tableName);
+
         public abstract bool ColumnExists(string schemaName, string tableName, string columnName);
+
         public abstract bool ConstraintExists(string schemaName, string tableName, string constraintName);
+
         public abstract bool IndexExists(string schemaName, string tableName, string indexName);
+
         public abstract bool SequenceExists(string schemaName, string sequenceName);
+
         public abstract bool DefaultValueExists(string schemaName, string tableName, string columnName,
             object defaultValue);
-        public void Dispose() {
+
+        public void Dispose()
+        {
             Dispose(true);
         }
+
         protected abstract void Process(string sql);
+
         protected abstract void Dispose(bool isDisposing);
     }
 }

@@ -16,11 +16,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     Opt-in into the file system convention
     /// </summary>
-    public interface IFileSystemExpression {
+    public interface IFileSystemExpression
+    {
         /// <summary>
         ///     Gets or sets the root path (working directory)
         /// </summary>

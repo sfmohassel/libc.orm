@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.ForeignKey {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.ForeignKey
+{
     /// <summary>
     ///     Define the schema or foreign key column to delete
     /// </summary>
-    public interface IDeleteForeignKeyForeignColumnOrInSchemaSyntax : IDeleteForeignKeyForeignColumnSyntax {
+    public interface IDeleteForeignKeyForeignColumnOrInSchemaSyntax : IDeleteForeignKeyForeignColumnSyntax
+    {
         /// <summary>
         ///     Define the schema
         /// </summary>

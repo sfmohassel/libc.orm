@@ -18,27 +18,34 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     Function to replace token in an SQL script
     /// </summary>
-    public static class SqlScriptTokenReplacer {
+    public static class SqlScriptTokenReplacer
+    {
         /// <summary>
         ///     Replace tokens in an SQL script
         /// </summary>
         /// <param name="sqlText">The SQL script where the tokens will be replaced</param>
         /// <param name="parameters">The tokens to be replaced</param>
         /// <returns>The SQL script with the replaced tokens</returns>
-        public static string ReplaceSqlScriptTokens(string sqlText, IDictionary<string, string> parameters) {
+        public static string ReplaceSqlScriptTokens(string sqlText, IDictionary<string, string> parameters)
+        {
             // Are parameters set?
-            if (parameters != null && parameters.Count != 0) {
+            if (parameters != null && parameters.Count != 0)
+            {
                 // Replace $(word) elements with values stored
                 // in the Parameters dictionary.
                 sqlText = Regex.Replace(
                     sqlText,
                     @"\$\((?<token>\w+)\)",
-                    m => {
+                    m =>
+                    {
                         var key = m.Groups["token"].Value;
+
                         if (parameters.TryGetValue(key, out var keyValue)) return keyValue;
 
                         // Return the whole match value when the key
@@ -51,6 +58,7 @@ namespace libc.orm.DatabaseMigration.Abstractions.Model {
                 // Replace $$((word)) with $(word)
                 sqlText = Regex.Replace(sqlText, @"\${2}\({2}(\w+)\){2}", @"$$($1)");
             }
+
             return sqlText;
         }
     }

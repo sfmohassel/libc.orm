@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Insert {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Insert
+{
     /// <summary>
     ///     Specify the data or schema to insert
     /// </summary>
-    public interface IInsertDataOrInSchemaSyntax : IInsertDataSyntax {
+    public interface IInsertDataOrInSchemaSyntax : IInsertDataSyntax
+    {
         /// <summary>
         ///     Specify the schema of the table to insert data
         /// </summary>

@@ -25,35 +25,51 @@ using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter.Column;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter.Table;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter
+{
     /// <summary>
     ///     The root expression for alterations
     /// </summary>
-    public class AlterExpressionRoot : IAlterExpressionRoot {
+    public class AlterExpressionRoot : IAlterExpressionRoot
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="AlterExpressionRoot" /> class.
         /// </summary>
         /// <param name="context">The migration context</param>
-        public AlterExpressionRoot(MigrationContext context) {
+        public AlterExpressionRoot(MigrationContext context)
+        {
             _context = context;
         }
+
         /// <inheritdoc />
-        public IAlterTableAddColumnOrAlterColumnOrSchemaOrDescriptionSyntax Table(string tableName) {
-            var expression = new AlterTableExpression {
+        public IAlterTableAddColumnOrAlterColumnOrSchemaOrDescriptionSyntax Table(string tableName)
+        {
+            var expression = new AlterTableExpression
+            {
                 TableName = tableName
             };
+
             _context.Expressions.Add(expression);
+
             return new AlterTableExpressionBuilder(expression, _context);
         }
+
         /// <inheritdoc />
-        public IAlterColumnOnTableSyntax Column(string columnName) {
-            var expression = new AlterColumnExpression {
-                Column = {
+        public IAlterColumnOnTableSyntax Column(string columnName)
+        {
+            var expression = new AlterColumnExpression
+            {
+                Column =
+                {
                     Name = columnName
                 }
             };
+
             _context.Expressions.Add(expression);
+
             return new AlterColumnExpressionBuilder(expression, _context);
         }
     }

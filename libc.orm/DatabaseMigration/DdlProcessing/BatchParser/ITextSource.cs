@@ -16,17 +16,17 @@
 
 #endregion
 
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser
+{
     /// <summary>
     ///     An interface to create a reader that is used to read the SQL script lines
     /// </summary>
-    public interface ITextSource {
+    public interface ITextSource
+    {
         /// <summary>
         ///     Creates a reader
         /// </summary>
         /// <returns><c>null</c> when no content was available</returns>
-        
         ILineReader CreateReader();
     }
 }

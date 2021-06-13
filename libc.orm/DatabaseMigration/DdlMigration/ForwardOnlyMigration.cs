@@ -17,16 +17,20 @@
 #endregion
 
 using System;
-namespace libc.orm.DatabaseMigration.DdlMigration {
+
+namespace libc.orm.DatabaseMigration.DdlMigration
+{
     /// <summary>
     ///     A forward-only migration
     /// </summary>
     /// <remarks>
     ///     A try to collect the <c>Down</c> expressions will result in an exception
     /// </remarks>
-    public abstract class ForwardOnlyMigration : Migration {
+    public abstract class ForwardOnlyMigration : Migration
+    {
         /// <inheritdoc />
-        public sealed override void Down() {
+        public sealed override void Down()
+        {
             throw new InvalidOperationException("Only forward migration is supported");
         }
     }

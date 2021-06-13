@@ -19,17 +19,21 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Rename.Table;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Rename {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Rename
+{
     /// <summary>
     ///     The expression root for renaming tables or columns
     /// </summary>
-    public interface IRenameExpressionRoot : IFluentSyntax {
+    public interface IRenameExpressionRoot : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the table (or its column) to be renamed
         /// </summary>
         /// <param name="oldName">The current table name</param>
         /// <returns>The next step</returns>
         IRenameTableToOrInSchemaSyntax Table(string oldName);
+
         /// <summary>
         ///     Specify the column to be renamed
         /// </summary>

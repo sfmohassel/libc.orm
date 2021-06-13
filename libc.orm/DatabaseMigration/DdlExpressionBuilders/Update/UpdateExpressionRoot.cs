@@ -21,25 +21,35 @@
 using libc.orm.DatabaseMigration.Abstractions.Builders.Update;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Update {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Update
+{
     /// <summary>
     ///     The implementation of the <see cref="IUpdateExpressionRoot" /> interface.
     /// </summary>
-    public class UpdateExpressionRoot : IUpdateExpressionRoot {
+    public class UpdateExpressionRoot : IUpdateExpressionRoot
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="UpdateExpressionRoot" /> class.
         /// </summary>
         /// <param name="context">The migration context</param>
-        public UpdateExpressionRoot(MigrationContext context) {
+        public UpdateExpressionRoot(MigrationContext context)
+        {
             _context = context;
         }
+
         /// <inheritdoc />
-        public IUpdateSetOrInSchemaSyntax Table(string tableName) {
-            var expression = new UpdateDataExpression {
+        public IUpdateSetOrInSchemaSyntax Table(string tableName)
+        {
+            var expression = new UpdateDataExpression
+            {
                 TableName = tableName
             };
+
             _context.Expressions.Add(expression);
+
             return new UpdateDataExpressionBuilder(expression);
         }
     }

@@ -20,15 +20,19 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Constraint;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Constraint {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Constraint
+{
     /// <summary>
     ///     The implementation of the <see cref="ISchemaConstraintSyntax" /> interface.
     /// </summary>
-    public class SchemaConstraintQuery : ISchemaConstraintSyntax {
+    public class SchemaConstraintQuery : ISchemaConstraintSyntax
+    {
         private readonly string _constraintName;
         private readonly MigrationContext _context;
         private readonly string _schemaName;
         private readonly string _tableName;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SchemaConstraintQuery" /> class.
         /// </summary>
@@ -36,14 +40,18 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Constraint {
         /// <param name="tableName">The table name</param>
         /// <param name="constraintName">The constraint name</param>
         /// <param name="context">The migration context</param>
-        public SchemaConstraintQuery(string schemaName, string tableName, string constraintName, MigrationContext context) {
+        public SchemaConstraintQuery(string schemaName, string tableName, string constraintName,
+            MigrationContext context)
+        {
             _schemaName = schemaName;
             _tableName = tableName;
             _constraintName = constraintName;
             _context = context;
         }
+
         /// <inheritdoc />
-        public bool Exists() {
+        public bool Exists()
+        {
             return _context.QuerySchema.ConstraintExists(_schemaName, _tableName, _constraintName);
         }
     }

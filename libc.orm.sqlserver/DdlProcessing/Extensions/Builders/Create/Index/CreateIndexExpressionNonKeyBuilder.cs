@@ -19,17 +19,25 @@
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index;
 using libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.Builders.Create.Index {
-    internal class CreateIndexExpressionNonKeyBuilder : ICreateIndexNonKeyColumnSyntax {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.Builders.Create.Index
+{
+    internal class CreateIndexExpressionNonKeyBuilder : ICreateIndexNonKeyColumnSyntax
+    {
         public CreateIndexExpressionNonKeyBuilder(ICreateIndexOnColumnSyntax expression,
-            ISupportAdditionalFeatures supportAdditionalFeatures) {
+            ISupportAdditionalFeatures supportAdditionalFeatures)
+        {
             Expression = expression;
             SupportAdditionalFeatures = supportAdditionalFeatures;
         }
+
         public ICreateIndexOnColumnSyntax Expression { get; }
         public ISupportAdditionalFeatures SupportAdditionalFeatures { get; }
-        public ICreateIndexNonKeyColumnSyntax Include(string columnName) {
+
+        public ICreateIndexNonKeyColumnSyntax Include(string columnName)
+        {
             SupportAdditionalFeatures.Include(columnName);
+
             return this;
         }
     }

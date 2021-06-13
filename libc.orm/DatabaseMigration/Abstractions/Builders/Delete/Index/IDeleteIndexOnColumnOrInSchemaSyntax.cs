@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Index {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Index
+{
     /// <summary>
     ///     Specify the column or schema of the index to delete
     /// </summary>
-    public interface IDeleteIndexOnColumnOrInSchemaSyntax : IDeleteIndexOnColumnSyntax {
+    public interface IDeleteIndexOnColumnOrInSchemaSyntax : IDeleteIndexOnColumnSyntax
+    {
         /// <summary>
         ///     The schema of the index to delete
         /// </summary>

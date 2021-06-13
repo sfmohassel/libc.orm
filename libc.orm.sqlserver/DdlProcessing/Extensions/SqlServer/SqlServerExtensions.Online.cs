@@ -22,8 +22,11 @@ using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Index;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
-    public static partial class SqlServerExtensions {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer
+{
+    public static partial class SqlServerExtensions
+    {
         /// <summary>
         ///     Specifies whether underlying tables and associated indexes are available for queries and data modification during
         ///     the index operation.
@@ -37,13 +40,17 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         ///     <c>false</c>
         ///     Table locks are applied and the table is unavailable for the duration of the index operation.
         /// </param>
-        public static IDeleteIndexOptionsSyntax Online(this IDeleteIndexOptionsSyntax expression, bool active = true) {
+        public static IDeleteIndexOptionsSyntax Online(this IDeleteIndexOptionsSyntax expression, bool active = true)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures ??
                                      throw new InvalidOperationException(UnsupportedMethodMessage(nameof(Online),
                                          nameof(ISupportAdditionalFeatures)));
+
             additionalFeatures.AdditionalFeatures[OnlineIndex] = active;
+
             return expression;
         }
+
         /// <summary>
         ///     Specifies whether underlying tables and associated indexes are available for queries and data modification during
         ///     the index operation.
@@ -57,14 +64,19 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         ///     <c>false</c>
         ///     Table locks are applied and the table is unavailable for the duration of the index operation.
         /// </param>
-        public static IDeleteConstraintInSchemaOptionsSyntax Online(this IDeleteConstraintInSchemaOptionsSyntax expression,
-            bool active = true) {
+        public static IDeleteConstraintInSchemaOptionsSyntax Online(
+            this IDeleteConstraintInSchemaOptionsSyntax expression,
+            bool active = true)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures ??
                                      throw new InvalidOperationException(UnsupportedMethodMessage(nameof(Online),
                                          nameof(ISupportAdditionalFeatures)));
+
             additionalFeatures.AdditionalFeatures[OnlineIndex] = active;
+
             return expression;
         }
+
         /// <summary>
         ///     Specifies whether underlying tables and associated indexes are available for queries and data modification during
         ///     the index operation.
@@ -78,13 +90,17 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         ///     <c>false</c>
         ///     Table locks are applied and the table is unavailable for the duration of the index operation.
         /// </param>
-        public static ICreateIndexOptionsSyntax Online(this ICreateIndexOptionsSyntax expression, bool active = true) {
+        public static ICreateIndexOptionsSyntax Online(this ICreateIndexOptionsSyntax expression, bool active = true)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures ??
                                      throw new InvalidOperationException(UnsupportedMethodMessage(nameof(Online),
                                          nameof(ISupportAdditionalFeatures)));
+
             additionalFeatures.AdditionalFeatures[OnlineIndex] = active;
+
             return expression;
         }
+
         /// <summary>
         ///     Specifies whether underlying tables and associated indexes are available for queries and data modification during
         ///     the index operation.
@@ -99,11 +115,14 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         ///     Table locks are applied and the table is unavailable for the duration of the index operation.
         /// </param>
         public static ICreateConstraintOptionsSyntax Online(this ICreateConstraintOptionsSyntax expression,
-            bool active = true) {
+            bool active = true)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures ??
                                      throw new InvalidOperationException(UnsupportedMethodMessage(nameof(Online),
                                          nameof(ISupportAdditionalFeatures)));
+
             additionalFeatures.AdditionalFeatures[OnlineIndex] = active;
+
             return expression;
         }
     }

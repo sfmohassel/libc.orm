@@ -18,12 +18,14 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Table {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Table
+{
     /// <summary>
     ///     Interface to change the description or alter the table/column/schema
     /// </summary>
     public interface
-        IAlterTableAddColumnOrAlterColumnOrSchemaOrDescriptionSyntax : IAlterTableAddColumnOrAlterColumnOrSchemaSyntax {
+        IAlterTableAddColumnOrAlterColumnOrSchemaOrDescriptionSyntax : IAlterTableAddColumnOrAlterColumnOrSchemaSyntax
+    {
         /// <summary>
         ///     Set the description
         /// </summary>

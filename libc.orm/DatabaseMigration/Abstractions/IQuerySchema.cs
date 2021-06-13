@@ -19,36 +19,39 @@
 #endregion
 
 using System.Collections.Generic;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.Abstractions {
+
+namespace libc.orm.DatabaseMigration.Abstractions
+{
     /// <summary>
     ///     Gets the interface to query a database
     /// </summary>
-    public interface IQuerySchema {
+    public interface IQuerySchema
+    {
         /// <summary>
         ///     Gets the database type
         /// </summary>
-        
         string DatabaseType { get; }
+
         /// <summary>
         ///     Gets the database type aliases
         /// </summary>
-        
-        
         IList<string> DatabaseTypeAliases { get; }
+
         /// <summary>
         ///     Tests if the schema exists
         /// </summary>
         /// <param name="schemaName">The schema name</param>
         /// <returns><c>true</c> when it exists</returns>
         bool SchemaExists(string schemaName);
+
         /// <summary>
         ///     Tests if the table exists
         /// </summary>
         /// <param name="schemaName">The schema name</param>
         /// <param name="tableName">The table name</param>
         /// <returns><c>true</c> when it exists</returns>
-        bool TableExists(string schemaName,string tableName);
+        bool TableExists(string schemaName, string tableName);
+
         /// <summary>
         ///     Tests if a column exists
         /// </summary>
@@ -57,6 +60,7 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <param name="columnName">The column name</param>
         /// <returns><c>true</c> when it exists</returns>
         bool ColumnExists(string schemaName, string tableName, string columnName);
+
         /// <summary>
         ///     Tests if a constraint exists
         /// </summary>
@@ -65,6 +69,7 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <param name="constraintName">The constraint name</param>
         /// <returns><c>true</c> when it exists</returns>
         bool ConstraintExists(string schemaName, string tableName, string constraintName);
+
         /// <summary>
         ///     Tests if an index exists
         /// </summary>
@@ -73,6 +78,7 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <param name="indexName">The index name</param>
         /// <returns><c>true</c> when it exists</returns>
         bool IndexExists(string schemaName, string tableName, string indexName);
+
         /// <summary>
         ///     Tests if a sequence exists
         /// </summary>
@@ -80,6 +86,7 @@ namespace libc.orm.DatabaseMigration.Abstractions {
         /// <param name="sequenceName">The sequence name</param>
         /// <returns><c>true</c> when it exists</returns>
         bool SequenceExists(string schemaName, string sequenceName);
+
         /// <summary>
         ///     Tests if a default value for a column exists
         /// </summary>

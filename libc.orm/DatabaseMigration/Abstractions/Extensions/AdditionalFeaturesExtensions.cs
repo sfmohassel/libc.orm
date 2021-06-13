@@ -19,11 +19,14 @@
 #endregion
 
 using System;
-namespace libc.orm.DatabaseMigration.Abstractions.Extensions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Extensions
+{
     /// <summary>
     ///     Extension methods for the <see cref="ISupportAdditionalFeatures" /> interface
     /// </summary>
-    public static class AdditionalFeaturesExtensions {
+    public static class AdditionalFeaturesExtensions
+    {
         /// <summary>
         ///     Gets an additional feature value
         /// </summary>
@@ -33,17 +36,24 @@ namespace libc.orm.DatabaseMigration.Abstractions.Extensions {
         /// <param name="defaultValue">The default value to be used if none was found</param>
         /// <returns>The stored value or the <paramref name="defaultValue" /></returns>
         public static T GetAdditionalFeature<T>(this ISupportAdditionalFeatures additionalFeatures, string key,
-            T defaultValue = default) {
+            T defaultValue = default)
+        {
             T result;
             var dict = additionalFeatures.AdditionalFeatures;
-            if (!dict.TryGetValue(key, out var val)) {
+
+            if (!dict.TryGetValue(key, out var val))
+            {
                 result = defaultValue;
                 dict.Add(key, result);
-            } else {
+            }
+            else
+            {
                 result = (T) val;
             }
+
             return result;
         }
+
         /// <summary>
         ///     Gets an additional feature value
         /// </summary>
@@ -53,17 +63,24 @@ namespace libc.orm.DatabaseMigration.Abstractions.Extensions {
         /// <param name="createDefaultValue">A lambda to create a default value</param>
         /// <returns>The stored or a newly created value</returns>
         public static T GetAdditionalFeature<T>(this ISupportAdditionalFeatures additionalFeatures, string key,
-            Func<T> createDefaultValue) {
+            Func<T> createDefaultValue)
+        {
             T result;
             var dict = additionalFeatures.AdditionalFeatures;
-            if (!dict.TryGetValue(key, out var val)) {
+
+            if (!dict.TryGetValue(key, out var val))
+            {
                 result = createDefaultValue();
                 dict.Add(key, result);
-            } else {
+            }
+            else
+            {
                 result = (T) val;
             }
+
             return result;
         }
+
         /// <summary>
         ///     Sets the value for an additional feature
         /// </summary>
@@ -72,7 +89,8 @@ namespace libc.orm.DatabaseMigration.Abstractions.Extensions {
         /// <param name="key">The key into the <see cref="ISupportAdditionalFeatures.AdditionalFeatures" /> dictionary</param>
         /// <param name="value">The value to be set</param>
         public static void SetAdditionalFeature<T>(this ISupportAdditionalFeatures additionalFeatures, string key,
-            T value) {
+            T value)
+        {
             var dict = additionalFeatures.AdditionalFeatures;
             dict[key] = value;
         }

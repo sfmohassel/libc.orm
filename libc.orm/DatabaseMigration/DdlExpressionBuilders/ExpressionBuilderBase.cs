@@ -19,20 +19,25 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders
+{
     /// <summary>
     ///     The base class for builders with underlying expressions
     /// </summary>
     /// <typeparam name="T">A type that implements <see cref="IMigrationExpression" /></typeparam>
     public abstract class ExpressionBuilderBase<T>
-        where T : class, IMigrationExpression {
+        where T : class, IMigrationExpression
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExpressionBuilderBase{T}" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
-        protected ExpressionBuilderBase(T expression) {
+        protected ExpressionBuilderBase(T expression)
+        {
             Expression = expression;
         }
+
         /// <summary>
         ///     Gets the underlying migration expression
         /// </summary>

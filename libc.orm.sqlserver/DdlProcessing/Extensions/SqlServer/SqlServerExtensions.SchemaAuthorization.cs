@@ -19,19 +19,25 @@
 using System;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Schema;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
-    public static partial class SqlServerExtensions {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer
+{
+    public static partial class SqlServerExtensions
+    {
         /// <summary>
         ///     Sets the schema owner during schema creation
         /// </summary>
         /// <param name="expression">The schema creation expression</param>
         /// <param name="owner">The schema owner</param>
         /// <returns>The next step</returns>
-        public static ICreateSchemaOptionsSyntax Authorization(this ICreateSchemaOptionsSyntax expression, string owner) {
+        public static ICreateSchemaOptionsSyntax Authorization(this ICreateSchemaOptionsSyntax expression, string owner)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures ??
                                      throw new InvalidOperationException(UnsupportedMethodMessage(nameof(Authorization),
                                          nameof(ISupportAdditionalFeatures)));
+
             additionalFeatures.AdditionalFeatures[SchemaAuthorization] = owner;
+
             return expression;
         }
     }

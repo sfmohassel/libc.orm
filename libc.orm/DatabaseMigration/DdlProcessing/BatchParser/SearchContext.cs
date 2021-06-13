@@ -19,54 +19,64 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser
+{
     /// <summary>
     ///     Represents the context for the <see cref="SearchStatus" /> operation
     /// </summary>
-    internal sealed class SearchContext {
+    internal sealed class SearchContext
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SearchContext" /> class.
         /// </summary>
         /// <param name="rangeSearchers">The range searchers</param>
         /// <param name="specialTokenSearchers">The special token searchers</param>
         /// <param name="stripComments">Should the comments be stripped</param>
-        public SearchContext( IEnumerable<IRangeSearcher> rangeSearchers,
-             IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
-            bool stripComments) {
+        public SearchContext(IEnumerable<IRangeSearcher> rangeSearchers,
+            IEnumerable<ISpecialTokenSearcher> specialTokenSearchers,
+            bool stripComments)
+        {
             StripComments = stripComments;
+
             SpecialTokenSearchers = specialTokenSearchers as IList<ISpecialTokenSearcher> ??
                                     specialTokenSearchers.ToList().AsReadOnly();
+
             RangeSearchers = rangeSearchers as IList<IRangeSearcher> ?? rangeSearchers.ToList().AsReadOnly();
         }
+
         /// <summary>
         ///     Gets the special token searchers
         /// </summary>
-        
-        
         public IList<ISpecialTokenSearcher> SpecialTokenSearchers { get; }
+
         /// <summary>
         ///     Gets the range searchers
         /// </summary>
-        
-        
         public IList<IRangeSearcher> RangeSearchers { get; }
+
         /// <summary>
         ///     Gets a value indicating whether the comments should be stripped
         /// </summary>
         public bool StripComments { get; }
+
         /// <summary>
         ///     Event handler that is called when SQL statements should be collected
         /// </summary>
         public event EventHandler<SqlBatchCollectorEventArgs> BatchSql;
+
         /// <summary>
         ///     Event handler that is called when a special token was found
         /// </summary>
         public event EventHandler<SpecialTokenEventArgs> SpecialToken;
-        internal void OnBatchSql(SqlBatchCollectorEventArgs e) {
+
+        internal void OnBatchSql(SqlBatchCollectorEventArgs e)
+        {
             BatchSql?.Invoke(this, e);
         }
-        internal void OnSpecialToken(SpecialTokenEventArgs e) {
+
+        internal void OnSpecialToken(SpecialTokenEventArgs e)
+        {
             SpecialToken?.Invoke(this, e);
         }
     }

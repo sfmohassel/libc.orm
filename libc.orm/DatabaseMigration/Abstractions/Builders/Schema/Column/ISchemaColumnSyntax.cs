@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Column {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Column
+{
     /// <summary>
     ///     Query a columns existence
     /// </summary>
-    public interface ISchemaColumnSyntax : IFluentSyntax {
+    public interface ISchemaColumnSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Returns <c>true</c> when the column exists
         /// </summary>

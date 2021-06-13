@@ -23,16 +23,23 @@ using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.sqlserver.DdlGeneration;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.sqlserver.DdlProcessing {
-    public class SqlServer2005ProcessorFactory : IProcessorFactory {
-        private static readonly string[] _dbTypes = {
+
+namespace libc.orm.sqlserver.DdlProcessing
+{
+    public class SqlServer2005ProcessorFactory : IProcessorFactory
+    {
+        private static readonly string[] _dbTypes =
+        {
             "SqlServer2005",
             "SqlServer"
         };
-        public IProcessor Create(ProcessorOptions options, ILogger logger) {
+
+        public IProcessor Create(ProcessorOptions options, ILogger logger)
+        {
             var generatorOptions = new GeneratorOptions();
             var quoter = new SqlServer2005Quoter();
             var generator = new SqlServer2005Generator(quoter, generatorOptions);
+
             return new SqlServer2005Processor(logger, generator, options);
         }
     }

@@ -21,31 +21,43 @@
 using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Column;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Column {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Column
+{
     /// <summary>
     ///     An expression builder for a <see cref="DeleteColumnExpression" />
     /// </summary>
     public class DeleteColumnExpressionBuilder : ExpressionBuilderBase<DeleteColumnExpression>,
-        IDeleteColumnFromTableSyntax, IInSchemaSyntax {
+        IDeleteColumnFromTableSyntax, IInSchemaSyntax
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DeleteColumnExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public DeleteColumnExpressionBuilder(DeleteColumnExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
-        public IInSchemaSyntax FromTable(string tableName) {
+        public IInSchemaSyntax FromTable(string tableName)
+        {
             Expression.TableName = tableName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IDeleteColumnFromTableSyntax Column(string columnName) {
+        public IDeleteColumnFromTableSyntax Column(string columnName)
+        {
             Expression.ColumnNames.Add(columnName);
+
             return this;
         }
+
         /// <inheritdoc />
-        public void InSchema(string schemaName) {
+        public void InSchema(string schemaName)
+        {
             Expression.SchemaName = schemaName;
         }
     }

@@ -24,7 +24,9 @@ using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Index;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Index {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Index
+{
     /// <summary>
     ///     An expression builder for a <see cref="DeleteIndexExpression" />
     /// </summary>
@@ -32,65 +34,90 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Delete.Index {
         IDeleteIndexForTableSyntax,
         IDeleteIndexOnColumnOrInSchemaSyntax,
         IDeleteIndexOptionsSyntax,
-        ISupportAdditionalFeatures {
+        ISupportAdditionalFeatures
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DeleteIndexExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public DeleteIndexExpressionBuilder(DeleteIndexExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <summary>
         ///     Gets or sets the current column
         /// </summary>
         [Obsolete("Unused by the Fluent Migrator infrastructure")]
         public IndexColumnDefinition CurrentColumn { get; set; }
+
         /// <inheritdoc />
-        public IDeleteIndexOnColumnOrInSchemaSyntax OnTable(string tableName) {
+        public IDeleteIndexOnColumnOrInSchemaSyntax OnTable(string tableName)
+        {
             Expression.Index.TableName = tableName;
+
             return this;
         }
+
         /// <summary>
         ///     Define additional index options
         /// </summary>
         /// <returns>The extension point for additional options</returns>
-        public IDeleteIndexOptionsSyntax WithOptions() {
+        public IDeleteIndexOptionsSyntax WithOptions()
+        {
             return this;
         }
+
         /// <inheritdoc />
-        public IDeleteIndexOnColumnSyntax InSchema(string schemaName) {
+        public IDeleteIndexOnColumnSyntax InSchema(string schemaName)
+        {
             Expression.Index.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
-        IDeleteIndexOptionsSyntax IDeleteIndexOnColumnSyntax.OnColumns(params string[] columnNames) {
+        IDeleteIndexOptionsSyntax IDeleteIndexOnColumnSyntax.OnColumns(params string[] columnNames)
+        {
             OnColumns(columnNames);
+
             return this;
         }
+
         /// <inheritdoc />
-        IDeleteIndexOptionsSyntax IDeleteIndexOnColumnSyntax.OnColumn(string columnName) {
+        IDeleteIndexOptionsSyntax IDeleteIndexOnColumnSyntax.OnColumn(string columnName)
+        {
             OnColumn(columnName);
+
             return this;
         }
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures => Expression.AdditionalFeatures;
+
         /// <summary>
         ///     Defines the column of the index to delete
         /// </summary>
         /// <param name="columnName">The column name</param>
-        public void OnColumn(string columnName) {
-            var column = new IndexColumnDefinition {
+        public void OnColumn(string columnName)
+        {
+            var column = new IndexColumnDefinition
+            {
                 Name = columnName
             };
+
             Expression.Index.Columns.Add(column);
         }
+
         /// <summary>
         ///     Defines the columns of the index to delete
         /// </summary>
         /// <param name="columnNames">The column names</param>
-        public void OnColumns(params string[] columnNames) {
+        public void OnColumns(params string[] columnNames)
+        {
             foreach (var columnName in columnNames)
-                Expression.Index.Columns.Add(new IndexColumnDefinition {
+                Expression.Index.Columns.Add(new IndexColumnDefinition
+                {
                     Name = columnName
                 });
         }

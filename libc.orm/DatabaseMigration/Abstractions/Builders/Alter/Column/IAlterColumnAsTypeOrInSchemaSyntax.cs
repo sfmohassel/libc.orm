@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Column {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Column
+{
     /// <summary>
     ///     Interface to fluently specify the table schema of the column modification
     /// </summary>
-    public interface IAlterColumnAsTypeOrInSchemaSyntax : IAlterColumnAsTypeSyntax {
+    public interface IAlterColumnAsTypeOrInSchemaSyntax : IAlterColumnAsTypeSyntax
+    {
         /// <summary>
         ///     Specify the table schema of the column modification
         /// </summary>

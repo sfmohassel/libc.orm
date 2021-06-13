@@ -18,12 +18,14 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column
+{
     /// <summary>
     ///     The interface to specify the column options or the foreign key
     /// </summary>
     public interface ICreateColumnOptionOrForeignKeyCascadeSyntax :
         ICreateColumnOptionSyntax,
-        IForeignKeyCascadeSyntax<ICreateColumnOptionSyntax, ICreateColumnOptionOrForeignKeyCascadeSyntax> {
+        IForeignKeyCascadeSyntax<ICreateColumnOptionSyntax, ICreateColumnOptionOrForeignKeyCascadeSyntax>
+    {
     }
 }

@@ -24,25 +24,34 @@ using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Table;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Schema;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Table;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema
+{
     /// <summary>
     ///     The implementation of the <see cref="ISchemaExpressionRoot" /> interface.
     /// </summary>
-    public class SchemaExpressionRoot : ISchemaExpressionRoot {
+    public class SchemaExpressionRoot : ISchemaExpressionRoot
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     ctorc
         /// </summary>
         /// <param name="context">The migration context</param>
-        public SchemaExpressionRoot(MigrationContext context) {
+        public SchemaExpressionRoot(MigrationContext context)
+        {
             _context = context;
         }
+
         /// <inheritdoc />
-        public ISchemaTableSyntax Table(string tableName) {
+        public ISchemaTableSyntax Table(string tableName)
+        {
             return new SchemaTableQuery(_context, null, tableName);
         }
+
         /// <inheritdoc />
-        public ISchemaSchemaSyntax Schema(string schemaName) {
+        public ISchemaSchemaSyntax Schema(string schemaName)
+        {
             return new SchemaSchemaQuery(_context, schemaName);
         }
     }

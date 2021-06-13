@@ -22,21 +22,28 @@ using System.ComponentModel.DataAnnotations;
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to delete a schema
     /// </summary>
-    public class DeleteSchemaExpression : MigrationExpressionBase {
+    public class DeleteSchemaExpression : MigrationExpressionBase
+    {
         /// <summary>
         ///     Gets or sets a schema name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "SchemaNameCannotBeNullOrEmpty")]
         public virtual string SchemaName { get; set; }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return base.ToString() + SchemaName;
         }
     }

@@ -25,41 +25,56 @@ using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.Abstractions.Validation;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to create a table
     /// </summary>
     public class CreateTableExpression : MigrationExpressionBase, ISchemaExpression, IColumnsExpression,
-        IValidationChildren {
+        IValidationChildren
+    {
         /// <summary>
         ///     Gets or sets the column definitions
         /// </summary>
         public virtual IList<ColumnDefinition> Columns { get; set; } = new List<ColumnDefinition>();
+
         /// <summary>
         ///     Gets or sets the table description
         /// </summary>
         public virtual string TableDescription { get; set; }
+
         /// <inheritdoc />
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "TableNameCannotBeNullOrEmpty")]
         public virtual string TableName { get; set; }
+
         /// <inheritdoc />
         IEnumerable<ColumnDefinition> IColumnsExpression.Columns => Columns;
+
         /// <inheritdoc />
         public virtual string SchemaName { get; set; }
+
         /// <inheritdoc />
         IEnumerable<object> IValidationChildren.Children => Columns;
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override IMigrationExpression Reverse() {
-            return new DeleteTableExpression {
+        public override IMigrationExpression Reverse()
+        {
+            return new DeleteTableExpression
+            {
                 TableName = TableName,
                 SchemaName = SchemaName
             };
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return base.ToString() + TableName;
         }
     }

@@ -16,11 +16,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     Opt-in into the schema expression convention
     /// </summary>
-    public interface ISchemaExpression {
+    public interface ISchemaExpression
+    {
         /// <summary>
         ///     Gets or sets the schema name
         /// </summary>

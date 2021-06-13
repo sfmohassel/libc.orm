@@ -20,107 +20,163 @@
 
 using System.Collections.Generic;
 using System.Data;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.mysql.DdlGeneration;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
-namespace libc.orm.mysql.DdlProcessing {
-    public abstract class MySqlProcessor : GenericProcessorBase {
+
+namespace libc.orm.mysql.DdlProcessing
+{
+    public abstract class MySqlProcessor : GenericProcessorBase
+    {
         private readonly MySqlQuoter _quoter = new MySqlQuoter();
+
         protected MySqlProcessor(IMigrationGenerator generator, ILogger logger,
             ProcessorOptions options)
-            : base(() => new MySqlClientFactory(), generator, logger, options) {
+            : base(() => new MySqlClientFactory(), generator, logger, options)
+        {
         }
+
         public override string DatabaseType => "MySql";
-        public override IList<string> DatabaseTypeAliases { get; } = new List<string> {
+
+        public override IList<string> DatabaseTypeAliases { get; } = new List<string>
+        {
             "MariaDB"
         };
-        public override bool SchemaExists(string schemaName) {
+
+        public override bool SchemaExists(string schemaName)
+        {
             return true;
         }
-        public override bool TableExists(string schemaName, string tableName) {
+
+        public override bool TableExists(string schemaName, string tableName)
+        {
             return Exists(@"select table_name from information_schema.tables
                             where table_schema = SCHEMA() and table_name='{0}'",
                 FormatHelper.FormatSqlEscape(tableName));
         }
-        public override bool ColumnExists(string schemaName, string tableName, string columnName) {
+
+        public override bool ColumnExists(string schemaName, string tableName, string columnName)
+        {
             const string sql = @"select column_name from information_schema.columns
                             where table_schema = SCHEMA() and table_name='{0}'
                             and column_name='{1}'";
+
             return Exists(sql, FormatHelper.FormatSqlEscape(tableName), FormatHelper.FormatSqlEscape(columnName));
         }
-        public override bool ConstraintExists(string schemaName, string tableName, string constraintName) {
+
+        public override bool ConstraintExists(string schemaName, string tableName, string constraintName)
+        {
             const string sql = @"select constraint_name from information_schema.table_constraints
                             where table_schema = SCHEMA() and table_name='{0}'
                             and constraint_name='{1}'";
+
             return Exists(sql, FormatHelper.FormatSqlEscape(tableName), FormatHelper.FormatSqlEscape(constraintName));
         }
-        public override bool IndexExists(string schemaName, string tableName, string indexName) {
+
+        public override bool IndexExists(string schemaName, string tableName, string indexName)
+        {
             const string sql = @"select index_name from information_schema.statistics
                             where table_schema = SCHEMA() and table_name='{0}'
                             and index_name='{1}'";
+
             return Exists(sql, FormatHelper.FormatSqlEscape(tableName), FormatHelper.FormatSqlEscape(indexName));
         }
-        public override bool SequenceExists(string schemaName, string sequenceName) {
+
+        public override bool SequenceExists(string schemaName, string sequenceName)
+        {
             return false;
         }
+
         public override bool DefaultValueExists(string schemaName, string tableName, string columnName,
-            object defaultValue) {
+            object defaultValue)
+        {
             var defaultValueAsString = string.Format("%{0}%", FormatHelper.FormatSqlEscape(defaultValue.ToString()));
+
             return Exists(
                 "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = SCHEMA() AND TABLE_NAME = '{0}' AND COLUMN_NAME = '{1}' AND COLUMN_DEFAULT LIKE '{2}'",
-                FormatHelper.FormatSqlEscape(tableName), FormatHelper.FormatSqlEscape(columnName), defaultValueAsString);
+                FormatHelper.FormatSqlEscape(tableName), FormatHelper.FormatSqlEscape(columnName),
+                defaultValueAsString);
         }
-        public override void Execute(string template, params object[] args) {
+
+        public override void Execute(string template, params object[] args)
+        {
             var commandText = string.Format(template, args);
             Logger.LogSql(commandText);
+
             if (Options.PreviewOnly) return;
             EnsureConnectionIsOpen();
-            using (var command = CreateCommand(commandText)) {
+
+            using (var command = CreateCommand(commandText))
+            {
                 command.ExecuteNonQuery();
             }
         }
-        public override bool Exists(string template, params object[] args) {
+
+        public override bool Exists(string template, params object[] args)
+        {
             EnsureConnectionIsOpen();
-            using (var command = CreateCommand(string.Format(template, args))) {
-                using (var reader = command.ExecuteReader()) {
-                    try {
+
+            using (var command = CreateCommand(string.Format(template, args)))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    try
+                    {
                         return reader.Read();
-                    } catch {
+                    }
+                    catch
+                    {
                         return false;
                     }
                 }
             }
         }
-        public override DataSet ReadTableData(string schemaName, string tableName) {
+
+        public override DataSet ReadTableData(string schemaName, string tableName)
+        {
             return Read("select * from {0}", _quoter.QuoteTableName(tableName, schemaName));
         }
-        public override DataSet Read(string template, params object[] args) {
+
+        public override DataSet Read(string template, params object[] args)
+        {
             EnsureConnectionIsOpen();
-            using (var command = CreateCommand(string.Format(template, args))) {
-                using (var reader = command.ExecuteReader()) {
+
+            using (var command = CreateCommand(string.Format(template, args)))
+            {
+                using (var reader = command.ExecuteReader())
+                {
                     return reader.ReadDataSet();
                 }
             }
         }
-        protected override void Process(string sql) {
+
+        protected override void Process(string sql)
+        {
             Logger.LogSql(sql);
+
             if (Options.PreviewOnly || string.IsNullOrEmpty(sql)) return;
             EnsureConnectionIsOpen();
-            using (var command = CreateCommand(sql)) {
+
+            using (var command = CreateCommand(sql))
+            {
                 command.ExecuteNonQuery();
             }
         }
-        public override void Process(PerformDBOperationExpression expression) {
+
+        public override void Process(PerformDBOperationExpression expression)
+        {
             Logger.LogSay("Performing DB Operation");
+
             if (Options.PreviewOnly) return;
             EnsureConnectionIsOpen();
             expression.Operation?.Invoke(Connection, Transaction);
         }
-        public override void Process(RenameColumnExpression expression) {
+
+        public override void Process(RenameColumnExpression expression)
+        {
             var columnDefinitionSql = string.Format(@"
 SELECT CONCAT(
           CAST(COLUMN_TYPE AS CHAR),
@@ -140,6 +196,7 @@ SELECT CONCAT(
   FROM INFORMATION_SCHEMA.COLUMNS
  WHERE TABLE_NAME = '{0}' AND COLUMN_NAME = '{1}'", FormatHelper.FormatSqlEscape(expression.TableName),
                 FormatHelper.FormatSqlEscape(expression.OldName));
+
             var fieldValue = Read(columnDefinitionSql).Tables[0].Rows[0][0];
             var columnDefinition = fieldValue as string;
             Process(Generator.Generate(expression) + columnDefinition);

@@ -17,33 +17,54 @@
 #endregion
 
 using System.Data;
-namespace libc.orm.DatabaseMigration.DdlProcessing {
-    public static class DataReaderExtensions {
-        public static DataSet ReadDataSet(this IDataReader reader) {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing
+{
+    public static class DataReaderExtensions
+    {
+        public static DataSet ReadDataSet(this IDataReader reader)
+        {
             var result = new DataSet();
-            do {
+
+            do
+            {
                 result.Tables.Add(reader.ReadTable());
-            } while (reader.NextResult());
+            }
+            while (reader.NextResult());
+
             return result;
         }
-        public static DataTable ReadTable(this IDataReader reader) {
+
+        public static DataTable ReadTable(this IDataReader reader)
+        {
             var table = new DataTable();
-            if (reader.Read()) {
+
+            if (reader.Read())
+            {
                 reader.CreateColumns(table);
                 var values = new object[reader.FieldCount];
-                do {
+
+                do
+                {
                     reader.GetValues(values);
                     table.Rows.Add(values);
-                } while (reader.Read());
+                }
+                while (reader.Read());
             }
+
             return table;
         }
-        private static void CreateColumns(this IDataReader reader, DataTable table) {
+
+        private static void CreateColumns(this IDataReader reader, DataTable table)
+        {
             for (var i = 0; i != reader.FieldCount; ++i) table.Columns.Add(reader.CreateColumn(i));
         }
-        private static DataColumn CreateColumn(this IDataReader reader, int fieldIndex) {
+
+        private static DataColumn CreateColumn(this IDataReader reader, int fieldIndex)
+        {
             var fieldName = reader.GetName(fieldIndex);
             var fieldType = reader.GetFieldType(fieldIndex);
+
             return new DataColumn(fieldName, fieldType);
         }
     }

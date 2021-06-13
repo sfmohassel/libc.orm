@@ -20,19 +20,26 @@
 
 using System;
 using libc.orm.DatabaseMigration.DdlProcessing;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     The base class for migration expressions
     /// </summary>
-    public abstract class MigrationExpressionBase : IMigrationExpression {
+    public abstract class MigrationExpressionBase : IMigrationExpression
+    {
         /// <inheritdoc />
         public abstract void ExecuteWith(IProcessor processor);
+
         /// <inheritdoc />
-        public virtual IMigrationExpression Reverse() {
+        public virtual IMigrationExpression Reverse()
+        {
             throw new NotSupportedException($"The {GetType().Name} cannot be automatically reversed");
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return GetType().Name.Replace("Expression", "") + " ";
         }
     }

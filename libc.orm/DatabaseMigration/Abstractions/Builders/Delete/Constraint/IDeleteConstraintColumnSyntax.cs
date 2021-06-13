@@ -16,16 +16,19 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint
+{
     /// <summary>
     ///     Delete a constraint column
     /// </summary>
-    public interface IDeleteConstraintColumnSyntax : IFluentSyntax {
+    public interface IDeleteConstraintColumnSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     The name of the column to delete
         /// </summary>
         /// <param name="columnName">The column name</param>
         void Column(string columnName);
+
         /// <summary>
         ///     The names of the columns to delete
         /// </summary>

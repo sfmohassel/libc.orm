@@ -22,22 +22,29 @@ using System.ComponentModel.DataAnnotations;
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to execute an SQL statement
     /// </summary>
-    public class ExecuteSqlStatementExpression : MigrationExpressionBase {
+    public class ExecuteSqlStatementExpression : MigrationExpressionBase
+    {
         /// <summary>
         ///     Gets or sets the SQL statement to be executed
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt),
             ErrorMessageResourceName = nameof(Dmt.SqlStatementCannotBeNullOrEmpty))]
         public virtual string SqlStatement { get; set; }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Execute(SqlStatement);
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return base.ToString() + SqlStatement;
         }
     }

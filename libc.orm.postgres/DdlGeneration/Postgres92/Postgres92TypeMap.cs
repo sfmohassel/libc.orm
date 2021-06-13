@@ -18,10 +18,14 @@
 
 using System.Data;
 using libc.orm.postgres.DdlGeneration.Postgres;
-namespace libc.orm.postgres.DdlGeneration.Postgres92 {
-    internal class Postgres92TypeMap : PostgresTypeMap {
+
+namespace libc.orm.postgres.DdlGeneration.Postgres92
+{
+    internal class Postgres92TypeMap : PostgresTypeMap
+    {
         /// <inheritdoc />
-        protected override void SetupTypeMaps() {
+        protected override void SetupTypeMaps()
+        {
             base.SetupTypeMaps();
             SetTypeMap(DbType.Object, "json");
         }

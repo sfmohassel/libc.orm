@@ -20,11 +20,16 @@
 
 using System.Data;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.postgres.DdlGeneration.Postgres {
-    internal class PostgresTypeMap : TypeMapBase {
+
+namespace libc.orm.postgres.DdlGeneration.Postgres
+{
+    internal class PostgresTypeMap : TypeMapBase
+    {
         private const int DecimalCapacity = 1000;
         private const int PostgresMaxVarcharSize = 10485760;
-        protected override void SetupTypeMaps() {
+
+        protected override void SetupTypeMaps()
+        {
             SetTypeMap(DbType.AnsiStringFixedLength, "char(255)");
             SetTypeMap(DbType.AnsiStringFixedLength, "char($size)", int.MaxValue);
             SetTypeMap(DbType.AnsiString, "text");
@@ -37,8 +42,10 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
             SetTypeMap(DbType.Currency, "money");
             SetTypeMap(DbType.Date, "date");
             SetTypeMap(DbType.DateTime, "timestamp");
+
             SetTypeMap(DbType.DateTime2,
                 "timestamp"); // timestamp columns in postgres can support a larger date range.  Source: http://www.postgresql.org/docs/9.1/static/datatype-datetime.html
+
             SetTypeMap(DbType.DateTimeOffset, "timestamptz");
             SetTypeMap(DbType.Decimal, "decimal(19,5)");
             SetTypeMap(DbType.Decimal, "decimal($size,$precision)", DecimalCapacity);

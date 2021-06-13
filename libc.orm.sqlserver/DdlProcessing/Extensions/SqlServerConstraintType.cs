@@ -16,8 +16,10 @@
 
 #endregion
 
-namespace libc.orm.sqlserver.DdlProcessing.Extensions {
-    public enum SqlServerConstraintType {
+namespace libc.orm.sqlserver.DdlProcessing.Extensions
+{
+    public enum SqlServerConstraintType
+    {
         Clustered,
         NonClustered
     }

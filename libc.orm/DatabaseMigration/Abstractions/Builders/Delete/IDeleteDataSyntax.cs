@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete
+{
     /// <summary>
     ///     Specify the condition of the data to delete
     /// </summary>
-    public interface IDeleteDataSyntax : IFluentSyntax {
+    public interface IDeleteDataSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Define the condition of a row/multiple rows to delete
         /// </summary>
@@ -32,10 +34,12 @@ namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete {
         /// </param>
         /// <returns>The next step</returns>
         IDeleteDataSyntax Row(object dataAsAnonymousType);
+
         /// <summary>
         ///     Specify that all rows should be deleted
         /// </summary>
         void AllRows();
+
         /// <summary>
         ///     Specify that all rows having a <c>null</c> value in the given column should be deleted
         /// </summary>

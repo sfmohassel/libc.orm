@@ -19,10 +19,13 @@
 #endregion
 
 using System.Collections.Generic;
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     A list of column name/value pairs used for DELETE conditions
     /// </summary>
-    public class DeletionDataDefinition : List<KeyValuePair<string, object>> {
+    public class DeletionDataDefinition : List<KeyValuePair<string, object>>
+    {
     }
 }

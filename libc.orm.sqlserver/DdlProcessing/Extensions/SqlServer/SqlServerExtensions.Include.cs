@@ -23,27 +23,40 @@ using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index;
 using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.sqlserver.DdlProcessing.Extensions.Builders.Create.Index;
 using libc.orm.sqlserver.DdlProcessing.Extensions.Model;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
-    public static partial class SqlServerExtensions {
-        public static ICreateIndexOptionsSyntax Include(this ICreateIndexOptionsSyntax expression, string columnName) {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer
+{
+    public static partial class SqlServerExtensions
+    {
+        public static ICreateIndexOptionsSyntax Include(this ICreateIndexOptionsSyntax expression, string columnName)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures;
             additionalFeatures.Include(columnName);
+
             return expression;
         }
+
         public static ICreateIndexNonKeyColumnSyntax
-            Include(this ICreateIndexOnColumnSyntax expression, string columnName) {
+            Include(this ICreateIndexOnColumnSyntax expression, string columnName)
+        {
             var additionalFeatures = expression as ISupportAdditionalFeatures;
             additionalFeatures.Include(columnName);
+
             return new CreateIndexExpressionNonKeyBuilder(expression, additionalFeatures);
         }
-        internal static void Include(this ISupportAdditionalFeatures additionalFeatures, string columnName) {
+
+        internal static void Include(this ISupportAdditionalFeatures additionalFeatures, string columnName)
+        {
             if (additionalFeatures == null)
                 throw new InvalidOperationException(UnsupportedMethodMessage(nameof(Include),
                     nameof(ISupportAdditionalFeatures)));
+
             var includes =
                 additionalFeatures.GetAdditionalFeature<IList<IndexIncludeDefinition>>(IncludesList,
                     () => new List<IndexIncludeDefinition>());
-            includes.Add(new IndexIncludeDefinition {
+
+            includes.Add(new IndexIncludeDefinition
+            {
                 Name = columnName
             });
         }

@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.DefaultConstraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.DefaultConstraint
+{
     /// <summary>
     ///     Delete the default constraint from the given column
     /// </summary>
-    public interface IDeleteDefaultConstraintOnColumnOrInSchemaSyntax : IDeleteDefaultConstraintOnColumnSyntax {
+    public interface IDeleteDefaultConstraintOnColumnOrInSchemaSyntax : IDeleteDefaultConstraintOnColumnSyntax
+    {
         /// <summary>
         ///     The table schema of the columns default constraint
         /// </summary>

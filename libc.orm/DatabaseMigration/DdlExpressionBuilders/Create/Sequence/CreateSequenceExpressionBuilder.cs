@@ -20,52 +20,77 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Sequence;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Sequence {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Sequence
+{
     /// <summary>
     ///     An expression builder for a <see cref="CreateSchemaExpression" />
     /// </summary>
     public class CreateSequenceExpressionBuilder : ExpressionBuilderBase<CreateSequenceExpression>,
-        ICreateSequenceInSchemaSyntax {
+        ICreateSequenceInSchemaSyntax
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CreateSequenceExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public CreateSequenceExpressionBuilder(CreateSequenceExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
-        public ICreateSequenceSyntax IncrementBy(long increment) {
+        public ICreateSequenceSyntax IncrementBy(long increment)
+        {
             Expression.Sequence.Increment = increment;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateSequenceSyntax MinValue(long minValue) {
+        public ICreateSequenceSyntax MinValue(long minValue)
+        {
             Expression.Sequence.MinValue = minValue;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateSequenceSyntax MaxValue(long maxValue) {
+        public ICreateSequenceSyntax MaxValue(long maxValue)
+        {
             Expression.Sequence.MaxValue = maxValue;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateSequenceSyntax StartWith(long startwith) {
+        public ICreateSequenceSyntax StartWith(long startwith)
+        {
             Expression.Sequence.StartWith = startwith;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateSequenceSyntax Cache(long value) {
+        public ICreateSequenceSyntax Cache(long value)
+        {
             Expression.Sequence.Cache = value;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateSequenceSyntax Cycle() {
+        public ICreateSequenceSyntax Cycle()
+        {
             Expression.Sequence.Cycle = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateSequenceSyntax InSchema(string schemaName) {
+        public ICreateSequenceSyntax InSchema(string schemaName)
+        {
             Expression.Sequence.SchemaName = schemaName;
+
             return this;
         }
     }

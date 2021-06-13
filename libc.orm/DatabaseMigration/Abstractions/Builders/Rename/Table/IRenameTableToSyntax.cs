@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Rename.Table {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Rename.Table
+{
     /// <summary>
     ///     Specify the new table name
     /// </summary>
-    public interface IRenameTableToSyntax : IFluentSyntax {
+    public interface IRenameTableToSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the new name of the table
         /// </summary>

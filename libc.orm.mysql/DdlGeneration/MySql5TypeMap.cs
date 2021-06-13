@@ -17,10 +17,15 @@
 #endregion
 
 using System.Data;
-namespace libc.orm.mysql.DdlGeneration {
-    internal class MySql5TypeMap : MySql4TypeMap {
+
+namespace libc.orm.mysql.DdlGeneration
+{
+    internal class MySql5TypeMap : MySql4TypeMap
+    {
         public new const int DecimalCapacity = 65;
-        protected override void SetupTypeMaps() {
+
+        protected override void SetupTypeMaps()
+        {
             base.SetupTypeMaps();
             SetTypeMap(DbType.Decimal, "DECIMAL($size,$precision)", DecimalCapacity);
             SetTypeMap(DbType.StringFixedLength, "NCHAR(255)");

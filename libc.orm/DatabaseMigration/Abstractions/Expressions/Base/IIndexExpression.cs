@@ -17,11 +17,14 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     Opt-in into the index expression conventions
     /// </summary>
-    public interface IIndexExpression {
+    public interface IIndexExpression
+    {
         /// <summary>
         ///     Gets the index definition
         /// </summary>

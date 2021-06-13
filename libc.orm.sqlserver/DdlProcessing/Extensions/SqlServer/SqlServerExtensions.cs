@@ -23,8 +23,11 @@ using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Table;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Insert;
 using libc.orm.sqlserver.Resources;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
-    public static partial class SqlServerExtensions {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer
+{
+    public static partial class SqlServerExtensions
+    {
         public static readonly string IdentityInsert = "SqlServerIdentityInsert";
         public static readonly string IdentitySeed = "SqlServerIdentitySeed";
         public static readonly string IdentityIncrement = "SqlServerIdentityIncrement";
@@ -35,49 +38,73 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         public static readonly string IndexColumnNullsDistinct = "SqlServerIndexColumnNullsDistinct";
         public static readonly string SchemaAuthorization = "SqlServerSchemaAuthorization";
         public static readonly string SparseColumn = "SqlServerSparseColumn";
+
         private static string MethodXMustBeCalledOnObjectImplementingY =>
             Dmt.Instance.Get("MethodXMustBeCalledOnObjectImplementingY");
+
         /// <summary>
         ///     Inserts data using Sql Server's IDENTITY INSERT feature.
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static IInsertDataSyntax WithIdentityInsert(this IInsertDataSyntax expression) {
+        public static IInsertDataSyntax WithIdentityInsert(this IInsertDataSyntax expression)
+        {
             var castExpression = expression as ISupportAdditionalFeatures ??
-                                 throw new InvalidOperationException(UnsupportedMethodMessage(nameof(WithIdentityInsert),
+                                 throw new InvalidOperationException(UnsupportedMethodMessage(
+                                     nameof(WithIdentityInsert),
                                      nameof(ISupportAdditionalFeatures)));
+
             castExpression.AdditionalFeatures[IdentityInsert] = true;
+
             return expression;
         }
-        private static void SetConstraintType(ICreateConstraintOptionsSyntax expression, SqlServerConstraintType type) {
+
+        private static void SetConstraintType(ICreateConstraintOptionsSyntax expression, SqlServerConstraintType type)
+        {
             if (!(expression is ISupportAdditionalFeatures additionalFeatures))
                 throw new InvalidOperationException(UnsupportedMethodMessage(type, nameof(ISupportAdditionalFeatures)));
+
             additionalFeatures.AdditionalFeatures[ConstraintType] = type;
         }
-        public static void Clustered(this ICreateConstraintOptionsSyntax expression) {
+
+        public static void Clustered(this ICreateConstraintOptionsSyntax expression)
+        {
             SetConstraintType(expression, SqlServerConstraintType.Clustered);
         }
-        public static void NonClustered(this ICreateConstraintOptionsSyntax expression) {
+
+        public static void NonClustered(this ICreateConstraintOptionsSyntax expression)
+        {
             SetConstraintType(expression, SqlServerConstraintType.NonClustered);
         }
+
         public static ICreateTableColumnOptionOrWithColumnSyntax RowGuid(
-            this ICreateTableColumnOptionOrWithColumnSyntax expression) {
+            this ICreateTableColumnOptionOrWithColumnSyntax expression)
+        {
             var columnExpression = expression as IColumnExpressionBuilder ??
                                    throw new InvalidOperationException(UnsupportedMethodMessage(nameof(RowGuid),
                                        nameof(IColumnExpressionBuilder)));
+
             columnExpression.Column.AdditionalFeatures[RowGuidColumn] = true;
+
             return expression;
         }
+
         public static ICreateTableColumnOptionOrWithColumnSyntax Sparse(
-            this ICreateTableColumnOptionOrWithColumnSyntax expression) {
+            this ICreateTableColumnOptionOrWithColumnSyntax expression)
+        {
             var columnExpression = expression as IColumnExpressionBuilder ??
                                    throw new InvalidOperationException(UnsupportedMethodMessage(nameof(Sparse),
                                        nameof(IColumnExpressionBuilder)));
+
             columnExpression.Column.AdditionalFeatures[SparseColumn] = true;
+
             return expression;
         }
-        private static string UnsupportedMethodMessage(object methodName, string interfaceName) {
+
+        private static string UnsupportedMethodMessage(object methodName, string interfaceName)
+        {
             var msg = string.Format(MethodXMustBeCalledOnObjectImplementingY, methodName, interfaceName);
+
             return msg;
         }
     }

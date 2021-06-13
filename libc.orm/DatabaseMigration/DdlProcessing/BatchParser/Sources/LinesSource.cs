@@ -18,59 +18,82 @@
 
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources
+{
     /// <summary>
     ///     A <see cref="ITextSource" /> implementation that uses lines as input
     /// </summary>
-    public class LinesSource : ITextSource {
-        
-        
+    public class LinesSource : ITextSource
+    {
         private readonly IEnumerable<string> _batchSource;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="LinesSource" /> class.
         /// </summary>
         /// <param name="batchSource">The collection of lines to be used as source</param>
-        public LinesSource( IEnumerable<string> batchSource) {
+        public LinesSource(IEnumerable<string> batchSource)
+        {
             _batchSource = batchSource;
         }
+
         /// <inheritdoc />
-        public ILineReader CreateReader() {
+        public ILineReader CreateReader()
+        {
             var enumerator = _batchSource.GetEnumerator();
+
             if (!enumerator.MoveNext())
                 return null;
+
             return new LineReader(enumerator, 0);
         }
-        private class LineReader : ILineReader {
-            
+
+        private class LineReader : ILineReader
+        {
             private readonly IEnumerator<string> _enumerator;
-            public LineReader(IEnumerator<string> enumerator, int index) {
+
+            public LineReader(IEnumerator<string> enumerator, int index)
+            {
                 _enumerator = enumerator;
                 Index = index;
                 Line = _enumerator.Current ?? throw new InvalidOperationException("The returned line must not be null");
             }
+
             public string Line { get; private set; }
             public int Index { get; }
             public int Length => Line.Length - Index;
-            public string ReadString(int length) {
+
+            public string ReadString(int length)
+            {
                 return Line.Substring(Index, length);
             }
-            public ILineReader Advance(int length) {
+
+            public ILineReader Advance(int length)
+            {
                 var currentLine = Line;
                 var currentIndex = Index;
                 var remaining = currentLine.Length - currentIndex;
+
                 if (length >= remaining)
-                    do {
+                    do
+                    {
                         length -= remaining;
+
                         if (!_enumerator.MoveNext())
                             return null;
+
                         currentIndex = 0;
+
                         currentLine = _enumerator.Current ??
                                       throw new InvalidOperationException("The returned line must not be null");
+
                         remaining = currentLine.Length;
-                    } while (length >= remaining && length != 0);
+                    }
+                    while (length >= remaining && length != 0);
+
                 Line = currentLine;
                 currentIndex += length;
+
                 return new LineReader(_enumerator, currentIndex);
             }
         }

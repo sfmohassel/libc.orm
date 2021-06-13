@@ -24,33 +24,48 @@ using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename.Column;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename.Table;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename
+{
     /// <summary>
     ///     The implementation of the <see cref="IRenameExpressionRoot" /> interface.
     /// </summary>
-    public class RenameExpressionRoot : IRenameExpressionRoot {
+    public class RenameExpressionRoot : IRenameExpressionRoot
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RenameExpressionRoot" /> class.
         /// </summary>
         /// <param name="context">The migration context</param>
-        public RenameExpressionRoot(MigrationContext context) {
+        public RenameExpressionRoot(MigrationContext context)
+        {
             _context = context;
         }
+
         /// <inheritdoc />
-        public IRenameTableToOrInSchemaSyntax Table(string oldName) {
-            var expression = new RenameTableExpression {
+        public IRenameTableToOrInSchemaSyntax Table(string oldName)
+        {
+            var expression = new RenameTableExpression
+            {
                 OldName = oldName
             };
+
             _context.Expressions.Add(expression);
+
             return new RenameTableExpressionBuilder(expression);
         }
+
         /// <inheritdoc />
-        public IRenameColumnTableSyntax Column(string oldName) {
-            var expression = new RenameColumnExpression {
+        public IRenameColumnTableSyntax Column(string oldName)
+        {
+            var expression = new RenameColumnExpression
+            {
                 OldName = oldName
             };
+
             _context.Expressions.Add(expression);
+
             return new RenameColumnExpressionBuilder(expression);
         }
     }

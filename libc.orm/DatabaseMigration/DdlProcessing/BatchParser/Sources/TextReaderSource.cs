@@ -18,14 +18,17 @@
 
 using System;
 using System.IO;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources
+{
     /// <summary>
     ///     A <see cref="ITextSource" /> implementation that uses a <see cref="TextReader" /> as source.
     /// </summary>
-    public class TextReaderSource : ITextSource, IDisposable {
+    public class TextReaderSource : ITextSource, IDisposable
+    {
         private readonly bool _isOwner;
         private readonly TextReader _reader;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextReaderSource" /> class.
         /// </summary>
@@ -34,8 +37,10 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
         ///     This function doesn't take ownership of the <paramref name="reader" />.
         /// </remarks>
         public TextReaderSource(TextReader reader)
-            : this(reader, false) {
+            : this(reader, false)
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextReaderSource" /> class.
         /// </summary>
@@ -44,49 +49,71 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.Sources {
         ///     <c>true</c> when the <see cref="TextReaderSource" /> should become the owner of the
         ///     <paramref name="reader" />
         /// </param>
-        public TextReaderSource(TextReader reader, bool takeOwnership) {
+        public TextReaderSource(TextReader reader, bool takeOwnership)
+        {
             _reader = reader;
             _isOwner = takeOwnership;
         }
+
         /// <inheritdoc />
-        public void Dispose() {
+        public void Dispose()
+        {
             if (_isOwner) _reader.Dispose();
         }
+
         /// <inheritdoc />
-        public ILineReader CreateReader() {
+        public ILineReader CreateReader()
+        {
             var currentLine = _reader.ReadLine();
+
             if (currentLine == null) return null;
+
             return new LineReader(_reader, currentLine, 0);
         }
-        private class LineReader : ILineReader {
-            
+
+        private class LineReader : ILineReader
+        {
             private readonly TextReader _reader;
-            public LineReader(TextReader reader, string currentLine, int index) {
+
+            public LineReader(TextReader reader, string currentLine, int index)
+            {
                 _reader = reader;
                 Line = currentLine;
                 Index = index;
             }
+
             public string Line { get; }
             public int Index { get; }
             public int Length => Line.Length - Index;
-            public string ReadString(int length) {
+
+            public string ReadString(int length)
+            {
                 return Line.Substring(Index, length);
             }
-            public ILineReader Advance(int length) {
+
+            public ILineReader Advance(int length)
+            {
                 var currentLine = Line;
                 var currentIndex = Index;
                 var remaining = currentLine.Length - currentIndex;
+
                 if (length >= remaining)
-                    do {
+                    do
+                    {
                         length -= remaining;
                         var line = _reader.ReadLine();
+
                         if (line == null)
                             return null;
+
                         currentIndex = 0;
                         currentLine = line;
                         remaining = currentLine.Length;
-                    } while (length >= remaining && length != 0);
+                    }
+                    while (length >= remaining && length != 0);
+
                 currentIndex += length;
+
                 return new LineReader(_reader, currentLine, currentIndex);
             }
         }

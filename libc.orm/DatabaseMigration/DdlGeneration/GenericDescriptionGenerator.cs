@@ -21,46 +21,68 @@
 using System.Collections.Generic;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlGeneration {
+
+namespace libc.orm.DatabaseMigration.DdlGeneration
+{
     /// <summary>
     ///     Base class to generate descriptions for tables/classes
     /// </summary>
-    public abstract class GenericDescriptionGenerator : IDescriptionGenerator {
-        public virtual IEnumerable<string> GenerateDescriptionStatements(CreateTableExpression expression) {
+    public abstract class GenericDescriptionGenerator : IDescriptionGenerator
+    {
+        public virtual IEnumerable<string> GenerateDescriptionStatements(CreateTableExpression expression)
+        {
             var statements = new List<string>();
+
             if (!string.IsNullOrEmpty(expression.TableDescription))
                 statements.Add(GenerateTableDescription(expression.SchemaName, expression.TableName,
                     expression.TableDescription));
-            foreach (var column in expression.Columns) {
+
+            foreach (var column in expression.Columns)
+            {
                 if (string.IsNullOrEmpty(column.ColumnDescription))
                     continue;
+
                 statements.Add(GenerateColumnDescription(
                     expression.SchemaName,
                     expression.TableName,
                     column.Name,
                     column.ColumnDescription));
             }
+
             return statements;
         }
-        public virtual string GenerateDescriptionStatement(AlterTableExpression expression) {
+
+        public virtual string GenerateDescriptionStatement(AlterTableExpression expression)
+        {
             if (string.IsNullOrEmpty(expression.TableDescription))
                 return string.Empty;
+
             return GenerateTableDescription(
                 expression.SchemaName, expression.TableName, expression.TableDescription);
         }
-        public virtual string GenerateDescriptionStatement(CreateColumnExpression expression) {
+
+        public virtual string GenerateDescriptionStatement(CreateColumnExpression expression)
+        {
             if (string.IsNullOrEmpty(expression.Column.ColumnDescription))
                 return string.Empty;
+
             return GenerateColumnDescription(
-                expression.SchemaName, expression.TableName, expression.Column.Name, expression.Column.ColumnDescription);
+                expression.SchemaName, expression.TableName, expression.Column.Name,
+                expression.Column.ColumnDescription);
         }
-        public virtual string GenerateDescriptionStatement(AlterColumnExpression expression) {
+
+        public virtual string GenerateDescriptionStatement(AlterColumnExpression expression)
+        {
             if (string.IsNullOrEmpty(expression.Column.ColumnDescription))
                 return string.Empty;
+
             return GenerateColumnDescription(expression.SchemaName, expression.TableName, expression.Column.Name,
                 expression.Column.ColumnDescription);
         }
-        protected abstract string GenerateTableDescription(string schemaName, string tableName, string tableDescription);
+
+        protected abstract string
+            GenerateTableDescription(string schemaName, string tableName, string tableDescription);
+
         protected abstract string GenerateColumnDescription(string schemaName, string tableName, string columnName,
             string columnDescription);
     }

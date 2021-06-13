@@ -1,9 +1,14 @@
 ﻿using System.Reflection;
 using libc.translation;
-namespace libc.orm.Resources {
-    internal static class Dmt {
-        public static readonly ILocalizer Instance = new Localizer(new LocalizationSource(Assembly.GetExecutingAssembly(),
+
+namespace libc.orm.Resources
+{
+    internal static class Dmt
+    {
+        public static readonly ILocalizer Instance = new Localizer(new LocalizationSource(
+            Assembly.GetExecutingAssembly(),
             $"{typeof(Dmt).Namespace}.dmt.i18n.json", LocalizationSourcePropertyCaseSensitivity.CaseInsensitive));
+
         public static string ColumnNameCannotBeNullOrEmpty => Instance.Get("ColumnNameCannotBeNullOrEmpty");
         public static string TableNameCannotBeNullOrEmpty => Instance.Get("TableNameCannotBeNullOrEmpty");
         public static string ForeignKeyNameCannotBeNullOrEmpty => Instance.Get("ForeignKeyNameCannotBeNullOrEmpty");
@@ -20,18 +25,24 @@ namespace libc.orm.Resources {
         public static string NewColumnNameCannotBeNullOrEmpty => Instance.Get("NewColumnNameCannotBeNullOrEmpty");
         public static string OldTableNameCannotBeNullOrEmpty => Instance.Get("OldTableNameCannotBeNullOrEmpty");
         public static string NewTableNameCannotBeNullOrEmpty => Instance.Get("NewTableNameCannotBeNullOrEmpty");
+
         public static string UpdateDataExpressionMustSpecifyWhereClauseOrAllRows =>
             Instance.Get("UpdateDataExpressionMustSpecifyWhereClauseOrAllRows");
+
         public static string UpdateDataExpressionMustNotSpecifyBothWhereClauseAndAllRows =>
             Instance.Get("UpdateDataExpressionMustNotSpecifyBothWhereClauseAndAllRows");
+
         public static string OperationCannotBeNull => Instance.Get("OperationCannotBeNull");
         public static string ColumnNamesMustBeUnique => Instance.Get("ColumnNamesMustBeUnique");
         public static string ColumnTypeMustBeDefined => Instance.Get("ColumnTypeMustBeDefined");
         public static string ConstraintMustHaveAtLeastOneColumn => Instance.Get("ConstraintMustHaveAtLeastOneColumn");
+
         public static string ForeignKeyMustHaveOneOrMorePrimaryColumns =>
             Instance.Get("ForeignKeyMustHaveOneOrMorePrimaryColumns");
+
         public static string ForeignKeyMustHaveOneOrMoreForeignColumns =>
             Instance.Get("ForeignKeyMustHaveOneOrMoreForeignColumns");
+
         public static string IndexMustHaveOneOrMoreColumns => Instance.Get("IndexMustHaveOneOrMoreColumns");
         public static string ExpressionTableNameMissing => Instance.Get("ExpressionTableNameMissing");
         public static string ExpressionTableNameMissingWithHints => Instance.Get("ExpressionTableNameMissingWithHints");

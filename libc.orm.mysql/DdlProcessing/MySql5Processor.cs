@@ -17,24 +17,30 @@
 #endregion
 
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.mysql.DdlGeneration;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.mysql.DdlProcessing {
-    public class MySql5Processor : MySqlProcessor {
+
+namespace libc.orm.mysql.DdlProcessing
+{
+    public class MySql5Processor : MySqlProcessor
+    {
         /// <inheritdoc />
         public MySql5Processor(MySql5Generator generator,
             ILogger logger,
             ProcessorOptions options) : base(
             generator,
             logger,
-            options) {
+            options)
+        {
         }
+
         /// <inheritdoc />
         public override string DatabaseType => "MySql5";
+
         /// <inheritdoc />
-        public override IList<string> DatabaseTypeAliases { get; } = new List<string> {
+        public override IList<string> DatabaseTypeAliases { get; } = new List<string>
+        {
             "MariaDB",
             "MySQL",
             "MySQL 5"

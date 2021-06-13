@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Index {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Index
+{
     /// <summary>
     ///     Query an index' existence
     /// </summary>
-    public interface ISchemaIndexSyntax : IFluentSyntax {
+    public interface ISchemaIndexSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Returns <c>true</c> when the index exists
         /// </summary>

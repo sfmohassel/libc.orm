@@ -17,30 +17,33 @@
 #endregion
 
 using System;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser
+{
     /// <summary>
     ///     Event arguments for a special token
     /// </summary>
-    public class SpecialTokenEventArgs : EventArgs {
+    public class SpecialTokenEventArgs : EventArgs
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SpecialTokenEventArgs" /> class.
         /// </summary>
         /// <param name="token">The found token</param>
         /// <param name="opaque">An opaque (token specific) value</param>
-        public SpecialTokenEventArgs(string token, object opaque) {
+        public SpecialTokenEventArgs(string token, object opaque)
+        {
             Token = token;
             Opaque = opaque;
         }
+
         /// <summary>
         ///     Gets the found token
         /// </summary>
-        
         public string Token { get; }
+
         /// <summary>
         ///     Gets an opaque (token specific) value
         /// </summary>
-        
         public object Opaque { get; }
     }
 }

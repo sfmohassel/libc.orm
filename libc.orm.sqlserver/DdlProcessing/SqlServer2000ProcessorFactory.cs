@@ -24,12 +24,17 @@ using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.sqlserver.DdlGeneration;
 using libc.orm.sqlserver.DdlProcessing.BatchParser;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.sqlserver.DdlProcessing {
-    public class SqlServer2000ProcessorFactory : IProcessorFactory {
-        public IProcessor Create(ProcessorOptions options, ILogger logger) {
+
+namespace libc.orm.sqlserver.DdlProcessing
+{
+    public class SqlServer2000ProcessorFactory : IProcessorFactory
+    {
+        public IProcessor Create(ProcessorOptions options, ILogger logger)
+        {
             var generatorOptions = new GeneratorOptions();
             var quoter = new SqlServer2000Quoter();
             var generator = new SqlServer2000Generator(quoter, generatorOptions);
+
             return new SqlServer2000Processor(generator, logger, options, new SqlServerBatchParser());
         }
     }

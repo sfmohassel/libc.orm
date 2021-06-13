@@ -19,16 +19,19 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser
+{
     /// <summary>
     ///     The main class to perform SQL batch collection
     /// </summary>
-    internal class SearchStatus {
+    internal class SearchStatus
+    {
         private readonly Stack<IRangeSearcher> _activeRanges;
         private readonly SearchContext _context;
         private readonly SpecialTokenInfo _foundToken;
         private readonly ILineReader _reader;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SearchStatus" /> class.
         /// </summary>
@@ -36,8 +39,10 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="reader">The reader to be read from</param>
         public SearchStatus(SearchContext context,
             ILineReader reader)
-            : this(context, reader, new Stack<IRangeSearcher>(), null) {
+            : this(context, reader, new Stack<IRangeSearcher>(), null)
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SearchStatus" /> class
         /// </summary>
@@ -47,92 +52,122 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         /// <param name="foundToken">The found special token</param>
         private SearchStatus(SearchContext context,
             ILineReader reader,
-             Stack<IRangeSearcher> activeRanges,
-            SpecialTokenInfo foundToken) {
+            Stack<IRangeSearcher> activeRanges,
+            SpecialTokenInfo foundToken)
+        {
             _context = context;
             _reader = reader;
             _activeRanges = activeRanges;
             _foundToken = foundToken;
         }
+
         /// <summary>
         ///     Tries to find the next token or range
         /// </summary>
         /// <returns><c>null</c> when no token or range could be found</returns>
-        
-        public SearchStatus Process() {
+        public SearchStatus Process()
+        {
             if (_activeRanges.Count == 0)
                 return FindTokenOrRangeStart();
+
             return FindRangeEnd();
         }
+
         /// <summary>
         ///     Search a special token
         /// </summary>
         /// <param name="reader">The reader where the token should be searched in</param>
         /// <param name="searchers">The collection of searchers to test</param>
         /// <returns><c>null</c> when no token could be found</returns>
-        
         private static SpecialTokenInfo FindToken(ILineReader reader,
-             IEnumerable<ISpecialTokenSearcher> searchers) {
+            IEnumerable<ISpecialTokenSearcher> searchers)
+        {
             SpecialTokenInfo result = null;
-            foreach (var searcher in searchers) {
+
+            foreach (var searcher in searchers)
+            {
                 var searcherResult = searcher.Find(reader);
+
                 if (searcherResult != null && (result == null || result.Index > searcherResult.Index))
                     result = searcherResult;
             }
+
             return result;
         }
+
         /// <summary>
         ///     Search for the start of a range
         /// </summary>
         /// <param name="reader">The reader where the range start token should be searched in</param>
         /// <param name="searchers">The collection of searchers to test</param>
         /// <returns><c>null</c> when no range could be found</returns>
-        
         private static RangeStart FindRangeStart(ILineReader reader,
-             IEnumerable<IRangeSearcher> searchers) {
+            IEnumerable<IRangeSearcher> searchers)
+        {
             RangeStart result = null;
-            foreach (var searcher in searchers) {
+
+            foreach (var searcher in searchers)
+            {
                 var index = searcher.FindStartCode(reader);
                 if (index != -1 && (result == null || result.Index > index)) result = new RangeStart(searcher, index);
             }
+
             return result;
         }
+
         /// <summary>
         ///     Search for the end of a range
         /// </summary>
         /// <returns><c>null</c> when no range end token could be found</returns>
-        
-        private SearchStatus FindRangeEnd() {
+        private SearchStatus FindRangeEnd()
+        {
             Debug.Assert(
                 _activeRanges.Count != 0 || _foundToken == null,
                 "Operation can only be performed when a range is active and no token has been found");
+
             var searcher = _activeRanges.Peek();
             var result = searcher.FindEndCode(_reader);
-            if (result == null) {
+
+            if (result == null)
+            {
                 var reader = _reader;
+
                 if (_context.StripComments && searcher.IsComment)
                     reader = reader.Advance(reader.Length);
                 else
                     reader = WriteSql(reader);
+
                 if (reader == null)
                     throw new InvalidOperationException($"Missing end of range ({searcher.GetType().Name})");
+
                 return new SearchStatus(_context, reader, _activeRanges, null);
             }
-            if (result.IsNestedStart) {
+
+            if (result.IsNestedStart)
+            {
                 var reader = _reader;
-                if (_context.StripComments && searcher.IsComment) {
+
+                if (_context.StripComments && searcher.IsComment)
+                {
                     reader = reader.Advance(result.Index - reader.Index);
                     Debug.Assert(reader != null, "The returned ILineReader must not be null");
                 }
+
                 Debug.Assert(result.NestedRangeSearcher != null, "result.NestedRangeSearcher != null");
+
                 return UseNewRange(reader, new RangeStart(result.NestedRangeSearcher, result.Index));
             }
+
             var nextReader = WriteSql(_reader, searcher, result);
+
             if (nextReader == null)
                 return null;
+
             _activeRanges.Pop();
+
             return new SearchStatus(_context, nextReader, _activeRanges, null);
         }
+
         /// <summary>
         ///     Search for a token or range start token
         /// </summary>
@@ -140,79 +175,108 @@ namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser {
         ///     In other words: Search for everything that is allowed outside of a range.
         /// </remarks>
         /// <returns><c>null</c> if neither a token nor a range start sequence could be found</returns>
-        
-        private SearchStatus FindTokenOrRangeStart() {
+        private SearchStatus FindTokenOrRangeStart()
+        {
             Debug.Assert(_activeRanges.Count == 0, "Operation can only be performed when no range is active");
             var rangeStart = FindRangeStart(_reader, _context.RangeSearchers);
             var tokenInfo = FindToken(_reader, _context.SpecialTokenSearchers);
-            if (tokenInfo != null) {
-                if (rangeStart == null || rangeStart.Index > tokenInfo.Index) {
+
+            if (tokenInfo != null)
+            {
+                if (rangeStart == null || rangeStart.Index > tokenInfo.Index)
+                {
                     var reader = WriteSql(_reader, tokenInfo.Index, tokenInfo.Length);
                     _context.OnSpecialToken(new SpecialTokenEventArgs(tokenInfo.Token, tokenInfo.Opaque));
+
                     if (reader == null)
                         return null;
+
                     return new SearchStatus(_context, reader, _activeRanges, tokenInfo);
                 }
-            } else if (rangeStart == null) {
+            }
+            else if (rangeStart == null)
+            {
                 var reader = WriteSql(_reader);
+
                 if (reader == null)
                     return null;
+
                 return new SearchStatus(_context, reader, _activeRanges, null);
             }
+
             return UseNewRange(_reader, rangeStart);
         }
+
         /// <summary>
         ///     Handle the case where a new range start sequence was found
         /// </summary>
         /// <param name="reader">The reader where the sequence was found</param>
         /// <param name="info">Information about the start sequence</param>
         /// <returns>A new search status</returns>
-        
-        private SearchStatus UseNewRange(ILineReader reader, RangeStart info) {
+        private SearchStatus UseNewRange(ILineReader reader, RangeStart info)
+        {
             var nextReader = WriteSql(reader, info);
+
             if (nextReader == null)
                 throw new InvalidOperationException($"Missing end of range ({info.Searcher.GetType().Name})");
+
             _activeRanges.Push(info.Searcher);
+
             return new SearchStatus(_context, nextReader, _activeRanges, null);
         }
-        
-        private ILineReader WriteSql(ILineReader reader) {
+
+        private ILineReader WriteSql(ILineReader reader)
+        {
             var content = reader.ReadString(reader.Length);
             _context.OnBatchSql(new SqlBatchCollectorEventArgs(content, true));
+
             return reader.Advance(reader.Length);
         }
-        
-        private ILineReader WriteSql(ILineReader reader, RangeStart info) {
+
+        private ILineReader WriteSql(ILineReader reader, RangeStart info)
+        {
             if (info.Searcher.IsComment && _context.StripComments)
                 return WriteSql(reader, info.Index, info.Searcher.StartCodeLength);
+
             return WriteSql(reader, info.Index + info.Searcher.StartCodeLength);
         }
-        
+
         private ILineReader WriteSql(ILineReader reader, IRangeSearcher searcher,
-            EndCodeSearchResult info) {
-            if (searcher.IsComment && _context.StripComments) {
+            EndCodeSearchResult info)
+        {
+            if (searcher.IsComment && _context.StripComments)
+            {
                 var length = info.Index - reader.Index + searcher.EndCodeLength;
+
                 if (length == reader.Length)
                     _context.OnBatchSql(new SqlBatchCollectorEventArgs(string.Empty, true));
+
                 return reader.Advance(length);
             }
+
             return WriteSql(_reader, info.Index + searcher.EndCodeLength);
         }
-        
-        private ILineReader WriteSql(ILineReader reader, int itemIndex, int skipLength = 0) {
+
+        private ILineReader WriteSql(ILineReader reader, int itemIndex, int skipLength = 0)
+        {
             var readLength = itemIndex - reader.Index;
             var content = reader.ReadString(readLength);
             var isEndOfLine = readLength == reader.Length;
+
             if (!string.IsNullOrEmpty(content) || isEndOfLine)
                 _context.OnBatchSql(new SqlBatchCollectorEventArgs(content, isEndOfLine));
+
             return reader.Advance(readLength + skipLength);
         }
-        private class RangeStart {
-            public RangeStart(IRangeSearcher searcher, int index) {
+
+        private class RangeStart
+        {
+            public RangeStart(IRangeSearcher searcher, int index)
+            {
                 Searcher = searcher;
                 Index = index;
             }
-            
+
             public IRangeSearcher Searcher { get; }
             public int Index { get; }
         }

@@ -21,12 +21,17 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using libc.orm.sqlserver.Resources;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.Model {
-    public class IndexIncludeDefinition : ICloneable {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.Model
+{
+    public class IndexIncludeDefinition : ICloneable
+    {
         [Required(ErrorMessageResourceType = typeof(Dmt),
             ErrorMessageResourceName = nameof(Dmt.ColumnNameCannotBeNullOrEmpty))]
         public virtual string Name { get; set; }
-        public object Clone() {
+
+        public object Clone()
+        {
             return MemberwiseClone();
         }
     }

@@ -26,33 +26,48 @@ using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.Abstractions.Validation;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to delete a foreign key
     /// </summary>
-    public class DeleteForeignKeyExpression : MigrationExpressionBase, IForeignKeyExpression, IValidatableObject {
+    public class DeleteForeignKeyExpression : MigrationExpressionBase, IForeignKeyExpression, IValidatableObject
+    {
         /// <inheritdoc />
         public virtual ForeignKeyDefinition ForeignKey { get; set; } = new ForeignKeyDefinition();
+
         /// <inheritdoc />
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
             var results = new List<ValidationResult>();
-            if (ForeignKey.ForeignColumns.Count > 0) {
+
+            if (ForeignKey.ForeignColumns.Count > 0)
+            {
                 var ctxt = new ValidationContext(ForeignKey, validationContext.Items);
                 ctxt.InitializeServiceProvider(validationContext.GetService);
                 ValidationUtilities.TryCollectResults(ctxt, ForeignKey, results);
-            } else {
+            }
+            else
+            {
                 if (string.IsNullOrEmpty(ForeignKey.Name))
                     results.Add(new ValidationResult(Dmt.ForeignKeyNameCannotBeNullOrEmpty));
+
                 if (string.IsNullOrEmpty(ForeignKey.ForeignTable))
                     results.Add(new ValidationResult(Dmt.ForeignTableNameCannotBeNullOrEmpty));
             }
+
             return results;
         }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override IMigrationExpression Reverse() {
+        public override IMigrationExpression Reverse()
+        {
             // there are 2 types of delete FK statements
             //  1) Delete.ForeignKey("FK_Name").OnTable("Table")
             //  2) Delete.ForeignKey()
@@ -64,7 +79,9 @@ namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
 
             // only type 2 has foreign column(s) and primary column(s)
             if (!ForeignKey.HasForeignAndPrimaryColumnsDefined()) return base.Reverse();
-            var reverseForeignKey = new ForeignKeyDefinition {
+
+            var reverseForeignKey = new ForeignKeyDefinition
+            {
                 Name = ForeignKey.Name,
                 ForeignTableSchema = ForeignKey.PrimaryTableSchema,
                 ForeignTable = ForeignKey.PrimaryTable,
@@ -75,12 +92,16 @@ namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
                 OnDelete = ForeignKey.OnDelete,
                 OnUpdate = ForeignKey.OnUpdate
             };
-            return new CreateForeignKeyExpression {
+
+            return new CreateForeignKeyExpression
+            {
                 ForeignKey = reverseForeignKey
             };
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return base.ToString() + ForeignKey.Name + " "
                    + ForeignKey.ForeignTable + " (" + string.Join(", ", ForeignKey.ForeignColumns.ToArray()) + ") "
                    + ForeignKey.PrimaryTable + " (" + string.Join(", ", ForeignKey.PrimaryColumns.ToArray()) + ")";

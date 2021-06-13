@@ -1,14 +1,17 @@
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint
+{
     /// <summary>
     ///     Define the columns of a constraint
     /// </summary>
-    public interface ICreateConstraintColumnsSyntax {
+    public interface ICreateConstraintColumnsSyntax
+    {
         /// <summary>
         ///     The column for the constraint
         /// </summary>
         /// <param name="columnName">The column name</param>
         /// <returns>Other constraint options</returns>
         ICreateConstraintOptionsSyntax Column(string columnName);
+
         /// <summary>
         ///     The columns for the constraint
         /// </summary>

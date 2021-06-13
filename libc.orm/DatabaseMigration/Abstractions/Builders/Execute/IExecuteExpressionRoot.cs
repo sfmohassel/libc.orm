@@ -20,16 +20,20 @@
 
 using System;
 using System.Data;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Execute {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Execute
+{
     /// <summary>
     ///     Executes some SQL
     /// </summary>
-    public interface IExecuteExpressionRoot : IFluentSyntax {
+    public interface IExecuteExpressionRoot : IFluentSyntax
+    {
         /// <summary>
         ///     Executes an SQL statement
         /// </summary>
         /// <param name="sqlStatement">The SQL statement to execute</param>
         void Sql(string sqlStatement);
+
         /// <summary>
         ///     Calls an action to execute dynamically generated SQL statements
         /// </summary>

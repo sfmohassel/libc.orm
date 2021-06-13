@@ -22,29 +22,39 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     Index column definition
     /// </summary>
-    public class IndexColumnDefinition : ICloneable, ISupportAdditionalFeatures {
+    public class IndexColumnDefinition : ICloneable, ISupportAdditionalFeatures
+    {
         /// <summary>
         ///     Gets or sets the column name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "ColumnNameCannotBeNullOrEmpty")]
         public virtual string Name { get; set; }
+
         /// <summary>
         ///     Gets or sets the sort direction of the index column
         /// </summary>
         public virtual Direction Direction { get; set; }
+
         /// <inheritdoc />
-        public object Clone() {
-            var result = new IndexColumnDefinition {
+        public object Clone()
+        {
+            var result = new IndexColumnDefinition
+            {
                 Name = Name,
                 Direction = Direction
             };
+
             AdditionalFeatures.CloneTo(result.AdditionalFeatures);
+
             return result;
         }
+
         /// <inheritdoc />
         public virtual IDictionary<string, object> AdditionalFeatures { get; } = new Dictionary<string, object>();
     }

@@ -16,10 +16,12 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Schema {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Schema
+{
     /// <summary>
     ///     Extension point for schema creation options
     /// </summary>
-    public interface ICreateSchemaOptionsSyntax : IFluentSyntax {
+    public interface ICreateSchemaOptionsSyntax : IFluentSyntax
+    {
     }
 }

@@ -18,11 +18,15 @@
 
 #endregion
 
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2005Quoter : SqlServer2000Quoter {
-        public override string QuoteSchemaName(string schemaName) {
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2005Quoter : SqlServer2000Quoter
+    {
+        public override string QuoteSchemaName(string schemaName)
+        {
             if (string.IsNullOrEmpty(schemaName))
                 return "[dbo]";
+
             return Quote(schemaName);
         }
     }

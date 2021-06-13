@@ -20,19 +20,25 @@ using System.Collections.Generic;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Schema;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Schema {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Schema
+{
     /// <summary>
     ///     An expression builder for a <see cref="CreateSchemaExpression" />
     /// </summary>
-    public class CreateSchemaExpressionBuilder : ExpressionBuilderBase<CreateSchemaExpression>, ICreateSchemaOptionsSyntax,
-        ISupportAdditionalFeatures {
+    public class CreateSchemaExpressionBuilder : ExpressionBuilderBase<CreateSchemaExpression>,
+        ICreateSchemaOptionsSyntax,
+        ISupportAdditionalFeatures
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="CreateSchemaExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public CreateSchemaExpressionBuilder(CreateSchemaExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures => Expression.AdditionalFeatures;
     }

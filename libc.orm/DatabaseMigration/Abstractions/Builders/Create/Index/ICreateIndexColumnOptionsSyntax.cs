@@ -18,21 +18,25 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index
+{
     /// <summary>
     ///     Setting the default index column options
     /// </summary>
-    public interface ICreateIndexColumnOptionsSyntax : IFluentSyntax {
+    public interface ICreateIndexColumnOptionsSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Mark the index column as ascending
         /// </summary>
         /// <returns>More column options</returns>
         ICreateIndexMoreColumnOptionsSyntax Ascending();
+
         /// <summary>
         ///     Mark the index column as descending
         /// </summary>
         /// <returns>More column options</returns>
         ICreateIndexMoreColumnOptionsSyntax Descending();
+
         /// <summary>
         ///     Mark the index column as unique
         /// </summary>

@@ -23,31 +23,44 @@ using System.Data;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Execute;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Execute {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Execute
+{
     /// <summary>
     ///     The implementation of the <see cref="IExecuteExpressionRoot" /> interface.
     /// </summary>
-    public class ExecuteExpressionRoot : IExecuteExpressionRoot {
+    public class ExecuteExpressionRoot : IExecuteExpressionRoot
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExecuteExpressionRoot" /> class.
         /// </summary>
         /// <param name="context">The migration context</param>
-        public ExecuteExpressionRoot(MigrationContext context) {
+        public ExecuteExpressionRoot(MigrationContext context)
+        {
             _context = context;
         }
+
         /// <inheritdoc />
-        public void Sql(string sqlStatement) {
-            var expression = new ExecuteSqlStatementExpression {
+        public void Sql(string sqlStatement)
+        {
+            var expression = new ExecuteSqlStatementExpression
+            {
                 SqlStatement = sqlStatement
             };
+
             _context.Expressions.Add(expression);
         }
+
         /// <inheritdoc />
-        public void WithConnection(Action<IDbConnection, IDbTransaction> operation) {
-            var expression = new PerformDBOperationExpression {
+        public void WithConnection(Action<IDbConnection, IDbTransaction> operation)
+        {
+            var expression = new PerformDBOperationExpression
+            {
                 Operation = operation
             };
+
             _context.Expressions.Add(expression);
         }
     }

@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint
+{
     /// <summary>
     ///     Specify the constraint table schmea or the columns
     /// </summary>
     public interface ICreateConstraintWithSchemaOrColumnSyntax : ICreateConstraintColumnsSyntax,
-        ICreateConstraintWithSchemaSyntax {
+        ICreateConstraintWithSchemaSyntax
+    {
     }
 }

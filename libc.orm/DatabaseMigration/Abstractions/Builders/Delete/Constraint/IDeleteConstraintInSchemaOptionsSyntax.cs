@@ -16,11 +16,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Constraint
+{
     /// <summary>
     ///     Define the schema of the constraint to delete
     /// </summary>
-    public interface IDeleteConstraintInSchemaOptionsSyntax : IDeleteConstraintColumnSyntax {
+    public interface IDeleteConstraintInSchemaOptionsSyntax : IDeleteConstraintColumnSyntax
+    {
         /// <summary>
         ///     Define the schema of the constraint to delete
         /// </summary>

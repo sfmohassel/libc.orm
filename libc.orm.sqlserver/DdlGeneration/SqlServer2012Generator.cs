@@ -20,16 +20,21 @@
 #endregion
 
 using System.Text;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2012Generator : SqlServer2008Generator {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2012Generator : SqlServer2008Generator
+    {
         public SqlServer2012Generator(SqlServer2008Quoter quoter, GeneratorOptions options)
-            : base(quoter, options) {
+            : base(quoter, options)
+        {
         }
-        public override string Generate(CreateSequenceExpression expression) {
+
+        public override string Generate(CreateSequenceExpression expression)
+        {
             var result = new StringBuilder("CREATE SEQUENCE ");
             var seq = expression.Sequence;
             result.Append(Quoter.QuoteSequenceName(seq.Name, seq.SchemaName));
@@ -38,18 +43,27 @@ namespace libc.orm.sqlserver.DdlGeneration {
             if (seq.MaxValue.HasValue) result.AppendFormat(" MAXVALUE {0}", seq.MaxValue);
             if (seq.StartWith.HasValue) result.AppendFormat(" START WITH {0}", seq.StartWith);
             const long MINIMUM_CACHE_VALUE = 2;
-            if (seq.Cache.HasValue) {
+
+            if (seq.Cache.HasValue)
+            {
                 if (seq.Cache.Value < MINIMUM_CACHE_VALUE)
                     return CompatibilityMode.HandleCompatibilty(
                         "Cache size must be greater than 1; if you intended to disable caching, set Cache to null.");
+
                 result.AppendFormat(" CACHE {0}", seq.Cache);
-            } else {
+            }
+            else
+            {
                 result.Append(" NO CACHE");
             }
+
             if (seq.Cycle) result.Append(" CYCLE");
+
             return result.ToString();
         }
-        public override string Generate(DeleteSequenceExpression expression) {
+
+        public override string Generate(DeleteSequenceExpression expression)
+        {
             return $"DROP SEQUENCE {Quoter.QuoteSequenceName(expression.SequenceName, expression.SchemaName)}";
         }
     }

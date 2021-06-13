@@ -18,13 +18,15 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column
+{
     /// <summary>
     ///     Interface to set the column options or the new value for existing rows
     /// </summary>
     public interface
         ICreateColumnOptionSyntax : IColumnOptionSyntax<ICreateColumnOptionSyntax,
-            ICreateColumnOptionOrForeignKeyCascadeSyntax> {
+            ICreateColumnOptionOrForeignKeyCascadeSyntax>
+    {
         /// <summary>
         ///     The value to set against existing rows for the new column.
         /// </summary>

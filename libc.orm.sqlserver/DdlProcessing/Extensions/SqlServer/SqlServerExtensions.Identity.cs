@@ -19,8 +19,11 @@
 using System;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders;
-namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
-    public static partial class SqlServerExtensions {
+
+namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer
+{
+    public static partial class SqlServerExtensions
+    {
         /// <summary>
         ///     Makes a column an Identity column using the specified seed and increment values.
         /// </summary>
@@ -31,10 +34,13 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         public static TNext Identity<TNext, TNextFk>(this IColumnOptionSyntax<TNext, TNextFk> expression,
             int seed,
             int increment)
-            where TNext : IFluentSyntax where TNextFk : IFluentSyntax {
+            where TNext : IFluentSyntax where TNextFk : IFluentSyntax
+        {
             var castColumn = GetColumn(expression);
+
             return SetIdentity(expression, seed, increment, castColumn);
         }
+
         /// <summary>
         ///     Makes a column an Identity column using the specified seed and increment values with bigint support.
         /// </summary>
@@ -45,23 +51,32 @@ namespace libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer {
         public static TNext Identity<TNext, TNextFk>(this IColumnOptionSyntax<TNext, TNextFk> expression,
             long seed,
             int increment)
-            where TNext : IFluentSyntax where TNextFk : IFluentSyntax {
+            where TNext : IFluentSyntax where TNextFk : IFluentSyntax
+        {
             var castColumn = GetColumn(expression);
+
             return SetIdentity(expression, seed, increment, castColumn);
         }
+
         private static TNext SetIdentity<TNext, TNextFk>(IColumnOptionSyntax<TNext, TNextFk> expression,
             object seed,
             int increment,
             ISupportAdditionalFeatures castColumn)
-            where TNext : IFluentSyntax where TNextFk : IFluentSyntax {
+            where TNext : IFluentSyntax where TNextFk : IFluentSyntax
+        {
             castColumn.AdditionalFeatures[IdentitySeed] = seed;
             castColumn.AdditionalFeatures[IdentityIncrement] = increment;
+
             return expression.Identity();
         }
-        private static ISupportAdditionalFeatures GetColumn<TNext, TNextFk>(IColumnOptionSyntax<TNext, TNextFk> expression)
-            where TNext : IFluentSyntax where TNextFk : IFluentSyntax {
+
+        private static ISupportAdditionalFeatures GetColumn<TNext, TNextFk>(
+            IColumnOptionSyntax<TNext, TNextFk> expression)
+            where TNext : IFluentSyntax where TNextFk : IFluentSyntax
+        {
             if (expression is IColumnExpressionBuilder cast1)
                 return cast1.Column;
+
             throw new InvalidOperationException(UnsupportedMethodMessage(nameof(IdentityIncrement),
                 nameof(IColumnExpressionBuilder)));
         }

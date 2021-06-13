@@ -21,32 +21,44 @@
 using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Rename.Table;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename.Table {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename.Table
+{
     /// <summary>
     ///     An expression builder for a <see cref="RenameTableExpression" />
     /// </summary>
     public class RenameTableExpressionBuilder : ExpressionBuilderBase<RenameTableExpression>,
         IRenameTableToOrInSchemaSyntax,
-        IInSchemaSyntax {
+        IInSchemaSyntax
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RenameTableExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public RenameTableExpressionBuilder(RenameTableExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
-        public void InSchema(string schemaName) {
+        public void InSchema(string schemaName)
+        {
             Expression.SchemaName = schemaName;
         }
+
         /// <inheritdoc />
-        public IInSchemaSyntax To(string name) {
+        public IInSchemaSyntax To(string name)
+        {
             Expression.NewName = name;
+
             return this;
         }
+
         /// <inheritdoc />
-        IRenameTableToSyntax IRenameTableToOrInSchemaSyntax.InSchema(string schemaName) {
+        IRenameTableToSyntax IRenameTableToOrInSchemaSyntax.InSchema(string schemaName)
+        {
             Expression.SchemaName = schemaName;
+
             return this;
         }
     }

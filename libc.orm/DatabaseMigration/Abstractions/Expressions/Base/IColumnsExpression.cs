@@ -18,15 +18,19 @@
 
 using System.Collections.Generic;
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     Opt-in into columns conventions
     /// </summary>
-    public interface IColumnsExpression {
+    public interface IColumnsExpression
+    {
         /// <summary>
         ///     Gets the table name
         /// </summary>
         string TableName { get; }
+
         /// <summary>
         ///     Gets the list of columns
         /// </summary>

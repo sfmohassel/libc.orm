@@ -23,39 +23,51 @@ using System.ComponentModel.DataAnnotations;
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to update data
     /// </summary>
-    public class UpdateDataExpression : MigrationExpressionBase, ISchemaExpression, IValidatableObject {
+    public class UpdateDataExpression : MigrationExpressionBase, ISchemaExpression, IValidatableObject
+    {
         /// <summary>
         ///     Gets or sets the table name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt),
             ErrorMessageResourceName = nameof(Dmt.TableNameCannotBeNullOrEmpty))]
         public string TableName { get; set; }
+
         /// <summary>
         ///     Gets or sets the values to be set
         /// </summary>
         public List<KeyValuePair<string, object>> Set { get; set; }
+
         /// <summary>
         ///     Gets or sets the condition column/value pairs
         /// </summary>
         public List<KeyValuePair<string, object>> Where { get; set; }
+
         /// <summary>
         ///     Gets or sets a value indicating whether all rows should be updated
         /// </summary>
         public bool IsAllRows { get; set; }
+
         /// <inheritdoc />
         public string SchemaName { get; set; }
+
         /// <inheritdoc />
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
             if (!IsAllRows && (Where == null || Where.Count == 0))
                 yield return new ValidationResult(Dmt.UpdateDataExpressionMustSpecifyWhereClauseOrAllRows);
+
             if (IsAllRows && Where != null && Where.Count > 0)
                 yield return new ValidationResult(Dmt.UpdateDataExpressionMustNotSpecifyBothWhereClauseAndAllRows);
         }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
     }

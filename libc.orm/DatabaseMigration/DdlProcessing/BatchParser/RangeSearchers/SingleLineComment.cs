@@ -18,50 +18,69 @@
 #endregion
 
 using System.Text.RegularExpressions;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers
+{
     /// <summary>
     ///     A single line comment starting with the specified start code
     /// </summary>
-    public class SingleLineComment : IRangeSearcher {
+    public class SingleLineComment : IRangeSearcher
+    {
         private readonly bool _onlyAtBeginningOfLine;
         private readonly Regex _startCodeRegex;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SingleLineComment" /> class.
         /// </summary>
         /// <param name="startCode">The start code for the single line comment</param>
         public SingleLineComment(string startCode)
-            : this(startCode, false) {
+            : this(startCode, false)
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SingleLineComment" /> class.
         /// </summary>
         /// <param name="startCode">The start code for the single line comment</param>
         /// <param name="onlyAtBeginningOfLine">Find the start code only at the beginning of the line</param>
-        public SingleLineComment(string startCode, bool onlyAtBeginningOfLine) {
+        public SingleLineComment(string startCode, bool onlyAtBeginningOfLine)
+        {
             _onlyAtBeginningOfLine = onlyAtBeginningOfLine;
             _startCodeRegex = new Regex(Regex.Escape(startCode), RegexOptions.CultureInvariant | RegexOptions.Compiled);
             StartCodeLength = startCode.Length;
         }
+
         /// <inheritdoc />
         public int StartCodeLength { get; }
+
         /// <inheritdoc />
         public int EndCodeLength => 0;
+
         /// <inheritdoc />
         public bool IsComment => true;
+
         /// <inheritdoc />
-        public int FindStartCode(ILineReader reader) {
+        public int FindStartCode(ILineReader reader)
+        {
             var match = _startCodeRegex.Match(reader.Line, reader.Index);
+
             if (!match.Success)
                 return -1;
-            if (_onlyAtBeginningOfLine) {
+
+            if (_onlyAtBeginningOfLine)
+            {
                 var skippedText = reader.Line.Substring(0, match.Index);
+
                 if (!string.IsNullOrWhiteSpace(skippedText))
                     return -1;
             }
+
             return match.Index;
         }
+
         /// <inheritdoc />
-        public EndCodeSearchResult FindEndCode(ILineReader reader) {
+        public EndCodeSearchResult FindEndCode(ILineReader reader)
+        {
             return reader.Line.Length;
         }
     }

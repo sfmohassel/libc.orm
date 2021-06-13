@@ -19,22 +19,32 @@
 using System;
 using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.mysql.DdlGeneration {
-    public class MySqlQuoter : GenericQuoter {
+
+namespace libc.orm.mysql.DdlGeneration
+{
+    public class MySqlQuoter : GenericQuoter
+    {
         public override string OpenQuote => "`";
         public override string CloseQuote => "`";
-        public override string QuoteValue(object value) {
+
+        public override string QuoteValue(object value)
+        {
             return base.QuoteValue(value).Replace(@"\", @"\\");
         }
-        public override string FromTimeSpan(TimeSpan value) {
+
+        public override string FromTimeSpan(TimeSpan value)
+        {
             return string.Format("{0}{1:00}:{2:00}:{3:00}{0}"
                 , ValueQuote
                 , value.Hours + value.Days * 24
                 , value.Minutes
                 , value.Seconds);
         }
-        public override string FormatSystemMethods(SystemMethods value) {
-            switch (value) {
+
+        public override string FormatSystemMethods(SystemMethods value)
+        {
+            switch (value)
+            {
                 case SystemMethods.NewGuid:
                 case SystemMethods.NewSequentialId:
                     return "(SELECT UUID())";
@@ -45,9 +55,12 @@ namespace libc.orm.mysql.DdlGeneration {
                 case SystemMethods.CurrentUser:
                     return "CURRENT_USER()";
             }
+
             return base.FormatSystemMethods(value);
         }
-        public override string QuoteSchemaName(string schemaName) {
+
+        public override string QuoteSchemaName(string schemaName)
+        {
             // This database doesn't support schemata
             return string.Empty;
         }

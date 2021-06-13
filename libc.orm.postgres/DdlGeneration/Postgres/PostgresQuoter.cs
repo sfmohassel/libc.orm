@@ -22,14 +22,18 @@ using System.Linq;
 using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.postgres.DdlProcessing.Postgres;
-namespace libc.orm.postgres.DdlGeneration.Postgres {
-    public class PostgresQuoter : GenericQuoter {
+
+namespace libc.orm.postgres.DdlGeneration.Postgres
+{
+    public class PostgresQuoter : GenericQuoter
+    {
         /// <summary>
         ///     https://www.postgresql.org/docs/current/sql-keywords-appendix.html
         ///     <para>select * from pg_get_keywords() where catcode != 'U'</para>
         /// </summary>
         private static readonly HashSet<string> _keywords = new HashSet<string>(
-            new[] {
+            new[]
+            {
                 "all",
                 "analyse",
                 "analyze",
@@ -181,38 +185,59 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
                 "xmlserialize",
                 "xmltable"
             }, StringComparer.OrdinalIgnoreCase);
-        public PostgresQuoter(PostgresOptions options) {
+
+        public PostgresQuoter(PostgresOptions options)
+        {
             Options = options ?? new PostgresOptions();
         }
+
         public PostgresOptions Options { get; }
+
         /// <inheritdoc />
-        protected override bool ShouldQuote(string name) {
+        protected override bool ShouldQuote(string name)
+        {
             return Options.ForceQuote ? base.ShouldQuote(name) : _keywords.Contains(name);
         }
-        public override string FormatBool(bool value) {
+
+        public override string FormatBool(bool value)
+        {
             return value ? "true" : "false";
         }
-        public override string QuoteSchemaName(string schemaName) {
+
+        public override string QuoteSchemaName(string schemaName)
+        {
             if (string.IsNullOrEmpty(schemaName))
                 schemaName = "public";
+
             return base.QuoteSchemaName(schemaName);
         }
-        public override string QuoteSequenceName(string sequenceName, string schemaName) {
+
+        public override string QuoteSequenceName(string sequenceName, string schemaName)
+        {
             return CreateSchemaPrefixedQuotedIdentifier(
                 string.IsNullOrEmpty(schemaName) ? string.Empty : Quote(schemaName),
                 IsQuoted(sequenceName) ? sequenceName : Quote(sequenceName));
         }
-        protected override string FormatByteArray(byte[] array) {
+
+        protected override string FormatByteArray(byte[] array)
+        {
             var arrayAsHex = array.Select(b => b.ToString("X2")).ToArray();
+
             return @"E'\\x" + string.Concat(arrayAsHex) + "'";
         }
-        public string UnQuoteSchemaName(string quoted) {
+
+        public string UnQuoteSchemaName(string quoted)
+        {
             if (string.IsNullOrEmpty(quoted))
                 return "public";
+
             return UnQuote(quoted);
         }
-        public override string FormatSystemMethods(SystemMethods value) {
-            switch (value) {
+
+        public override string FormatSystemMethods(SystemMethods value)
+        {
+            switch (value)
+            {
                 case SystemMethods.NewGuid:
                     //need to run the script share/contrib/uuid-ossp.sql to install the uuid_generate4 function
                     return "uuid_generate_v4()";
@@ -225,6 +250,7 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
                 case SystemMethods.CurrentUser:
                     return "current_user";
             }
+
             return base.FormatSystemMethods(value);
         }
     }

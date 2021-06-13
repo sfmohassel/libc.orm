@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.ForeignKey {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.ForeignKey
+{
     /// <summary>
     ///     Interface to define the foreign key columns or the foreign keys table schema
     /// </summary>
-    public interface ICreateForeignKeyForeignColumnOrInSchemaSyntax : ICreateForeignKeyForeignColumnSyntax {
+    public interface ICreateForeignKeyForeignColumnOrInSchemaSyntax : ICreateForeignKeyForeignColumnSyntax
+    {
         /// <summary>
         ///     Specify the schema of the foreign key table
         /// </summary>

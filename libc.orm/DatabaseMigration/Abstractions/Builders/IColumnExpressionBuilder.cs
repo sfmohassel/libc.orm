@@ -19,19 +19,24 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders
+{
     /// <summary>
     ///     Describes common attributes for expression builders which have a current table/column.
     /// </summary>
-    public interface IColumnExpressionBuilder : IFluentSyntax {
+    public interface IColumnExpressionBuilder : IFluentSyntax
+    {
         /// <summary>
         ///     Gets the schema name
         /// </summary>
         string SchemaName { get; }
+
         /// <summary>
         ///     Gets the table name
         /// </summary>
         string TableName { get; }
+
         /// <summary>
         ///     Gets the current column definition
         /// </summary>

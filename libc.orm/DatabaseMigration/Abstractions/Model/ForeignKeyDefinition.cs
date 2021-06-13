@@ -23,53 +23,70 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     The foreign key definition
     /// </summary>
-    public class ForeignKeyDefinition : ICloneable, IValidatableObject {
+    public class ForeignKeyDefinition : ICloneable, IValidatableObject
+    {
         /// <summary>
         ///     Gets or sets a foreign key name
         /// </summary>
-        [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "ForeignKeyNameCannotBeNullOrEmpty")]
+        [Required(ErrorMessageResourceType = typeof(Dmt),
+            ErrorMessageResourceName = "ForeignKeyNameCannotBeNullOrEmpty")]
         public virtual string Name { get; set; }
+
         /// <summary>
         ///     Gets or sets the foreign key table
         /// </summary>
-        [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "ForeignTableNameCannotBeNullOrEmpty")]
+        [Required(ErrorMessageResourceType = typeof(Dmt),
+            ErrorMessageResourceName = "ForeignTableNameCannotBeNullOrEmpty")]
         public virtual string ForeignTable { get; set; }
+
         /// <summary>
         ///     Gets or sets the foreign keys table schema
         /// </summary>
         public virtual string ForeignTableSchema { get; set; }
+
         /// <summary>
         ///     Gets or sets the primary table
         /// </summary>
-        [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "PrimaryTableNameCannotBeNullOrEmpty")]
+        [Required(ErrorMessageResourceType = typeof(Dmt),
+            ErrorMessageResourceName = "PrimaryTableNameCannotBeNullOrEmpty")]
         public virtual string PrimaryTable { get; set; }
+
         /// <summary>
         ///     Gets or sets the primary table schema
         /// </summary>
         public virtual string PrimaryTableSchema { get; set; }
+
         /// <summary>
         ///     Gets or sets the rule for a cascading DELETE
         /// </summary>
         public virtual Rule OnDelete { get; set; }
+
         /// <summary>
         ///     Gets or sets the rule for a cascading UPDATE
         /// </summary>
         public virtual Rule OnUpdate { get; set; }
+
         /// <summary>
         ///     GEts or sets the foreign key column names
         /// </summary>
         public virtual ICollection<string> ForeignColumns { get; set; } = new List<string>();
+
         /// <summary>
         ///     Gets or sets the primary key column names
         /// </summary>
         public virtual ICollection<string> PrimaryColumns { get; set; } = new List<string>();
+
         /// <inheritdoc />
-        public object Clone() {
-            return new ForeignKeyDefinition {
+        public object Clone()
+        {
+            return new ForeignKeyDefinition
+            {
                 Name = Name,
                 ForeignTableSchema = ForeignTableSchema,
                 ForeignTable = ForeignTable,
@@ -81,16 +98,23 @@ namespace libc.orm.DatabaseMigration.Abstractions.Model {
                 OnUpdate = OnUpdate
             };
         }
+
         /// <inheritdoc />
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
-            if (ForeignColumns.Count == 0) yield return new ValidationResult(Dmt.ForeignKeyMustHaveOneOrMoreForeignColumns);
-            if (PrimaryColumns.Count == 0) yield return new ValidationResult(Dmt.ForeignKeyMustHaveOneOrMorePrimaryColumns);
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (ForeignColumns.Count == 0)
+                yield return new ValidationResult(Dmt.ForeignKeyMustHaveOneOrMoreForeignColumns);
+
+            if (PrimaryColumns.Count == 0)
+                yield return new ValidationResult(Dmt.ForeignKeyMustHaveOneOrMorePrimaryColumns);
         }
+
         /// <summary>
         ///     Gets a value indicating whether primary and foreign key columns are defined
         /// </summary>
         /// <returns></returns>
-        public bool HasForeignAndPrimaryColumnsDefined() {
+        public bool HasForeignAndPrimaryColumnsDefined()
+        {
             return ForeignColumns.Count > 0 && PrimaryColumns.Count > 0;
         }
     }

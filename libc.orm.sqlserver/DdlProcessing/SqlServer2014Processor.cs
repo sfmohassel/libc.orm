@@ -16,19 +16,23 @@
 
 #endregion
 
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.sqlserver.DdlGeneration;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.sqlserver.DdlProcessing {
-    public class SqlServer2014Processor : SqlServerProcessor {
+
+namespace libc.orm.sqlserver.DdlProcessing
+{
+    public class SqlServer2014Processor : SqlServerProcessor
+    {
         public SqlServer2014Processor(ILogger logger,
             SqlServer2014Generator generator,
             ProcessorOptions options)
-            : base(new[] {
+            : base(new[]
+            {
                 "SqlServer2014",
                 "SqlServer"
-            }, generator, logger, options) {
+            }, generator, logger, options)
+        {
         }
     }
 }

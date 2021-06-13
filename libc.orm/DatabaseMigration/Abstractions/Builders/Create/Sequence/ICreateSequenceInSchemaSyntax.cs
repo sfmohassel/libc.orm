@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Sequence {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Sequence
+{
     /// <summary>
     ///     Defines a sequence and (optionally) the schema it's stored in
     /// </summary>
-    public interface ICreateSequenceInSchemaSyntax : ICreateSequenceSyntax {
+    public interface ICreateSequenceInSchemaSyntax : ICreateSequenceSyntax
+    {
         /// <summary>
         ///     Defines the schema of the sequence
         /// </summary>

@@ -20,64 +20,80 @@ using System;
 using System.IO;
 using System.Text;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.DatabaseMigration.DdlProcessing {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing
+{
     /// <summary>
     ///     Utility functions around logging
     /// </summary>
-    public static class LoggingUtilities {
+    public static class LoggingUtilities
+    {
         /// <summary>
         ///     Log elapsed time
         /// </summary>
         /// <param name="logger">The logger</param>
         /// <param name="timeSpan">The elapsed time</param>
-        public static void LogElapsedTime(this ILogger logger, TimeSpan timeSpan) {
+        public static void LogElapsedTime(this ILogger logger, TimeSpan timeSpan)
+        {
             logger.Log(LogLevel.Information, RunnerEventIds.ElapsedTime, timeSpan, null,
                 (ts, ex) => $"=> {ts.TotalSeconds}s");
         }
+
         /// <summary>
         ///     Log emphasized message
         /// </summary>
         /// <param name="logger">The logger</param>
         /// <param name="message">The message</param>
-        public static void LogEmphasized(this ILogger logger, string message) {
+        public static void LogEmphasized(this ILogger logger, string message)
+        {
             logger.LogWarning(RunnerEventIds.Emphasize, message);
         }
+
         /// <summary>
         ///     Log header message
         /// </summary>
         /// <param name="logger">The logger</param>
         /// <param name="message">The message</param>
-        public static void LogHeader(this ILogger logger, string message) {
+        public static void LogHeader(this ILogger logger, string message)
+        {
             logger.LogInformation(RunnerEventIds.Heading, message);
         }
+
         /// <summary>
         ///     Log SQL code
         /// </summary>
         /// <param name="logger">The logger</param>
         /// <param name="sql">The SQL code</param>
-        public static void LogSql(this ILogger logger, string sql) {
+        public static void LogSql(this ILogger logger, string sql)
+        {
             logger.LogInformation(RunnerEventIds.Sql, sql);
         }
+
         /// <summary>
         ///     Log an informational message
         /// </summary>
         /// <param name="logger">The logger</param>
         /// <param name="message">The message</param>
-        public static void LogSay(this ILogger logger, string message) {
+        public static void LogSay(this ILogger logger, string message)
+        {
             logger.LogInformation(RunnerEventIds.Say, message);
         }
+
         /// <summary>
         ///     Writes a horizontal ruler to the given <paramref name="writer" />
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter" /> to write the text to</param>
-        public static void WriteHorizontalRuler(this TextWriter writer) {
+        public static void WriteHorizontalRuler(this TextWriter writer)
+        {
             writer.WriteLine("".PadRight(79, '-'));
         }
+
         /// <summary>
         ///     Writes the header to the given <paramref name="writer" />
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter" /> to write the text to</param>
-        public static void WriteHeader(this TextWriter writer) {
+        public static void WriteHeader(this TextWriter writer)
+        {
             writer.WriteHorizontalRuler();
             writer.WriteLine("=============================== FluentMigrator ================================");
             writer.WriteHorizontalRuler();
@@ -87,31 +103,40 @@ namespace libc.orm.DatabaseMigration.DdlProcessing {
             writer.WriteLine("  https://gitter.im/FluentMigrator/fluentmigrator");
             writer.WriteHorizontalRuler();
         }
+
         /// <summary>
         ///     Writes the exception message to the given <paramref name="writer" />
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter" /> to write the text to</param>
         /// <param name="message">The exception message</param>
         /// <param name="level">A value > 0 when this exception is an inner exception</param>
-        public static void WriteExceptionMessage(this TextWriter writer, string message, int level = 0) {
+        public static void WriteExceptionMessage(this TextWriter writer, string message, int level = 0)
+        {
             // Indicate the dependencies of the inner exceptions
             var indent = new StringBuilder();
-            if (level != 0) {
+
+            if (level != 0)
+            {
                 for (var i = 0; i != level - 1; ++i) indent.Append("|  ");
                 indent.Append("+- ");
             }
+
             writer.WriteLine($"!!! {indent}{message}");
         }
+
         /// <summary>
         ///     Writes the exception (and all its inner exceptions) to the given <paramref name="writer" />
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter" /> to write the text to</param>
         /// <param name="exception">The exception containing the message</param>
         /// <param name="level">A value > 0 when this exception is an inner exception</param>
-        public static void WriteException(this TextWriter writer, Exception exception, int level = 0) {
-            while (exception != null) {
+        public static void WriteException(this TextWriter writer, Exception exception, int level = 0)
+        {
+            while (exception != null)
+            {
                 writer.WriteExceptionMessage(exception.Message, level);
                 level += 1;
+
                 if (exception is AggregateException aggregateException)
                     foreach (var innerException in aggregateException.InnerExceptions)
                         writer.WriteException(innerException, level);

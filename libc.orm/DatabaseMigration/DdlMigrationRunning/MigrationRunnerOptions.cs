@@ -5,10 +5,14 @@ using libc.orm.DatabaseManagementSystems;
 using libc.orm.DatabaseMigration.DdlMigration;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.DatabaseMigration.DdlMigrationRunning {
-    public class MigrationRunnerOptions {
+
+namespace libc.orm.DatabaseMigration.DdlMigrationRunning
+{
+    public class MigrationRunnerOptions
+    {
         private static readonly Dictionary<Dbms, string> journalSchema =
-            new Dictionary<Dbms, string> {
+            new Dictionary<Dbms, string>
+            {
                 {
                     Dbms.Sqlite, @"
 create table if not exists [{0}] ( 
@@ -17,7 +21,8 @@ create table if not exists [{0}] (
     CreateUtc integer not null 
 )
 "
-                }, {
+                },
+                {
                     Dbms.MySql, @"
 create table if not exists `{0}` (
     `MigrationVersion` int not null,
@@ -27,7 +32,8 @@ create table if not exists `{0}` (
     index `ix_{0}_CreateUtc` (`CreateUtc` ASC)
 );
 "
-                }, {
+                },
+                {
                     Dbms.SqlServer, @"
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[{0}]') AND type in (N'U'))
 BEGIN
@@ -40,7 +46,8 @@ create table [{0}] (
     ) ON [PRIMARY]
 END
 "
-                }, {
+                },
+                {
                     Dbms.Postgres, @"
 create table if not exists ""{0}"" (
     ""MigrationVersion"" int not null,
@@ -51,10 +58,13 @@ create table if not exists ""{0}"" (
 "
                 }
             };
+
         private static Dbms[] supportedDbmsList;
+
         public MigrationRunnerOptions(string nameInLogs, Dbms dbms, IEnumerable<IMigration> migrations, ILogger logger,
             MigrationTransactionMode transactionMode, Database db, IProcessor processor,
-            string journalTableName = "schema_journal") {
+            string journalTableName = "schema_journal")
+        {
             NameInLogs = nameInLogs;
             Dbms = dbms;
             Migrations = new List<IMigration>(migrations);
@@ -64,7 +74,10 @@ create table if not exists ""{0}"" (
             Db = db;
             Processor = processor;
         }
-        public static Dbms[] SupportedDbmsList => supportedDbmsList ?? (supportedDbmsList = journalSchema.Keys.ToArray());
+
+        public static Dbms[] SupportedDbmsList =>
+            supportedDbmsList ?? (supportedDbmsList = journalSchema.Keys.ToArray());
+
         public string NameInLogs { get; }
         public Dbms Dbms { get; }
         public List<IMigration> Migrations { get; }
@@ -73,10 +86,14 @@ create table if not exists ""{0}"" (
         public string JournalTableName { get; }
         public Database Db { get; }
         public IProcessor Processor { get; }
-        public string GetJournalTableQuery() {
+
+        public string GetJournalTableQuery()
+        {
             return journalSchema[Dbms];
         }
-        public MigrationContext CreateMigrationContext() {
+
+        public MigrationContext CreateMigrationContext()
+        {
             return new MigrationContext(Processor, Processor.Options.ConnectionString);
         }
     }

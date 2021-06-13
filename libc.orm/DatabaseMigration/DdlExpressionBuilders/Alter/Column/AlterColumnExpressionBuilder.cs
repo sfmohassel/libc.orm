@@ -22,7 +22,9 @@ using libc.orm.DatabaseMigration.Abstractions.Builders.Alter.Column;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter.Column {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter.Column
+{
     /// <summary>
     ///     An expression builder for a <see cref="AlterColumnExpression" />
     /// </summary>
@@ -31,119 +33,175 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter.Column {
         IAlterColumnOnTableSyntax,
         IAlterColumnAsTypeOrInSchemaSyntax,
         IAlterColumnOptionOrForeignKeyCascadeSyntax,
-        IColumnExpressionBuilder {
+        IColumnExpressionBuilder
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="AlterColumnExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         /// <param name="context">The migration context</param>
         public AlterColumnExpressionBuilder(AlterColumnExpression expression, MigrationContext context)
-            : base(expression) {
+            : base(expression)
+        {
             _context = context;
             ColumnHelper = new ColumnExpressionBuilderHelper(this, context);
         }
+
         /// <summary>
         ///     Gets or sets the current foreign key
         /// </summary>
         public ForeignKeyDefinition CurrentForeignKey { get; set; }
+
         /// <summary>
         ///     Gets or sets a column expression builder helper
         /// </summary>
         public ColumnExpressionBuilderHelper ColumnHelper { get; set; }
+
         /// <inheritdoc />
-        public IAlterColumnAsTypeSyntax InSchema(string schemaName) {
+        public IAlterColumnAsTypeSyntax InSchema(string schemaName)
+        {
             Expression.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnAsTypeOrInSchemaSyntax OnTable(string name) {
+        public IAlterColumnAsTypeOrInSchemaSyntax OnTable(string name)
+        {
             Expression.TableName = name;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax WithDefault(SystemMethods method) {
+        public IAlterColumnOptionSyntax WithDefault(SystemMethods method)
+        {
             return WithDefaultValue(method);
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax WithDefaultValue(object value) {
+        public IAlterColumnOptionSyntax WithDefaultValue(object value)
+        {
             // we need to do a drop constraint and then add constraint to change the default value
-            var dc = new AlterDefaultConstraintExpression {
+            var dc = new AlterDefaultConstraintExpression
+            {
                 TableName = Expression.TableName,
                 SchemaName = Expression.SchemaName,
                 ColumnName = Expression.Column.Name,
                 DefaultValue = value
             };
+
             _context.Expressions.Add(dc);
             Expression.Column.DefaultValue = value;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax WithColumnDescription(string description) {
+        public IAlterColumnOptionSyntax WithColumnDescription(string description)
+        {
             Expression.Column.ColumnDescription = description;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax Identity() {
+        public IAlterColumnOptionSyntax Identity()
+        {
             Expression.Column.IsIdentity = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax Indexed() {
+        public IAlterColumnOptionSyntax Indexed()
+        {
             return Indexed(null);
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax Indexed(string indexName) {
+        public IAlterColumnOptionSyntax Indexed(string indexName)
+        {
             ColumnHelper.Indexed(indexName);
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax PrimaryKey() {
+        public IAlterColumnOptionSyntax PrimaryKey()
+        {
             Expression.Column.IsPrimaryKey = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax PrimaryKey(string primaryKeyName) {
+        public IAlterColumnOptionSyntax PrimaryKey(string primaryKeyName)
+        {
             Expression.Column.IsPrimaryKey = true;
             Expression.Column.PrimaryKeyName = primaryKeyName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax Nullable() {
+        public IAlterColumnOptionSyntax Nullable()
+        {
             ColumnHelper.SetNullable(true);
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax NotNullable() {
+        public IAlterColumnOptionSyntax NotNullable()
+        {
             ColumnHelper.SetNullable(false);
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax Unique() {
+        public IAlterColumnOptionSyntax Unique()
+        {
             ColumnHelper.Unique(null);
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax Unique(string indexName) {
+        public IAlterColumnOptionSyntax Unique(string indexName)
+        {
             ColumnHelper.Unique(indexName);
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string primaryTableName, string primaryColumnName) {
+        public IAlterColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string primaryTableName, string primaryColumnName)
+        {
             return ForeignKey(null, null, primaryTableName, primaryColumnName);
         }
+
         /// <inheritdoc />
         public IAlterColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string foreignKeyName, string primaryTableName,
-            string primaryColumnName) {
+            string primaryColumnName)
+        {
             return ForeignKey(foreignKeyName, null, primaryTableName, primaryColumnName);
         }
+
         /// <inheritdoc />
         public IAlterColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string foreignKeyName, string primaryTableSchema,
             string primaryTableName,
-            string primaryColumnName) {
+            string primaryColumnName)
+        {
             Expression.Column.IsForeignKey = true;
-            var fk = new CreateForeignKeyExpression {
-                ForeignKey = new ForeignKeyDefinition {
+
+            var fk = new CreateForeignKeyExpression
+            {
+                ForeignKey = new ForeignKeyDefinition
+                {
                     Name = foreignKeyName,
                     PrimaryTable = primaryTableName,
                     PrimaryTableSchema = primaryTableSchema,
@@ -151,28 +209,40 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter.Column {
                     ForeignTableSchema = Expression.SchemaName
                 }
             };
+
             fk.ForeignKey.PrimaryColumns.Add(primaryColumnName);
             fk.ForeignKey.ForeignColumns.Add(Expression.Column.Name);
             _context.Expressions.Add(fk);
             CurrentForeignKey = fk.ForeignKey;
             Expression.Column.ForeignKey = fk.ForeignKey;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionOrForeignKeyCascadeSyntax ReferencedBy(string foreignTableName, string foreignColumnName) {
+        public IAlterColumnOptionOrForeignKeyCascadeSyntax ReferencedBy(string foreignTableName,
+            string foreignColumnName)
+        {
             return ReferencedBy(null, null, foreignTableName, foreignColumnName);
         }
+
         /// <inheritdoc />
         public IAlterColumnOptionOrForeignKeyCascadeSyntax ReferencedBy(string foreignKeyName, string foreignTableName,
-            string foreignColumnName) {
+            string foreignColumnName)
+        {
             return ReferencedBy(foreignKeyName, null, foreignTableName, foreignColumnName);
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionOrForeignKeyCascadeSyntax ReferencedBy(string foreignKeyName, string foreignTableSchema,
+        public IAlterColumnOptionOrForeignKeyCascadeSyntax ReferencedBy(string foreignKeyName,
+            string foreignTableSchema,
             string foreignTableName,
-            string foreignColumnName) {
-            var fk = new CreateForeignKeyExpression {
-                ForeignKey = new ForeignKeyDefinition {
+            string foreignColumnName)
+        {
+            var fk = new CreateForeignKeyExpression
+            {
+                ForeignKey = new ForeignKeyDefinition
+                {
                     Name = foreignKeyName,
                     PrimaryTable = Expression.TableName,
                     PrimaryTableSchema = Expression.SchemaName,
@@ -180,41 +250,60 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Alter.Column {
                     ForeignTableSchema = foreignTableSchema
                 }
             };
+
             fk.ForeignKey.PrimaryColumns.Add(Expression.Column.Name);
             fk.ForeignKey.ForeignColumns.Add(foreignColumnName);
             _context.Expressions.Add(fk);
             CurrentForeignKey = fk.ForeignKey;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionOrForeignKeyCascadeSyntax ForeignKey() {
+        public IAlterColumnOptionOrForeignKeyCascadeSyntax ForeignKey()
+        {
             Expression.Column.IsForeignKey = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionOrForeignKeyCascadeSyntax OnDelete(Rule rule) {
+        public IAlterColumnOptionOrForeignKeyCascadeSyntax OnDelete(Rule rule)
+        {
             CurrentForeignKey.OnDelete = rule;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionOrForeignKeyCascadeSyntax OnUpdate(Rule rule) {
+        public IAlterColumnOptionOrForeignKeyCascadeSyntax OnUpdate(Rule rule)
+        {
             CurrentForeignKey.OnUpdate = rule;
+
             return this;
         }
+
         /// <inheritdoc />
-        public IAlterColumnOptionSyntax OnDeleteOrUpdate(Rule rule) {
+        public IAlterColumnOptionSyntax OnDeleteOrUpdate(Rule rule)
+        {
             OnDelete(rule);
             OnUpdate(rule);
+
             return this;
         }
+
         /// <inheritdoc />
         string IColumnExpressionBuilder.SchemaName => Expression.SchemaName;
+
         /// <inheritdoc />
         string IColumnExpressionBuilder.TableName => Expression.TableName;
+
         /// <inheritdoc />
         ColumnDefinition IColumnExpressionBuilder.Column => Expression.Column;
+
         /// <inheritdoc />
-        public override ColumnDefinition GetColumnForType() {
+        public override ColumnDefinition GetColumnForType()
+        {
             return Expression.Column;
         }
     }

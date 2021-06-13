@@ -22,57 +22,76 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     The constraint definition
     /// </summary>
-    public class ConstraintDefinition : ICloneable, ISupportAdditionalFeatures, IValidatableObject {
+    public class ConstraintDefinition : ICloneable, ISupportAdditionalFeatures, IValidatableObject
+    {
         private readonly ConstraintType _constraintType;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ConstraintDefinition" /> class.
         /// </summary>
-        public ConstraintDefinition(ConstraintType type) {
+        public ConstraintDefinition(ConstraintType type)
+        {
             _constraintType = type;
         }
+
         /// <summary>
         ///     Gets a value indicating whether the constraint is a primary key constraint
         /// </summary>
         public bool IsPrimaryKeyConstraint => ConstraintType.PrimaryKey == _constraintType;
+
         /// <summary>
         ///     Gets a value indicating whether the constraint is a unique constraint
         /// </summary>
         public bool IsUniqueConstraint => ConstraintType.Unique == _constraintType;
+
         /// <summary>
         ///     Gets or sets the schema name
         /// </summary>
         public virtual string SchemaName { get; set; }
+
         /// <summary>
         ///     Gets or sets the constraint name
         /// </summary>
         public virtual string ConstraintName { get; set; }
+
         /// <summary>
         ///     Gets or sets the table name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "TableNameCannotBeNullOrEmpty")]
         public virtual string TableName { get; set; }
+
         /// <summary>
         ///     Gets or sets the column names
         /// </summary>
         public virtual ICollection<string> Columns { get; set; } = new HashSet<string>();
+
         /// <inheritdoc />
-        public object Clone() {
-            var result = new ConstraintDefinition(_constraintType) {
+        public object Clone()
+        {
+            var result = new ConstraintDefinition(_constraintType)
+            {
                 Columns = Columns,
                 ConstraintName = ConstraintName,
                 TableName = TableName
             };
+
             AdditionalFeatures.CloneTo(result.AdditionalFeatures);
+
             return result;
         }
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures { get; } = new Dictionary<string, object>();
+
         /// <inheritdoc />
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
             if (0 == Columns.Count) yield return new ValidationResult(Dmt.ConstraintMustHaveAtLeastOneColumn);
         }
     }

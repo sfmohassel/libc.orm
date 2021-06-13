@@ -20,55 +20,68 @@ using System;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.DatabaseMigration.DdlProcessing {
-    public abstract class GenericProcessorBase : ProcessorBase {
-        
+
+namespace libc.orm.DatabaseMigration.DdlProcessing
+{
+    public abstract class GenericProcessorBase : ProcessorBase
+    {
         private readonly Lazy<DbProviderFactory> _dbProviderFactory;
-        
         private readonly Lazy<IDbConnection> _lazyConnection;
-        
         private IDbConnection _connection;
         private bool _disposed;
+
         protected GenericProcessorBase(Func<DbProviderFactory> factoryAccessor,
             IMigrationGenerator generator,
             ILogger logger,
             ProcessorOptions options)
-            : base(generator, logger, options) {
+            : base(generator, logger, options)
+        {
             _dbProviderFactory = new Lazy<DbProviderFactory>(factoryAccessor.Invoke);
+
             _lazyConnection = new Lazy<IDbConnection>(
-                () => {
+                () =>
+                {
                     var connection = DbProviderFactory.CreateConnection();
                     Debug.Assert(connection != null, nameof(Connection) + " != null");
                     connection.ConnectionString = options.ConnectionString;
                     connection.Open();
+
                     return connection;
                 });
         }
-        public IDbConnection Connection {
+
+        public IDbConnection Connection
+        {
             get => _connection ?? _lazyConnection.Value;
             protected set => _connection = value;
         }
-        
+
         public IDbTransaction Transaction { get; private set; }
-        
         protected DbProviderFactory DbProviderFactory => _dbProviderFactory.Value;
-        protected virtual void EnsureConnectionIsOpen() {
+
+        protected virtual void EnsureConnectionIsOpen()
+        {
             if (Connection != null && Connection.State != ConnectionState.Open) Connection.Open();
         }
-        protected virtual void EnsureConnectionIsClosed() {
+
+        protected virtual void EnsureConnectionIsClosed()
+        {
             if ((_connection != null || _lazyConnection.IsValueCreated && Connection != null) &&
                 Connection.State != ConnectionState.Closed) Connection.Close();
         }
-        public override void BeginTransaction() {
+
+        public override void BeginTransaction()
+        {
             if (Transaction != null) return;
             EnsureConnectionIsOpen();
             Logger.LogSay("Beginning Transaction");
             Transaction = Connection?.BeginTransaction();
         }
-        public override void RollbackTransaction() {
+
+        public override void RollbackTransaction()
+        {
             if (Transaction == null) return;
             Logger.LogSay("Rolling back transaction");
             Transaction.Rollback();
@@ -76,7 +89,9 @@ namespace libc.orm.DatabaseMigration.DdlProcessing {
             WasCommitted = true;
             Transaction = null;
         }
-        public override void CommitTransaction() {
+
+        public override void CommitTransaction()
+        {
             if (Transaction == null) return;
             Logger.LogSay("Committing Transaction");
             Transaction.Commit();
@@ -84,26 +99,36 @@ namespace libc.orm.DatabaseMigration.DdlProcessing {
             WasCommitted = true;
             Transaction = null;
         }
-        protected override void Dispose(bool isDisposing) {
+
+        protected override void Dispose(bool isDisposing)
+        {
             if (!isDisposing || _disposed)
                 return;
+
             _disposed = true;
             RollbackTransaction();
             EnsureConnectionIsClosed();
             if (_connection != null || _lazyConnection.IsValueCreated && Connection != null) Connection.Dispose();
         }
-        protected virtual IDbCommand CreateCommand(string commandText) {
+
+        protected virtual IDbCommand CreateCommand(string commandText)
+        {
             return CreateCommand(commandText, Connection, Transaction);
         }
+
         protected virtual IDbCommand CreateCommand(string commandText, IDbConnection connection,
-            IDbTransaction transaction) {
+            IDbTransaction transaction)
+        {
             IDbCommand result = DbProviderFactory.CreateCommand();
             Debug.Assert(result != null, nameof(result) + " != null");
             result.Connection = connection;
+
             if (transaction != null)
                 result.Transaction = transaction;
+
             result.CommandText = commandText;
             if (Options.Timeout != null) result.CommandTimeout = (int) Options.Timeout.Value.TotalSeconds;
+
             return result;
         }
     }

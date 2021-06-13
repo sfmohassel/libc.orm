@@ -19,11 +19,14 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Exceptions;
-namespace libc.orm.DatabaseMigration.Abstractions.Extensions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Extensions
+{
     /// <summary>
     ///     Extension methods for <see cref="CompatibilityMode" />
     /// </summary>
-    public static class CompatibilityModeExtension {
+    public static class CompatibilityModeExtension
+    {
         /// <summary>
         ///     Handles unsupported generator features according to a compatibility mode.
         /// </summary>
@@ -31,8 +34,10 @@ namespace libc.orm.DatabaseMigration.Abstractions.Extensions {
         /// <param name="message">The exception message (if any gets thrown)</param>
         /// <returns>The string to be returned (if no exception was thrown)</returns>
         /// <exception cref="DatabaseOperationNotSupportedException">The exception to be thrown</exception>
-        public static string HandleCompatibilty(this CompatibilityMode mode, string message) {
+        public static string HandleCompatibilty(this CompatibilityMode mode, string message)
+        {
             if (CompatibilityMode.STRICT == mode) throw new DatabaseOperationNotSupportedException(message);
+
             return string.Empty;
         }
     }

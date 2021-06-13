@@ -18,10 +18,12 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column
+{
     /// <summary>
     ///     Set the column type
     /// </summary>
-    public interface ICreateColumnAsTypeSyntax : IColumnTypeSyntax<ICreateColumnOptionSyntax> {
+    public interface ICreateColumnAsTypeSyntax : IColumnTypeSyntax<ICreateColumnOptionSyntax>
+    {
     }
 }

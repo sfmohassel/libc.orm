@@ -19,16 +19,20 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Table;
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Schema {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Schema
+{
     /// <summary>
     ///     Query a schemas (or its of its tables) existence
     /// </summary>
-    public interface ISchemaSchemaSyntax : IFluentSyntax {
+    public interface ISchemaSchemaSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Returns <c>true</c> when a schema exists
         /// </summary>
         /// <returns><c>true</c> when a schema exists</returns>
         bool Exists();
+
         /// <summary>
         ///     Specify the table name as basis for a query a database objects existence
         /// </summary>

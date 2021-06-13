@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Update {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Update
+{
     /// <summary>
     ///     The expression root to update rows
     /// </summary>
-    public interface IUpdateExpressionRoot : IFluentSyntax {
+    public interface IUpdateExpressionRoot : IFluentSyntax
+    {
         /// <summary>
         ///     Specifies the table to update its data
         /// </summary>

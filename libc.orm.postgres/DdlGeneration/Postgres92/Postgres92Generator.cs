@@ -16,14 +16,17 @@
 
 #endregion
 
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.postgres.DdlGeneration.Postgres;
-namespace libc.orm.postgres.DdlGeneration.Postgres92 {
-    public class Postgres92Generator : PostgresGenerator {
+
+namespace libc.orm.postgres.DdlGeneration.Postgres92
+{
+    public class Postgres92Generator : PostgresGenerator
+    {
         public Postgres92Generator(PostgresQuoter quoter,
             GeneratorOptions generatorOptions)
-            : base(quoter, generatorOptions, new Postgres92TypeMap()) {
+            : base(quoter, generatorOptions, new Postgres92TypeMap())
+        {
         }
     }
 }

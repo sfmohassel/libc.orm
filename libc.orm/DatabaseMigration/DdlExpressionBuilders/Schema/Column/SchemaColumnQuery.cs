@@ -20,15 +20,19 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Column;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Column {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Column
+{
     /// <summary>
     ///     The implementation of the <see cref="ISchemaColumnSyntax" /> interface
     /// </summary>
-    public class SchemaColumnQuery : ISchemaColumnSyntax {
+    public class SchemaColumnQuery : ISchemaColumnSyntax
+    {
         private readonly string _columnName;
         private readonly MigrationContext _context;
         private readonly string _schemaName;
         private readonly string _tableName;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SchemaColumnQuery" /> class.
         /// </summary>
@@ -36,14 +40,17 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Column {
         /// <param name="tableName">The table name</param>
         /// <param name="columnName">The column name</param>
         /// <param name="context">The migration context</param>
-        public SchemaColumnQuery(string schemaName, string tableName, string columnName, MigrationContext context) {
+        public SchemaColumnQuery(string schemaName, string tableName, string columnName, MigrationContext context)
+        {
             _schemaName = schemaName;
             _tableName = tableName;
             _columnName = columnName;
             _context = context;
         }
+
         /// <inheritdoc />
-        public bool Exists() {
+        public bool Exists()
+        {
             return _context.QuerySchema.ColumnExists(_schemaName, _tableName, _columnName);
         }
     }

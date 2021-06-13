@@ -18,13 +18,15 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Table {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Table
+{
     /// <summary>
     ///     Set column options or define a new column
     /// </summary>
     public interface ICreateTableColumnOptionOrWithColumnSyntax :
         IColumnOptionSyntax<ICreateTableColumnOptionOrWithColumnSyntax,
             ICreateTableColumnOptionOrForeignKeyCascadeOrWithColumnSyntax>,
-        ICreateTableWithColumnSyntax {
+        ICreateTableWithColumnSyntax
+    {
     }
 }

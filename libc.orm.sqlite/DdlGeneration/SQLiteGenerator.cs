@@ -19,48 +19,74 @@
 
 #endregion
 
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.sqlite.DdlGeneration {
+
+namespace libc.orm.sqlite.DdlGeneration
+{
     // ReSharper disable once InconsistentNaming
-    public class SQLiteGenerator : GenericGenerator {
+    public class SQLiteGenerator : GenericGenerator
+    {
         public SQLiteGenerator(GeneratorOptions generatorOptions)
-            : base(new SQLiteColumn(), new SQLiteQuoter(), new EmptyDescriptionGenerator(), generatorOptions) {
+            : base(new SQLiteColumn(), new SQLiteQuoter(), new EmptyDescriptionGenerator(), generatorOptions)
+        {
         }
+
         public override string RenameTable => "ALTER TABLE {0} RENAME TO {1}";
-        public override string Generate(AlterColumnExpression expression) {
+
+        public override string Generate(AlterColumnExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("SQLite does not support alter column");
         }
-        public override string Generate(RenameColumnExpression expression) {
+
+        public override string Generate(RenameColumnExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("SQLite does not support renaming of columns");
         }
-        public override string Generate(DeleteColumnExpression expression) {
+
+        public override string Generate(DeleteColumnExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("SQLite does not support deleting of columns");
         }
-        public override string Generate(AlterDefaultConstraintExpression expression) {
+
+        public override string Generate(AlterDefaultConstraintExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("SQLite does not support altering of default constraints");
         }
-        public override string Generate(CreateForeignKeyExpression expression) {
+
+        public override string Generate(CreateForeignKeyExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("Foreign keys are not supported in SQLite");
         }
-        public override string Generate(DeleteForeignKeyExpression expression) {
+
+        public override string Generate(DeleteForeignKeyExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("Foreign keys are not supported in SQLite");
         }
-        public override string Generate(CreateSequenceExpression expression) {
+
+        public override string Generate(CreateSequenceExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("Sequences are not supported in SQLite");
         }
-        public override string Generate(DeleteSequenceExpression expression) {
+
+        public override string Generate(DeleteSequenceExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("Sequences are not supported in SQLite");
         }
-        public override string Generate(DeleteDefaultConstraintExpression expression) {
+
+        public override string Generate(DeleteDefaultConstraintExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("Default constraints are not supported");
         }
-        public override string Generate(CreateConstraintExpression expression) {
+
+        public override string Generate(CreateConstraintExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("Constraints are not supported");
         }
-        public override string Generate(DeleteConstraintExpression expression) {
+
+        public override string Generate(DeleteConstraintExpression expression)
+        {
             return CompatibilityMode.HandleCompatibilty("Constraints are not supported");
         }
     }

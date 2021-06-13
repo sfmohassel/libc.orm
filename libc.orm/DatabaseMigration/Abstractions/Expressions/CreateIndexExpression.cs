@@ -24,33 +24,47 @@ using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.Abstractions.Validation;
 using libc.orm.DatabaseMigration.DdlProcessing;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     Expression to create an index
     /// </summary>
     public class CreateIndexExpression : MigrationExpressionBase, ISupportAdditionalFeatures, IIndexExpression,
-        IValidationChildren {
+        IValidationChildren
+    {
         /// <inheritdoc />
         public virtual IndexDefinition Index { get; set; } = new IndexDefinition();
+
         /// <inheritdoc />
         public IDictionary<string, object> AdditionalFeatures => Index.AdditionalFeatures;
+
         /// <inheritdoc />
-        IEnumerable<object> IValidationChildren.Children {
-            get {
+        IEnumerable<object> IValidationChildren.Children
+        {
+            get
+            {
                 yield return Index;
             }
         }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override IMigrationExpression Reverse() {
-            return new DeleteIndexExpression {
+        public override IMigrationExpression Reverse()
+        {
+            return new DeleteIndexExpression
+            {
                 Index = Index.Clone() as IndexDefinition
             };
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return base.ToString() + Index.TableName + " (" +
                    string.Join(", ", Index.Columns.Select(x => x.Name).ToArray()) + ")";
         }

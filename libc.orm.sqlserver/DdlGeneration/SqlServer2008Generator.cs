@@ -25,28 +25,45 @@ using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer;
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2008Generator : SqlServer2005Generator {
-        private static readonly HashSet<string> _supportedAdditionalFeatures = new HashSet<string> {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2008Generator : SqlServer2005Generator
+    {
+        private static readonly HashSet<string> _supportedAdditionalFeatures = new HashSet<string>
+        {
             SqlServerExtensions.IndexColumnNullsDistinct
         };
+
         public SqlServer2008Generator(SqlServer2008Quoter quoter, GeneratorOptions options)
-            : base(quoter, options) {
+            : base(quoter, options)
+        {
         }
-        public override bool IsAdditionalFeatureSupported(string feature) {
+
+        public override bool IsAdditionalFeatureSupported(string feature)
+        {
             return _supportedAdditionalFeatures.Contains(feature)
                    || base.IsAdditionalFeatureSupported(feature);
         }
-        public virtual string GetWithNullsDistinctString(IndexDefinition index) {
-            bool? GetNullsDistinct(IndexColumnDefinition column) {
+
+        public virtual string GetWithNullsDistinctString(IndexDefinition index)
+        {
+            bool? GetNullsDistinct(IndexColumnDefinition column)
+            {
                 return column.GetAdditionalFeature(SqlServerExtensions.IndexColumnNullsDistinct, (bool?) null);
             }
-            var indexNullsDistinct = index.GetAdditionalFeature(SqlServerExtensions.IndexColumnNullsDistinct, (bool?) null);
+
+            var indexNullsDistinct =
+                index.GetAdditionalFeature(SqlServerExtensions.IndexColumnNullsDistinct, (bool?) null);
+
             var nullDistinctColumns =
                 index.Columns.Where(c => indexNullsDistinct != null || GetNullsDistinct(c) != null).ToList();
-            if (nullDistinctColumns.Count != 0 && !index.IsUnique) {
+
+            if (nullDistinctColumns.Count != 0 && !index.IsUnique)
+            {
                 // Should never occur
                 CompatibilityMode.HandleCompatibilty("With nulls distinct can only be used for unique indexes");
+
                 return string.Empty;
             }
 
@@ -56,14 +73,20 @@ namespace libc.orm.sqlserver.DdlGeneration {
             var conditions = nullDistinctColumns
                 .Where(x => (GetNullsDistinct(x) ?? indexNullsDistinct ?? true) == false)
                 .Select(c => $"{Quoter.QuoteColumnName(c.Name)} IS NOT NULL");
+
             var condition = string.Join(" AND ", conditions);
+
             if (condition.Length == 0)
                 return string.Empty;
+
             return $" WHERE {condition}";
         }
-        public override string Generate(CreateIndexExpression expression) {
+
+        public override string Generate(CreateIndexExpression expression)
+        {
             var sql = base.Generate(expression);
             sql += GetWithNullsDistinctString(expression.Index);
+
             return sql;
         }
     }

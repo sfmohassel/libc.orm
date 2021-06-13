@@ -21,39 +21,60 @@ using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer;
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2000Column : ColumnBase {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2000Column : ColumnBase
+    {
         public SqlServer2000Column(ITypeMap typeMap, IQuoter quoter)
-            : base(typeMap, quoter) {
+            : base(typeMap, quoter)
+        {
         }
+
         /// <inheritdoc />
-        protected override string FormatDefaultValue(ColumnDefinition column) {
+        protected override string FormatDefaultValue(ColumnDefinition column)
+        {
             if (DefaultValueIsSqlFunction(column.DefaultValue))
                 return "DEFAULT " + column.DefaultValue;
+
             var defaultValue = base.FormatDefaultValue(column);
+
             if (column.ModificationType == ColumnModificationType.Create && !string.IsNullOrEmpty(defaultValue))
-                return "CONSTRAINT " + Quoter.QuoteConstraintName(GetDefaultConstraintName(column.TableName, column.Name)) +
+                return "CONSTRAINT " +
+                       Quoter.QuoteConstraintName(GetDefaultConstraintName(column.TableName, column.Name)) +
                        " " + defaultValue;
+
             return string.Empty;
         }
-        private static bool DefaultValueIsSqlFunction(object defaultValue) {
+
+        private static bool DefaultValueIsSqlFunction(object defaultValue)
+        {
             return defaultValue is string && defaultValue.ToString().EndsWith("()");
         }
+
         /// <inheritdoc />
-        protected override string FormatIdentity(ColumnDefinition column) {
+        protected override string FormatIdentity(ColumnDefinition column)
+        {
             return column.IsIdentity ? GetIdentityString(column) : string.Empty;
         }
-        private static string GetIdentityString(ColumnDefinition column) {
+
+        private static string GetIdentityString(ColumnDefinition column)
+        {
             return string.Format("IDENTITY({0},{1})",
                 column.GetAdditionalFeature(SqlServerExtensions.IdentitySeed, 1),
                 column.GetAdditionalFeature(SqlServerExtensions.IdentityIncrement, 1));
         }
-        public static string FormatDefaultValue(object defaultValue, IQuoter quoter) {
+
+        public static string FormatDefaultValue(object defaultValue, IQuoter quoter)
+        {
             if (DefaultValueIsSqlFunction(defaultValue))
                 return defaultValue.ToString();
+
             return quoter.QuoteValue(defaultValue);
         }
-        public static string GetDefaultConstraintName(string tableName, string columnName) {
+
+        public static string GetDefaultConstraintName(string tableName, string columnName)
+        {
             return string.Format("DF_{0}_{1}", tableName, columnName);
         }
     }

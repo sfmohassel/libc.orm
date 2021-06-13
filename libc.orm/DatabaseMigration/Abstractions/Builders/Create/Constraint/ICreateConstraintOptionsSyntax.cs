@@ -18,13 +18,15 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint
+{
     /// <summary>
     ///     Options for creating the constraint
     /// </summary>
     /// <remarks>
     ///     This is an extension point for DB-specific constraint options
     /// </remarks>
-    public interface ICreateConstraintOptionsSyntax : IFluentSyntax {
+    public interface ICreateConstraintOptionsSyntax : IFluentSyntax
+    {
     }
 }

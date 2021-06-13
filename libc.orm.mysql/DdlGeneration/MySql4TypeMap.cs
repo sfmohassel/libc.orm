@@ -18,8 +18,11 @@
 
 using System.Data;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.mysql.DdlGeneration {
-    internal class MySql4TypeMap : TypeMapBase {
+
+namespace libc.orm.mysql.DdlGeneration
+{
+    internal class MySql4TypeMap : TypeMapBase
+    {
         public const int AnsiTinyStringCapacity = 127;
         public const int StringCapacity = 255;
         public const int VarcharCapacity = 8192;
@@ -27,7 +30,9 @@ namespace libc.orm.mysql.DdlGeneration {
         public const int MediumTextCapacity = 16777215;
         public const int LongTextCapacity = int.MaxValue;
         public const int DecimalCapacity = 254;
-        protected override void SetupTypeMaps() {
+
+        protected override void SetupTypeMaps()
+        {
             SetTypeMap(DbType.AnsiStringFixedLength, "CHAR(255)");
             SetTypeMap(DbType.AnsiStringFixedLength, "CHAR($size)", StringCapacity);
             SetTypeMap(DbType.AnsiStringFixedLength, "TEXT", TextCapacity);

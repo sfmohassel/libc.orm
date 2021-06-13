@@ -16,16 +16,19 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers {
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers
+{
     /// <summary>
     ///     A single line comment starting with two slashes (<c>// comment</c>)
     /// </summary>
-    public sealed class DoubleSlashSingleLineComment : SingleLineComment {
+    public sealed class DoubleSlashSingleLineComment : SingleLineComment
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DoubleSlashSingleLineComment" /> class.
         /// </summary>
         public DoubleSlashSingleLineComment()
-            : base("//") {
+            : base("//")
+        {
         }
     }
 }

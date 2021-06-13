@@ -18,16 +18,19 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.ForeignKey {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.ForeignKey
+{
     /// <summary>
     ///     Specify the columns of the primary table
     /// </summary>
-    public interface IDeleteForeignKeyPrimaryColumnSyntax : IFluentSyntax {
+    public interface IDeleteForeignKeyPrimaryColumnSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the primary table column
         /// </summary>
         /// <param name="column">The column name</param>
         void PrimaryColumn(string column);
+
         /// <summary>
         ///     Specify the primary table columns
         /// </summary>

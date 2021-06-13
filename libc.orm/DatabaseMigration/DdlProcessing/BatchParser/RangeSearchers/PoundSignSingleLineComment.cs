@@ -16,16 +16,19 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers {
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.RangeSearchers
+{
     /// <summary>
     ///     A single line comment starting with a pound sign (<c># comment</c>)
     /// </summary>
-    public sealed class PoundSignSingleLineComment : SingleLineComment {
+    public sealed class PoundSignSingleLineComment : SingleLineComment
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PoundSignSingleLineComment" /> class.
         /// </summary>
         public PoundSignSingleLineComment()
-            : base("#", true) {
+            : base("#", true)
+        {
         }
     }
 }

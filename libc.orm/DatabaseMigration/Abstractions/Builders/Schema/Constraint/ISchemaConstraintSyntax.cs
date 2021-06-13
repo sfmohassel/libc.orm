@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Constraint
+{
     /// <summary>
     ///     Query a constraints existence
     /// </summary>
-    public interface ISchemaConstraintSyntax : IFluentSyntax {
+    public interface ISchemaConstraintSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Returns <c>true</c> when a constraint exists
         /// </summary>

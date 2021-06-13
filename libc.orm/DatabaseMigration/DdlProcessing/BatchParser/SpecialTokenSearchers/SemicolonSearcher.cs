@@ -17,20 +17,27 @@
 #endregion
 
 using System.Text.RegularExpressions;
-namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.SpecialTokenSearchers {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing.BatchParser.SpecialTokenSearchers
+{
     /// <summary>
     ///     Searches for a semicolon
     /// </summary>
     /// <remarks>
     ///     This special token searcher might be used to separate SQL statements in a batch.
     /// </remarks>
-    public class SemicolonSearcher : ISpecialTokenSearcher {
+    public class SemicolonSearcher : ISpecialTokenSearcher
+    {
         private static readonly Regex _regex = new Regex(";", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
         /// <inheritdoc />
-        public SpecialTokenInfo Find(ILineReader reader) {
+        public SpecialTokenInfo Find(ILineReader reader)
+        {
             var match = _regex.Match(reader.Line);
+
             if (!match.Success)
                 return null;
+
             return new SpecialTokenInfo(match.Index, match.Length, match.Value);
         }
     }

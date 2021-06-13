@@ -19,31 +19,40 @@
 using System;
 using System.Globalization;
 using System.Text;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.Abstractions.Model;
-namespace libc.orm.DatabaseMigration.DdlGeneration {
-    public class GenericQuoter : IQuoter {
+
+namespace libc.orm.DatabaseMigration.DdlGeneration
+{
+    public class GenericQuoter : IQuoter
+    {
         public virtual string ValueQuote => "'";
         public virtual string EscapeValueQuote => ValueQuote + ValueQuote;
+
         /// <summary>
         ///     Gets the separator between identifiers (e.g. the dot between SCHEMA.TABLENAME)
         /// </summary>
         public virtual string IdentifierSeparator { get; } = ".";
+
         /// <summary>
         ///     Returns the opening quote identifier - " is the standard according to the specification
         /// </summary>
         public virtual string OpenQuote => "\"";
+
         /// <summary>
         ///     Returns the closing quote identifier - " is the standard according to the specification
         /// </summary>
         public virtual string CloseQuote => "\"";
+
         public virtual string OpenQuoteEscapeString => OpenQuote.PadRight(2, OpenQuote.ToCharArray()[0]);
         public virtual string CloseQuoteEscapeString => CloseQuote.PadRight(2, CloseQuote.ToCharArray()[0]);
+
         /// <inheritdoc />
-        public virtual string QuoteValue(object value) {
-            switch (value) {
+        public virtual string QuoteValue(object value)
+        {
+            switch (value)
+            {
                 case null:
                 case DBNull _:
                     return FormatNull();
@@ -78,126 +87,192 @@ namespace libc.orm.DatabaseMigration.DdlGeneration {
                 case TimeSpan v:
                     return FromTimeSpan(v);
             }
+
             return value.ToString();
         }
+
         /// <inheritdoc />
-        public virtual bool IsQuoted(string name) {
+        public virtual bool IsQuoted(string name)
+        {
             if (string.IsNullOrEmpty(name)) return false;
+
             //This can return true incorrectly in some cases edge cases.
             //If a string say [myname]] is passed in this is not correctly quote for MSSQL but this function will
             //return true.
             return name.StartsWith(OpenQuote) && name.EndsWith(CloseQuote);
         }
+
         /// <inheritdoc />
-        public virtual string Quote(string name) {
+        public virtual string Quote(string name)
+        {
             //Exit early if not quoting is needed
             if (!ShouldQuote(name))
                 return name;
+
             if (IsQuoted(name))
                 return name;
+
             var quotedName = name;
-            if (!string.IsNullOrEmpty(OpenQuoteEscapeString)) quotedName = name.Replace(OpenQuote, OpenQuoteEscapeString);
+
+            if (!string.IsNullOrEmpty(OpenQuoteEscapeString))
+                quotedName = name.Replace(OpenQuote, OpenQuoteEscapeString);
 
             //If closing quote is the same as the opening quote then no need to escape again
             if (OpenQuote != CloseQuote)
                 if (!string.IsNullOrEmpty(CloseQuoteEscapeString))
                     quotedName = quotedName.Replace(CloseQuote, CloseQuoteEscapeString);
+
             return OpenQuote + quotedName + CloseQuote;
         }
+
         /// <inheritdoc />
-        public virtual string QuoteColumnName(string columnName) {
+        public virtual string QuoteColumnName(string columnName)
+        {
             return IsQuoted(columnName) ? columnName : Quote(columnName);
         }
+
         /// <inheritdoc />
-        public virtual string QuoteConstraintName(string constraintName, string schemaName = null) {
+        public virtual string QuoteConstraintName(string constraintName, string schemaName = null)
+        {
             return IsQuoted(constraintName) ? constraintName : Quote(constraintName);
         }
+
         /// <inheritdoc />
-        public virtual string QuoteIndexName(string indexName, string schemaName) {
+        public virtual string QuoteIndexName(string indexName, string schemaName)
+        {
             return IsQuoted(indexName) ? indexName : Quote(indexName);
         }
+
         /// <inheritdoc />
-        public virtual string QuoteTableName(string tableName, string schemaName = null) {
+        public virtual string QuoteTableName(string tableName, string schemaName = null)
+        {
             return CreateSchemaPrefixedQuotedIdentifier(
                 QuoteSchemaName(schemaName),
                 IsQuoted(tableName) ? tableName : Quote(tableName));
         }
+
         /// <inheritdoc />
-        public virtual string QuoteSequenceName(string sequenceName, string schemaName) {
+        public virtual string QuoteSequenceName(string sequenceName, string schemaName)
+        {
             return CreateSchemaPrefixedQuotedIdentifier(
                 QuoteSchemaName(schemaName),
                 IsQuoted(sequenceName) ? sequenceName : Quote(sequenceName));
         }
+
         /// <inheritdoc />
-        public virtual string QuoteSchemaName(string schemaName) {
+        public virtual string QuoteSchemaName(string schemaName)
+        {
             if (string.IsNullOrEmpty(schemaName))
                 return string.Empty;
+
             return IsQuoted(schemaName) ? schemaName : Quote(schemaName);
         }
+
         /// <inheritdoc />
-        public virtual string UnQuote(string quoted) {
+        public virtual string UnQuote(string quoted)
+        {
             if (string.IsNullOrEmpty(quoted) || !IsQuoted(quoted))
                 return quoted ?? string.Empty;
+
             var unquoted = quoted.Substring(1, quoted.Length - 2);
             unquoted = unquoted.Replace(OpenQuoteEscapeString, OpenQuote);
             if (OpenQuote != CloseQuote) unquoted = unquoted.Replace(CloseQuoteEscapeString, CloseQuote);
+
             return unquoted;
         }
-        public virtual string FromTimeSpan(TimeSpan value) {
+
+        public virtual string FromTimeSpan(TimeSpan value)
+        {
             return ValueQuote + value + ValueQuote;
         }
-        protected virtual string FormatByteArray(byte[] value) {
+
+        protected virtual string FormatByteArray(byte[] value)
+        {
             var hex = new StringBuilder(value.Length * 2 + 2);
             hex.Append("0x");
+
             foreach (var b in value)
                 hex.AppendFormat("{0:x2}", b);
+
             return hex.ToString();
         }
-        private string FormatDecimal(decimal value) {
+
+        private string FormatDecimal(decimal value)
+        {
             return value.ToString(CultureInfo.InvariantCulture);
         }
-        private string FormatFloat(float value) {
+
+        private string FormatFloat(float value)
+        {
             return value.ToString(CultureInfo.InvariantCulture);
         }
-        private string FormatDouble(double value) {
+
+        private string FormatDouble(double value)
+        {
             return value.ToString(CultureInfo.InvariantCulture);
         }
-        public virtual string FormatNull() {
+
+        public virtual string FormatNull()
+        {
             return "NULL";
         }
-        public virtual string FormatAnsiString(string value) {
+
+        public virtual string FormatAnsiString(string value)
+        {
             return ValueQuote + value.Replace(ValueQuote, EscapeValueQuote) + ValueQuote;
         }
-        public virtual string FormatNationalString(string value) {
+
+        public virtual string FormatNationalString(string value)
+        {
             return ValueQuote + value.Replace(ValueQuote, EscapeValueQuote) + ValueQuote;
         }
-        public virtual string FormatSystemMethods(SystemMethods value) {
+
+        public virtual string FormatSystemMethods(SystemMethods value)
+        {
             throw new NotSupportedException($"The system method {value} is not supported.");
         }
-        public virtual string FormatChar(char value) {
+
+        public virtual string FormatChar(char value)
+        {
             return ValueQuote + value + ValueQuote;
         }
-        public virtual string FormatBool(bool value) {
+
+        public virtual string FormatBool(bool value)
+        {
             return value ? 1.ToString() : 0.ToString();
         }
-        public virtual string FormatGuid(Guid value) {
+
+        public virtual string FormatGuid(Guid value)
+        {
             return ValueQuote + value + ValueQuote;
         }
-        public virtual string FormatDateTime(DateTime value) {
+
+        public virtual string FormatDateTime(DateTime value)
+        {
             return ValueQuote + value.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture) + ValueQuote;
         }
-        public virtual string FormatDateTimeOffset(DateTimeOffset value) {
+
+        public virtual string FormatDateTimeOffset(DateTimeOffset value)
+        {
             return ValueQuote + value.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture) + ValueQuote;
         }
-        public virtual string FormatEnum(object value) {
+
+        public virtual string FormatEnum(object value)
+        {
             return ValueQuote + value + ValueQuote;
         }
-        protected virtual bool ShouldQuote(string name) {
-            return (!string.IsNullOrEmpty(OpenQuote) || !string.IsNullOrEmpty(CloseQuote)) && !string.IsNullOrEmpty(name);
+
+        protected virtual bool ShouldQuote(string name)
+        {
+            return (!string.IsNullOrEmpty(OpenQuote) || !string.IsNullOrEmpty(CloseQuote)) &&
+                   !string.IsNullOrEmpty(name);
         }
-        protected virtual string CreateSchemaPrefixedQuotedIdentifier(string quotedSchemaName, string quotedIdentifier) {
+
+        protected virtual string CreateSchemaPrefixedQuotedIdentifier(string quotedSchemaName, string quotedIdentifier)
+        {
             if (string.IsNullOrEmpty(quotedSchemaName))
                 return quotedIdentifier;
+
             return $"{quotedSchemaName}{IdentifierSeparator}{quotedIdentifier}";
         }
     }

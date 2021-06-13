@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Constraint
+{
     /// <summary>
     ///     Specify the primary table for the constraint
     /// </summary>
-    public interface ICreateConstraintOnTableSyntax : IFluentSyntax {
+    public interface ICreateConstraintOnTableSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the primary table for the constraint
         /// </summary>

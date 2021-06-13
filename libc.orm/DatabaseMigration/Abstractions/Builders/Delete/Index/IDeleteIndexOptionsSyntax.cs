@@ -16,10 +16,12 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Index {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Index
+{
     /// <summary>
     ///     Extension point for index options
     /// </summary>
-    public interface IDeleteIndexOptionsSyntax : IFluentSyntax {
+    public interface IDeleteIndexOptionsSyntax : IFluentSyntax
+    {
     }
 }

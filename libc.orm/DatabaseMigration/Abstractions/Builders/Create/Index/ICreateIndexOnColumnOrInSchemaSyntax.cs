@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.Index
+{
     /// <summary>
     ///     Definition of the schema the table belongs to
     /// </summary>
-    public interface ICreateIndexOnColumnOrInSchemaSyntax : ICreateIndexOnColumnSyntax {
+    public interface ICreateIndexOnColumnOrInSchemaSyntax : ICreateIndexOnColumnSyntax
+    {
         /// <summary>
         ///     Defines the schema of the table to create the index for
         /// </summary>

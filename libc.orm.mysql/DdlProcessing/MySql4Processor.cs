@@ -17,20 +17,26 @@
 #endregion
 
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.mysql.DdlGeneration;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.mysql.DdlProcessing {
-    public class MySql4Processor : MySqlProcessor {
+
+namespace libc.orm.mysql.DdlProcessing
+{
+    public class MySql4Processor : MySqlProcessor
+    {
         /// <inheritdoc />
         public MySql4Processor(MySql4Generator generator, ILogger logger,
-            ProcessorOptions options) : base(generator, logger, options) {
+            ProcessorOptions options) : base(generator, logger, options)
+        {
         }
+
         /// <inheritdoc />
         public override string DatabaseType => "MySql4";
+
         /// <inheritdoc />
-        public override IList<string> DatabaseTypeAliases { get; } = new List<string> {
+        public override IList<string> DatabaseTypeAliases { get; } = new List<string>
+        {
             "MySQL",
             "MySQL 4"
         };

@@ -18,36 +18,46 @@
 
 using System;
 using System.Runtime.Serialization;
-namespace libc.orm.DatabaseMigration.Abstractions.Exceptions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Exceptions
+{
     /// <summary>
     ///     The base exception class for FluentMigrator exceptions
     /// </summary>
     [Serializable]
-    public abstract class FluentMigratorException : Exception {
+    public abstract class FluentMigratorException : Exception
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="FluentMigratorException" /> class.
         /// </summary>
-        protected FluentMigratorException() {
+        protected FluentMigratorException()
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="FluentMigratorException" /> class.
         /// </summary>
         /// <param name="message">The exception message</param>
-        protected FluentMigratorException(string message) : base(message) {
+        protected FluentMigratorException(string message) : base(message)
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="FluentMigratorException" /> class.
         /// </summary>
         /// <param name="message">The exception message</param>
         /// <param name="innerException">The inner exception</param>
-        protected FluentMigratorException(string message, Exception innerException) : base(message, innerException) {
+        protected FluentMigratorException(string message, Exception innerException) : base(message, innerException)
+        {
         }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="FluentMigratorException" /> class.
         /// </summary>
         /// <param name="info">The serialization information</param>
         /// <param name="context">The streaming context</param>
-        protected FluentMigratorException(SerializationInfo info, StreamingContext context) : base(info, context) {
+        protected FluentMigratorException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 }

@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Update {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Update
+{
     /// <summary>
     ///     Specify the schema or the data to update
     /// </summary>
-    public interface IUpdateSetOrInSchemaSyntax : IUpdateSetSyntax {
+    public interface IUpdateSetOrInSchemaSyntax : IUpdateSetSyntax
+    {
         /// <summary>
         ///     Specify the schema of the table to update its data
         /// </summary>

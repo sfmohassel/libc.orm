@@ -20,9 +20,12 @@
 
 using System.Data;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.sqlite.DdlGeneration {
+
+namespace libc.orm.sqlite.DdlGeneration
+{
     // ReSharper disable once InconsistentNaming
-    internal class SQLiteTypeMap : TypeMapBase {
+    internal class SQLiteTypeMap : TypeMapBase
+    {
         public const int AnsiStringCapacity = 8000;
         public const int AnsiTextCapacity = 2147483647;
         public const int UnicodeStringCapacity = 4000;
@@ -30,7 +33,9 @@ namespace libc.orm.sqlite.DdlGeneration {
         public const int ImageCapacity = 2147483647;
         public const int DecimalCapacity = 19;
         public const int XmlCapacity = 1073741823;
-        protected override void SetupTypeMaps() {
+
+        protected override void SetupTypeMaps()
+        {
             SetTypeMap(DbType.Binary, "BLOB");
             SetTypeMap(DbType.Byte, "INTEGER");
             SetTypeMap(DbType.Int16, "INTEGER");
@@ -56,7 +61,9 @@ namespace libc.orm.sqlite.DdlGeneration {
             SetTypeMap(DbType.Boolean, "INTEGER");
             SetTypeMap(DbType.Guid, "UNIQUEIDENTIFIER");
         }
-        public override string GetTypeMap(DbType type, int? size, int? precision) {
+
+        public override string GetTypeMap(DbType type, int? size, int? precision)
+        {
             return base.GetTypeMap(type, null, null);
         }
     }

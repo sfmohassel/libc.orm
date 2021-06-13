@@ -21,36 +21,45 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Model {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Model
+{
     /// <summary>
     ///     The sequence definition
     /// </summary>
-    public class SequenceDefinition : ICloneable {
+    public class SequenceDefinition : ICloneable
+    {
         /// <summary>
         ///     Gets or sets the sequence name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "SequenceNameCannotBeNullOrEmpty")]
         public virtual string Name { get; set; }
+
         /// <summary>
         ///     Gets or sets the schema name
         /// </summary>
         public virtual string SchemaName { get; set; }
+
         /// <summary>
         ///     Gets or sets the increment of the sequence
         /// </summary>
         public virtual long? Increment { get; set; }
+
         /// <summary>
         ///     Gets or sets the minimum value of the sequence (inclusive)
         /// </summary>
         public virtual long? MinValue { get; set; }
+
         /// <summary>
         ///     Gets or sets the maximum value of the sequence (inclusive)
         /// </summary>
         public virtual long? MaxValue { get; set; }
+
         /// <summary>
         ///     Gets or sets the start value of the sequence
         /// </summary>
         public virtual long? StartWith { get; set; }
+
         /// <summary>
         ///     Gets or sets the number of cached sequence values
         /// </summary>
@@ -58,14 +67,18 @@ namespace libc.orm.DatabaseMigration.Abstractions.Model {
         ///     Normally used together with <see cref="Increment" />.
         /// </remarks>
         public virtual long? Cache { get; set; }
+
         /// <summary>
         ///     Gets or sets a value indicating whether the sequence should start with <see cref="MinValue" /> for the next value
         ///     after <see cref="MaxValue" />
         /// </summary>
         public virtual bool Cycle { get; set; }
+
         /// <inheritdoc />
-        public object Clone() {
-            return new SequenceDefinition {
+        public object Clone()
+        {
+            return new SequenceDefinition
+            {
                 Name = Name,
                 SchemaName = SchemaName,
                 Increment = Increment,

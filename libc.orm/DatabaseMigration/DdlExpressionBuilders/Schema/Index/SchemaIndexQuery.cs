@@ -20,15 +20,19 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Index;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Index {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Index
+{
     /// <summary>
     ///     The implementation of the <see cref="ISchemaIndexSyntax" /> interface.
     /// </summary>
-    public class SchemaIndexQuery : ISchemaIndexSyntax {
+    public class SchemaIndexQuery : ISchemaIndexSyntax
+    {
         private readonly MigrationContext _context;
         private readonly string _indexName;
         private readonly string _schemaName;
         private readonly string _tableName;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SchemaIndexQuery" /> class.
         /// </summary>
@@ -36,14 +40,17 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Index {
         /// <param name="tableName">The table name</param>
         /// <param name="indexName">The index name</param>
         /// <param name="context">The migration context</param>
-        public SchemaIndexQuery(string schemaName, string tableName, string indexName, MigrationContext context) {
+        public SchemaIndexQuery(string schemaName, string tableName, string indexName, MigrationContext context)
+        {
             _schemaName = schemaName;
             _tableName = tableName;
             _indexName = indexName;
             _context = context;
         }
+
         /// <inheritdoc />
-        public bool Exists() {
+        public bool Exists()
+        {
             return _context.QuerySchema.IndexExists(_schemaName, _tableName, _indexName);
         }
     }

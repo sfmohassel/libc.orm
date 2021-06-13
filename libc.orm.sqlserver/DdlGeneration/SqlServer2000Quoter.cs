@@ -20,20 +20,30 @@
 
 using libc.orm.DatabaseMigration.Abstractions.Builders;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2000Quoter : GenericQuoter {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2000Quoter : GenericQuoter
+    {
         public override string OpenQuote => "[";
         public override string CloseQuote => "]";
         public override string CloseQuoteEscapeString => "]]";
         public override string OpenQuoteEscapeString => string.Empty;
-        public override string QuoteSchemaName(string schemaName) {
+
+        public override string QuoteSchemaName(string schemaName)
+        {
             return string.Empty;
         }
-        public override string FormatNationalString(string value) {
+
+        public override string FormatNationalString(string value)
+        {
             return $"N{FormatAnsiString(value)}";
         }
-        public override string FormatSystemMethods(SystemMethods value) {
-            switch (value) {
+
+        public override string FormatSystemMethods(SystemMethods value)
+        {
+            switch (value)
+            {
                 case SystemMethods.NewGuid:
                     return "NEWID()";
                 case SystemMethods.NewSequentialId:
@@ -46,6 +56,7 @@ namespace libc.orm.sqlserver.DdlGeneration {
                 case SystemMethods.CurrentUser:
                     return "CURRENT_USER";
             }
+
             return base.FormatSystemMethods(value);
         }
     }

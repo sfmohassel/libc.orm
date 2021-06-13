@@ -22,28 +22,37 @@ using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Schema;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Schema.Table;
 using libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Table;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Schema {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Schema.Schema
+{
     /// <summary>
     ///     The implementation of the <see cref="ISchemaSchemaSyntax" /> interface.
     /// </summary>
-    public class SchemaSchemaQuery : ISchemaSchemaSyntax {
+    public class SchemaSchemaQuery : ISchemaSchemaSyntax
+    {
         private readonly MigrationContext _context;
         private readonly string _schemaName;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="SchemaSchemaQuery" /> class.
         /// </summary>
         /// <param name="context">The migration context</param>
         /// <param name="schemaName">The schema name</param>
-        public SchemaSchemaQuery(MigrationContext context, string schemaName) {
+        public SchemaSchemaQuery(MigrationContext context, string schemaName)
+        {
             _context = context;
             _schemaName = schemaName;
         }
+
         /// <inheritdoc />
-        public bool Exists() {
+        public bool Exists()
+        {
             return _context.QuerySchema.SchemaExists(_schemaName);
         }
+
         /// <inheritdoc />
-        public ISchemaTableSyntax Table(string tableName) {
+        public ISchemaTableSyntax Table(string tableName)
+        {
             return new SchemaTableQuery(_context, _schemaName, tableName);
         }
     }

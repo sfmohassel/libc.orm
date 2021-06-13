@@ -19,31 +19,39 @@
 #endregion
 
 using System;
-namespace libc.orm.DatabaseMigration.DdlProcessing {
+
+namespace libc.orm.DatabaseMigration.DdlProcessing
+{
     /// <summary>
     ///     Options for an <see cref="IProcessor" />
     /// </summary>
-    public sealed class ProcessorOptions {
+    public sealed class ProcessorOptions
+    {
         /// <summary>
         ///     Gets or sets the connection string (will not be used when <see cref="PreviewOnly" /> is active)
         /// </summary>
         public string ConnectionString { get; set; }
+
         /// <summary>
         ///     Gets or sets a value indicating whether a preview-only mode is active
         /// </summary>
         public bool PreviewOnly { get; set; }
+
         /// <summary>
         ///     Gets or sets the default command timeout
         /// </summary>
         public TimeSpan? Timeout { get; set; }
+
         /// <summary>
         ///     Gets or sets the provider switches
         /// </summary>
         public string ProviderSwitches { get; set; }
+
         /// <summary>
         ///     Gets or sets a value indicating whether the comments should be stripped
         /// </summary>
         public bool StripComments { get; set; }
+
         /// <inheritdoc />
         private int? TimeoutSeconds => Timeout == null ? null : (int?) Timeout.Value.TotalSeconds;
     }

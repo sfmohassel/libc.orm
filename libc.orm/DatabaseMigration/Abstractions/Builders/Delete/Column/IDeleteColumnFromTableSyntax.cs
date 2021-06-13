@@ -18,17 +18,20 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Column {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Delete.Column
+{
     /// <summary>
     ///     Delete a column from a table
     /// </summary>
-    public interface IDeleteColumnFromTableSyntax : IFluentSyntax {
+    public interface IDeleteColumnFromTableSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Define the table to delete the column from
         /// </summary>
         /// <param name="tableName">The table name</param>
         /// <returns>The next step</returns>
         IInSchemaSyntax FromTable(string tableName);
+
         /// <summary>
         ///     Delete define the column to delete
         /// </summary>

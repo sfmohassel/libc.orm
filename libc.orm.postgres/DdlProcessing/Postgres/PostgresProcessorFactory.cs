@@ -22,15 +22,22 @@ using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.postgres.DdlGeneration.Postgres;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.postgres.DdlProcessing.Postgres {
-    public class PostgresProcessorFactory : IProcessorFactory {
-        public IProcessor Create(ProcessorOptions options, ILogger logger) {
-            var postgresOptions = new PostgresOptions {
+
+namespace libc.orm.postgres.DdlProcessing.Postgres
+{
+    public class PostgresProcessorFactory : IProcessorFactory
+    {
+        public IProcessor Create(ProcessorOptions options, ILogger logger)
+        {
+            var postgresOptions = new PostgresOptions
+            {
                 ForceQuote = true
             };
+
             var quoter = new PostgresQuoter(postgresOptions);
             var generatorOptions = new GeneratorOptions();
             var generator = new PostgresGenerator(quoter, generatorOptions, new PostgresTypeMap());
+
             return new PostgresProcessor(generator, logger, options, postgresOptions);
         }
     }

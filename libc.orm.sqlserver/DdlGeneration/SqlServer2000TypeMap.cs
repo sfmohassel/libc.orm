@@ -20,15 +20,20 @@
 
 using System.Data;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2000TypeMap : TypeMapBase {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2000TypeMap : TypeMapBase
+    {
         public const int AnsiStringCapacity = 8000;
         public const int AnsiTextCapacity = 2147483647;
         public const int UnicodeStringCapacity = 4000;
         public const int UnicodeTextCapacity = 1073741823;
         public const int ImageCapacity = 2147483647;
         public const int DecimalCapacity = 38;
-        protected override void SetupTypeMaps() {
+
+        protected override void SetupTypeMaps()
+        {
             SetTypeMap(DbType.AnsiStringFixedLength, "CHAR(255)");
             SetTypeMap(DbType.AnsiStringFixedLength, "CHAR($size)", AnsiStringCapacity);
             SetTypeMap(DbType.AnsiString, "VARCHAR(255)");

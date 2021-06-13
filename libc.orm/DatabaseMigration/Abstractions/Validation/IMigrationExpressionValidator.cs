@@ -18,20 +18,20 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions.Expressions.Base;
-namespace libc.orm.DatabaseMigration.Abstractions.Validation {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Validation
+{
     /// <summary>
     ///     Interface for a migration expression validator
     /// </summary>
-    public interface IMigrationExpressionValidator {
+    public interface IMigrationExpressionValidator
+    {
         /// <summary>
         ///     Validates the given migration expression
         /// </summary>
         /// <param name="expression">The migration expression to validate</param>
         /// <returns>The validation results</returns>
-        
-        
         IEnumerable<ValidationResult> Validate(IMigrationExpression expression);
     }
 }

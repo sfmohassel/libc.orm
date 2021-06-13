@@ -1,5 +1,7 @@
-﻿namespace libc.orm.Models {
-    public static class Fixed {
+﻿namespace libc.orm.Models
+{
+    public static class Fixed
+    {
         public const int BIG_1024 = 1024;
         public const int NORMAL_512 = 512;
         public const int INDEXABLE_Ansi_800 = 800;

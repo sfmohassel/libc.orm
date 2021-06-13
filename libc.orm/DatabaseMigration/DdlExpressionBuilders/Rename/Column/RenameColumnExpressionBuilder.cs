@@ -21,32 +21,44 @@
 using libc.orm.DatabaseMigration.Abstractions.Builders.Rename;
 using libc.orm.DatabaseMigration.Abstractions.Builders.Rename.Column;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename.Column {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Rename.Column
+{
     /// <summary>
     ///     An expression builder for a <see cref="RenameColumnExpression" />
     /// </summary>
     public class RenameColumnExpressionBuilder : ExpressionBuilderBase<RenameColumnExpression>,
         IRenameColumnToOrInSchemaSyntax,
-        IRenameColumnTableSyntax {
+        IRenameColumnTableSyntax
+    {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RenameColumnExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         public RenameColumnExpressionBuilder(RenameColumnExpression expression)
-            : base(expression) {
+            : base(expression)
+        {
         }
+
         /// <inheritdoc />
-        public IRenameColumnToOrInSchemaSyntax OnTable(string tableName) {
+        public IRenameColumnToOrInSchemaSyntax OnTable(string tableName)
+        {
             Expression.TableName = tableName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public void To(string name) {
+        public void To(string name)
+        {
             Expression.NewName = name;
         }
+
         /// <inheritdoc />
-        public IRenameColumnToSyntax InSchema(string schemaName) {
+        public IRenameColumnToSyntax InSchema(string schemaName)
+        {
             Expression.SchemaName = schemaName;
+
             return this;
         }
     }

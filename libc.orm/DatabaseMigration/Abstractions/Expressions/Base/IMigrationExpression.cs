@@ -19,16 +19,20 @@
 #endregion
 
 using libc.orm.DatabaseMigration.DdlProcessing;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions.Base
+{
     /// <summary>
     ///     The interface for a migration expression
     /// </summary>
-    public interface IMigrationExpression {
+    public interface IMigrationExpression
+    {
         /// <summary>
         ///     Execute the expression with the given <paramref name="processor" />
         /// </summary>
         /// <param name="processor">The processor to execute the expression with</param>
         void ExecuteWith(IProcessor processor);
+
         /// <summary>
         ///     Create a reversing migration expression
         /// </summary>

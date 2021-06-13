@@ -3,10 +3,14 @@ using System.Linq;
 using libc.orm.DatabaseConnection;
 using libc.orm.Models;
 using SqlKata;
-namespace libc.orm.QueryFilters {
-    public static class Pager {
+
+namespace libc.orm.QueryFilters
+{
+    public static class Pager
+    {
         public static PageResponse<TResult> Run<TResult>(DbConn db, PageRequest request, Query query,
-            Func<Query, PageRequest, Query> search, string defaultSortColumn = "CreateUtc") {
+            Func<Query, PageRequest, Query> search, string defaultSortColumn = "CreateUtc")
+        {
             var res = new PageResponse<TResult>();
 
             //count
@@ -24,12 +28,16 @@ namespace libc.orm.QueryFilters {
             //page
             pageQuery = pageQuery.Paginate(db.Compiler, request);
             res.Rows = db.Query<TResult>(pageQuery).ToList();
+
             return res;
         }
+
         private static Query createSearchQuery(PageRequest request, Query query,
-            Func<Query, PageRequest, Query> search) {
+            Func<Query, PageRequest, Query> search)
+        {
             var res = query.Clone();
             if (request.HasSearch() && search != null) res = search(res, request);
+
             return res;
         }
     }

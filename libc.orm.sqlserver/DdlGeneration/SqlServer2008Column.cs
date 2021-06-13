@@ -19,21 +19,28 @@
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.sqlserver.DdlProcessing.Extensions.SqlServer;
-namespace libc.orm.sqlserver.DdlGeneration {
-    internal class SqlServer2008Column : SqlServer2005Column {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    internal class SqlServer2008Column : SqlServer2005Column
+    {
         public SqlServer2008Column(ITypeMap typeMap, IQuoter quoter)
-            : base(typeMap, quoter) {
+            : base(typeMap, quoter)
+        {
             ClauseOrder.Add(FormatSparse);
         }
+
         /// <summary>
         ///     Add <c>SPARSE</c> when <see cref="SqlServerExtensions.SparseColumn" /> is set.
         /// </summary>
         /// <param name="column">The column to create the definition part for</param>
         /// <returns>The generated SQL string part</returns>
-        protected virtual string FormatSparse(ColumnDefinition column) {
+        protected virtual string FormatSparse(ColumnDefinition column)
+        {
             if (column.AdditionalFeatures.ContainsKey(SqlServerExtensions.SparseColumn)
                 && (column.IsNullable ?? false))
                 return "SPARSE";
+
             return string.Empty;
         }
     }

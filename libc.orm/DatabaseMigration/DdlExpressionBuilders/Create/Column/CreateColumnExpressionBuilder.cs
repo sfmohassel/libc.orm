@@ -22,7 +22,9 @@ using libc.orm.DatabaseMigration.Abstractions.Builders.Create.Column;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlMigration;
-namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Column {
+
+namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Column
+{
     /// <summary>
     ///     An expression builder for a <see cref="CreateColumnExpression" />
     /// </summary>
@@ -31,124 +33,186 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Column {
         ICreateColumnOnTableSyntax,
         ICreateColumnAsTypeOrInSchemaSyntax,
         ICreateColumnOptionOrForeignKeyCascadeSyntax,
-        IColumnExpressionBuilder {
+        IColumnExpressionBuilder
+    {
         private readonly MigrationContext _context;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="CreateColumnExpressionBuilder" /> class.
         /// </summary>
         /// <param name="expression">The underlying expression</param>
         /// <param name="context">The migration context</param>
         public CreateColumnExpressionBuilder(CreateColumnExpression expression, MigrationContext context)
-            : base(expression) {
+            : base(expression)
+        {
             _context = context;
             ColumnHelper = new ColumnExpressionBuilderHelper(this, context);
         }
+
         /// <summary>
         ///     Gets or sets the current foreign key
         /// </summary>
         public ForeignKeyDefinition CurrentForeignKey { get; set; }
+
         /// <summary>
         ///     Gets or sets the column helper for the current column
         /// </summary>
         public ColumnExpressionBuilderHelper ColumnHelper { get; set; }
+
         /// <inheritdoc />
         string IColumnExpressionBuilder.SchemaName => Expression.SchemaName;
+
         /// <inheritdoc />
         string IColumnExpressionBuilder.TableName => Expression.TableName;
+
         /// <inheritdoc />
         ColumnDefinition IColumnExpressionBuilder.Column => Expression.Column;
+
         /// <inheritdoc />
-        public ICreateColumnAsTypeSyntax InSchema(string schemaName) {
+        public ICreateColumnAsTypeSyntax InSchema(string schemaName)
+        {
             Expression.SchemaName = schemaName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnAsTypeOrInSchemaSyntax OnTable(string name) {
+        public ICreateColumnAsTypeOrInSchemaSyntax OnTable(string name)
+        {
             Expression.TableName = name;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax WithDefault(SystemMethods method) {
+        public ICreateColumnOptionSyntax WithDefault(SystemMethods method)
+        {
             Expression.Column.DefaultValue = method;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax WithDefaultValue(object value) {
+        public ICreateColumnOptionSyntax WithDefaultValue(object value)
+        {
             Expression.Column.DefaultValue = value;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax SetExistingRowsTo(object value) {
+        public ICreateColumnOptionSyntax SetExistingRowsTo(object value)
+        {
             ColumnHelper.SetExistingRowsTo(value);
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax WithColumnDescription(string description) {
+        public ICreateColumnOptionSyntax WithColumnDescription(string description)
+        {
             Expression.Column.ColumnDescription = description;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax Identity() {
+        public ICreateColumnOptionSyntax Identity()
+        {
             Expression.Column.IsIdentity = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax Indexed() {
+        public ICreateColumnOptionSyntax Indexed()
+        {
             return Indexed(null);
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax Indexed(string indexName) {
+        public ICreateColumnOptionSyntax Indexed(string indexName)
+        {
             ColumnHelper.Indexed(indexName);
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax PrimaryKey() {
+        public ICreateColumnOptionSyntax PrimaryKey()
+        {
             Expression.Column.IsPrimaryKey = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax PrimaryKey(string primaryKeyName) {
+        public ICreateColumnOptionSyntax PrimaryKey(string primaryKeyName)
+        {
             Expression.Column.IsPrimaryKey = true;
             Expression.Column.PrimaryKeyName = primaryKeyName;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax Nullable() {
+        public ICreateColumnOptionSyntax Nullable()
+        {
             ColumnHelper.SetNullable(true);
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax NotNullable() {
+        public ICreateColumnOptionSyntax NotNullable()
+        {
             ColumnHelper.SetNullable(false);
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax Unique() {
+        public ICreateColumnOptionSyntax Unique()
+        {
             ColumnHelper.Unique(null);
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax Unique(string indexName) {
+        public ICreateColumnOptionSyntax Unique(string indexName)
+        {
             ColumnHelper.Unique(indexName);
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string primaryTableName, string primaryColumnName) {
+        public ICreateColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string primaryTableName,
+            string primaryColumnName)
+        {
             return ForeignKey(null, null, primaryTableName, primaryColumnName);
         }
+
         /// <inheritdoc />
         public ICreateColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string foreignKeyName, string primaryTableName,
-            string primaryColumnName) {
+            string primaryColumnName)
+        {
             return ForeignKey(foreignKeyName, null, primaryTableName, primaryColumnName);
         }
+
         /// <inheritdoc />
         public ICreateColumnOptionOrForeignKeyCascadeSyntax ForeignKey(string foreignKeyName,
             string primaryTableSchema,
             string primaryTableName,
-            string primaryColumnName) {
+            string primaryColumnName)
+        {
             Expression.Column.IsForeignKey = true;
-            var fk = new CreateForeignKeyExpression {
-                ForeignKey = new ForeignKeyDefinition {
+
+            var fk = new CreateForeignKeyExpression
+            {
+                ForeignKey = new ForeignKeyDefinition
+                {
                     Name = foreignKeyName,
                     PrimaryTable = primaryTableName,
                     PrimaryTableSchema = primaryTableSchema,
@@ -156,30 +220,40 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Column {
                     ForeignTableSchema = Expression.SchemaName
                 }
             };
+
             fk.ForeignKey.PrimaryColumns.Add(primaryColumnName);
             fk.ForeignKey.ForeignColumns.Add(Expression.Column.Name);
             _context.Expressions.Add(fk);
             CurrentForeignKey = fk.ForeignKey;
             Expression.Column.ForeignKey = fk.ForeignKey;
+
             return this;
         }
+
         /// <inheritdoc />
         public ICreateColumnOptionOrForeignKeyCascadeSyntax
-            ReferencedBy(string foreignTableName, string foreignColumnName) {
+            ReferencedBy(string foreignTableName, string foreignColumnName)
+        {
             return ReferencedBy(null, null, foreignTableName, foreignColumnName);
         }
+
         /// <inheritdoc />
         public ICreateColumnOptionOrForeignKeyCascadeSyntax ReferencedBy(string foreignKeyName, string foreignTableName,
-            string foreignColumnName) {
+            string foreignColumnName)
+        {
             return ReferencedBy(foreignKeyName, null, foreignTableName, foreignColumnName);
         }
+
         /// <inheritdoc />
         public ICreateColumnOptionOrForeignKeyCascadeSyntax ReferencedBy(string foreignKeyName,
             string foreignTableSchema,
             string foreignTableName,
-            string foreignColumnName) {
-            var fk = new CreateForeignKeyExpression {
-                ForeignKey = new ForeignKeyDefinition {
+            string foreignColumnName)
+        {
+            var fk = new CreateForeignKeyExpression
+            {
+                ForeignKey = new ForeignKeyDefinition
+                {
                     Name = foreignKeyName,
                     PrimaryTable = Expression.TableName,
                     PrimaryTableSchema = Expression.SchemaName,
@@ -187,35 +261,51 @@ namespace libc.orm.DatabaseMigration.DdlExpressionBuilders.Create.Column {
                     ForeignTableSchema = foreignTableSchema
                 }
             };
+
             fk.ForeignKey.PrimaryColumns.Add(Expression.Column.Name);
             fk.ForeignKey.ForeignColumns.Add(foreignColumnName);
             _context.Expressions.Add(fk);
             CurrentForeignKey = fk.ForeignKey;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionOrForeignKeyCascadeSyntax ForeignKey() {
+        public ICreateColumnOptionOrForeignKeyCascadeSyntax ForeignKey()
+        {
             Expression.Column.IsForeignKey = true;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionOrForeignKeyCascadeSyntax OnDelete(Rule rule) {
+        public ICreateColumnOptionOrForeignKeyCascadeSyntax OnDelete(Rule rule)
+        {
             CurrentForeignKey.OnDelete = rule;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionOrForeignKeyCascadeSyntax OnUpdate(Rule rule) {
+        public ICreateColumnOptionOrForeignKeyCascadeSyntax OnUpdate(Rule rule)
+        {
             CurrentForeignKey.OnUpdate = rule;
+
             return this;
         }
+
         /// <inheritdoc />
-        public ICreateColumnOptionSyntax OnDeleteOrUpdate(Rule rule) {
+        public ICreateColumnOptionSyntax OnDeleteOrUpdate(Rule rule)
+        {
             OnDelete(rule);
             OnUpdate(rule);
+
             return this;
         }
+
         /// <inheritdoc />
-        public override ColumnDefinition GetColumnForType() {
+        public override ColumnDefinition GetColumnForType()
+        {
             return Expression.Column;
         }
     }

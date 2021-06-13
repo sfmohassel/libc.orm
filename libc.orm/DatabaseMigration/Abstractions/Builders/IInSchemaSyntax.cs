@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders
+{
     /// <summary>
     ///     Defines the schema
     /// </summary>
-    public interface IInSchemaSyntax : IFluentSyntax {
+    public interface IInSchemaSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specifies the schema
         /// </summary>

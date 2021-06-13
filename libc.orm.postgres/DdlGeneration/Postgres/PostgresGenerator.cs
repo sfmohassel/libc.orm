@@ -22,88 +22,132 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using JetBrains.Annotations;
 using libc.orm.DatabaseMigration.Abstractions;
 using libc.orm.DatabaseMigration.Abstractions.Expressions;
 using libc.orm.DatabaseMigration.Abstractions.Extensions;
 using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.DdlGeneration;
-namespace libc.orm.postgres.DdlGeneration.Postgres {
-    public class PostgresGenerator : GenericGenerator {
+
+namespace libc.orm.postgres.DdlGeneration.Postgres
+{
+    public class PostgresGenerator : GenericGenerator
+    {
         public PostgresGenerator(PostgresQuoter quoter,
             GeneratorOptions generatorOptions,
-            ITypeMap typeMap) : base(new PostgresColumn(quoter, typeMap), quoter, new PostgresDescriptionGenerator(quoter),
-            generatorOptions) {
+            ITypeMap typeMap) : base(new PostgresColumn(quoter, typeMap), quoter,
+            new PostgresDescriptionGenerator(quoter),
+            generatorOptions)
+        {
         }
-        public override string Generate(AlterTableExpression expression) {
+
+        public override string Generate(AlterTableExpression expression)
+        {
             var alterStatement = new StringBuilder();
             var descriptionStatement = DescriptionGenerator.GenerateDescriptionStatement(expression);
             alterStatement.Append(base.Generate(expression));
             if (string.IsNullOrEmpty(descriptionStatement)) alterStatement.Append(descriptionStatement);
+
             return alterStatement.ToString();
         }
-        public override string Generate(CreateSchemaExpression expression) {
+
+        public override string Generate(CreateSchemaExpression expression)
+        {
             return string.Format("CREATE SCHEMA {0};", Quoter.QuoteSchemaName(expression.SchemaName));
         }
-        public override string Generate(DeleteSchemaExpression expression) {
+
+        public override string Generate(DeleteSchemaExpression expression)
+        {
             return string.Format("DROP SCHEMA {0};", Quoter.QuoteSchemaName(expression.SchemaName));
         }
-        public override string Generate(CreateTableExpression expression) {
+
+        public override string Generate(CreateTableExpression expression)
+        {
             var createStatement = new StringBuilder();
+
             createStatement.AppendFormat(
                 "CREATE TABLE {0} ({1})",
                 Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
                 Column.Generate(expression.Columns, Quoter.Quote(expression.TableName)));
+
             var descriptionStatement = DescriptionGenerator.GenerateDescriptionStatements(expression)
                 ?.ToList();
+
             createStatement.Append(";");
-            if (descriptionStatement != null && descriptionStatement.Count != 0) {
+
+            if (descriptionStatement != null && descriptionStatement.Count != 0)
+            {
                 createStatement.Append(string.Join(";", descriptionStatement.ToArray()));
                 createStatement.Append(";");
             }
+
             return createStatement.ToString();
         }
-        public override string Generate(AlterColumnExpression expression) {
+
+        public override string Generate(AlterColumnExpression expression)
+        {
             var alterStatement = new StringBuilder();
+
             alterStatement.AppendFormat(
                 "ALTER TABLE {0} {1};",
                 Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
                 ((PostgresColumn) Column).GenerateAlterClauses(expression.Column));
+
             var descriptionStatement = DescriptionGenerator.GenerateDescriptionStatement(expression);
-            if (!string.IsNullOrEmpty(descriptionStatement)) {
+
+            if (!string.IsNullOrEmpty(descriptionStatement))
+            {
                 alterStatement.Append(";");
                 alterStatement.Append(descriptionStatement);
             }
+
             return alterStatement.ToString();
         }
-        public override string Generate(CreateColumnExpression expression) {
+
+        public override string Generate(CreateColumnExpression expression)
+        {
             var createStatement = new StringBuilder();
+
             createStatement.AppendFormat("ALTER TABLE {0} ADD {1};",
                 Quoter.QuoteTableName(expression.TableName, expression.SchemaName), Column.Generate(expression.Column));
+
             var descriptionStatement = DescriptionGenerator.GenerateDescriptionStatement(expression);
-            if (!string.IsNullOrEmpty(descriptionStatement)) {
+
+            if (!string.IsNullOrEmpty(descriptionStatement))
+            {
                 createStatement.Append(";");
                 createStatement.Append(descriptionStatement);
             }
+
             return createStatement.ToString();
         }
-        public override string Generate(DeleteTableExpression expression) {
+
+        public override string Generate(DeleteTableExpression expression)
+        {
             return string.Format("DROP TABLE {0};", Quoter.QuoteTableName(expression.TableName, expression.SchemaName));
         }
-        public override string Generate(DeleteColumnExpression expression) {
+
+        public override string Generate(DeleteColumnExpression expression)
+        {
             var builder = new StringBuilder();
-            foreach (var columnName in expression.ColumnNames) {
+
+            foreach (var columnName in expression.ColumnNames)
+            {
                 if (expression.ColumnNames.First() != columnName) builder.AppendLine("");
+
                 builder.AppendFormat("ALTER TABLE {0} DROP COLUMN {1};",
                     Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
                     Quoter.QuoteColumnName(columnName));
             }
+
             return builder.ToString();
         }
-        public override string Generate(CreateForeignKeyExpression expression) {
+
+        public override string Generate(CreateForeignKeyExpression expression)
+        {
             var primaryColumns = GetColumnList(expression.ForeignKey.PrimaryColumns);
             var foreignColumns = GetColumnList(expression.ForeignKey.ForeignColumns);
             const string sql = "ALTER TABLE {0} ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES {3} ({4}){5}{6};";
+
             return string.Format(sql,
                 Quoter.QuoteTableName(expression.ForeignKey.ForeignTable, expression.ForeignKey.ForeignTableSchema),
                 Quoter.Quote(expression.ForeignKey.Name),
@@ -114,26 +158,37 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
                 Column.FormatCascade("UPDATE", expression.ForeignKey.OnUpdate)
             );
         }
-        public override string Generate(DeleteForeignKeyExpression expression) {
+
+        public override string Generate(DeleteForeignKeyExpression expression)
+        {
             return string.Format("ALTER TABLE {0} DROP CONSTRAINT {1};",
                 Quoter.QuoteTableName(expression.ForeignKey.ForeignTable, expression.ForeignKey.ForeignTableSchema),
                 Quoter.Quote(expression.ForeignKey.Name));
         }
-        public override string Generate(CreateIndexExpression expression) {
+
+        public override string Generate(CreateIndexExpression expression)
+        {
             var result = new StringBuilder("CREATE");
+
             if (expression.Index.IsUnique)
                 result.Append(" UNIQUE");
+
             result.Append(" INDEX {0} ON {1} (");
             var first = true;
-            foreach (var column in expression.Index.Columns) {
+
+            foreach (var column in expression.Index.Columns)
+            {
                 if (first)
                     first = false;
                 else
                     result.Append(",");
+
                 result.Append(Quoter.QuoteColumnName(column.Name));
                 result.Append(column.Direction == Direction.Ascending ? " ASC" : " DESC");
             }
+
             result.Append(");");
+
             return string.Format(result.ToString(), Quoter.QuoteIndexName(expression.Index.Name),
                 Quoter.QuoteTableName(expression.Index.TableName, expression.Index.SchemaName));
             /*
@@ -147,105 +202,152 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
             return string.Format("{0}; CLUSTER {1}\"{2}\" ON \"{3}\"", idx, Quoter.QuoteSchemaName(expression.Index.SchemaName), expression.Index.TableName, expression.Index.Name);
              */
         }
-        public override string Generate(DeleteIndexExpression expression) {
+
+        public override string Generate(DeleteIndexExpression expression)
+        {
             var quotedSchema = Quoter.QuoteSchemaName(expression.Index.SchemaName);
             var quotedIndex = Quoter.QuoteIndexName(expression.Index.Name);
             var indexName = string.IsNullOrEmpty(quotedSchema) ? quotedIndex : $"{quotedSchema}.{quotedIndex}";
+
             return string.Format("DROP INDEX {0};", indexName);
         }
-        public override string Generate(RenameTableExpression expression) {
+
+        public override string Generate(RenameTableExpression expression)
+        {
             return string.Format("ALTER TABLE {0} RENAME TO {1};",
                 Quoter.QuoteTableName(expression.OldName, expression.SchemaName), Quoter.Quote(expression.NewName));
         }
-        public override string Generate(RenameColumnExpression expression) {
+
+        public override string Generate(RenameColumnExpression expression)
+        {
             return string.Format(
                 "ALTER TABLE {0} RENAME COLUMN {1} TO {2};",
                 Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
                 Quoter.QuoteColumnName(expression.OldName),
                 Quoter.QuoteColumnName(expression.NewName));
         }
-        public override string Generate(InsertDataExpression expression) {
+
+        public override string Generate(InsertDataExpression expression)
+        {
             var result = new StringBuilder();
-            foreach (var row in expression.Rows) {
+
+            foreach (var row in expression.Rows)
+            {
                 var columnNames = new List<string>();
                 var columnData = new List<object>();
-                foreach (var item in row) {
+
+                foreach (var item in row)
+                {
                     columnNames.Add(item.Key);
                     columnData.Add(item.Value);
                 }
+
                 var columns = GetColumnList(columnNames);
                 var data = GetDataList(columnData);
+
                 result.AppendFormat("INSERT INTO {0} ({1}) VALUES ({2});",
                     Quoter.QuoteTableName(expression.TableName, expression.SchemaName), columns, data);
             }
+
             return result.ToString();
         }
-        public override string Generate(AlterDefaultConstraintExpression expression) {
+
+        public override string Generate(AlterDefaultConstraintExpression expression)
+        {
             return string.Format(
                 "ALTER TABLE {0} ALTER {1} DROP DEFAULT, ALTER {1} {2};",
                 Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
                 Quoter.QuoteColumnName(expression.ColumnName),
                 ((PostgresColumn) Column).FormatAlterDefaultValue(expression.ColumnName, expression.DefaultValue));
         }
-        public override string Generate(DeleteDataExpression expression) {
+
+        public override string Generate(DeleteDataExpression expression)
+        {
             var result = new StringBuilder();
+
             if (expression.IsAllRows)
-                result.AppendFormat("DELETE FROM {0};", Quoter.QuoteTableName(expression.TableName, expression.SchemaName));
+                result.AppendFormat("DELETE FROM {0};",
+                    Quoter.QuoteTableName(expression.TableName, expression.SchemaName));
             else
-                foreach (var row in expression.Rows) {
+                foreach (var row in expression.Rows)
+                {
                     var where = string.Empty;
                     var i = 0;
-                    foreach (var item in row) {
+
+                    foreach (var item in row)
+                    {
                         if (i != 0) where += " AND ";
                         var op = item.Value == null || item.Value == DBNull.Value ? "IS" : "=";
+
                         where += string.Format("{0} {1} {2}", Quoter.QuoteColumnName(item.Key), op,
                             Quoter.QuoteValue(item.Value));
+
                         i++;
                     }
+
                     result.AppendFormat("DELETE FROM {0} WHERE {1};",
                         Quoter.QuoteTableName(expression.TableName, expression.SchemaName), where);
                 }
+
             return result.ToString();
         }
-        public override string Generate(UpdateDataExpression expression) {
+
+        public override string Generate(UpdateDataExpression expression)
+        {
             var updateItems = new List<string>();
             var whereClauses = new List<string>();
+
             foreach (var item in expression.Set)
                 updateItems.Add(string.Format("{0} = {1}", Quoter.QuoteColumnName(item.Key),
                     Quoter.QuoteValue(item.Value)));
+
             if (expression.IsAllRows)
                 whereClauses.Add("1 = 1");
             else
-                foreach (var item in expression.Where) {
+                foreach (var item in expression.Where)
+                {
                     var op = item.Value == null || item.Value == DBNull.Value ? "IS" : "=";
+
                     whereClauses.Add(string.Format("{0} {1} {2}", Quoter.QuoteColumnName(item.Key),
                         op, Quoter.QuoteValue(item.Value)));
                 }
+
             return string.Format(
                 "UPDATE {0} SET {1} WHERE {2};",
                 Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
                 string.Join(", ", updateItems.ToArray()),
                 string.Join(" AND ", whereClauses.ToArray()));
         }
-        public override string Generate(AlterSchemaExpression expression) {
+
+        public override string Generate(AlterSchemaExpression expression)
+        {
             return string.Format("ALTER TABLE {0} SET SCHEMA {1};",
                 Quoter.QuoteTableName(expression.TableName, expression.SourceSchemaName),
                 Quoter.QuoteSchemaName(expression.DestinationSchemaName));
         }
-        public override string Generate(DeleteDefaultConstraintExpression expression) {
+
+        public override string Generate(DeleteDefaultConstraintExpression expression)
+        {
             return string.Format("ALTER TABLE {0} ALTER {1} DROP DEFAULT;",
-                Quoter.QuoteTableName(expression.TableName, expression.SchemaName), Quoter.Quote(expression.ColumnName));
+                Quoter.QuoteTableName(expression.TableName, expression.SchemaName),
+                Quoter.Quote(expression.ColumnName));
         }
-        public override string Generate(DeleteConstraintExpression expression) {
+
+        public override string Generate(DeleteConstraintExpression expression)
+        {
             return string.Format("ALTER TABLE {0} DROP CONSTRAINT {1};",
                 Quoter.QuoteTableName(expression.Constraint.TableName, expression.Constraint.SchemaName),
                 Quoter.Quote(expression.Constraint.ConstraintName));
         }
-        public override string Generate(CreateConstraintExpression expression) {
+
+        public override string Generate(CreateConstraintExpression expression)
+        {
             var constraintType = expression.Constraint.IsPrimaryKeyConstraint ? "PRIMARY KEY" : "UNIQUE";
             var columns = new string[expression.Constraint.Columns.Count];
+
             for (var i = 0; i < expression.Constraint.Columns.Count; i++)
                 columns[i] = Quoter.QuoteColumnName(expression.Constraint.Columns.ElementAt(i));
+
             return string.Format(
                 "ALTER TABLE {0} ADD CONSTRAINT {1} {2} ({3});",
                 Quoter.QuoteTableName(expression.Constraint.TableName, expression.Constraint.SchemaName),
@@ -253,17 +355,25 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
                 constraintType,
                 string.Join(", ", columns));
         }
-        protected string GetColumnList(IEnumerable<string> columns) {
+
+        protected string GetColumnList(IEnumerable<string> columns)
+        {
             var result = "";
             foreach (var column in columns) result += Quoter.QuoteColumnName(column) + ",";
+
             return result.TrimEnd(',');
         }
-        protected string GetDataList(List<object> data) {
+
+        protected string GetDataList(List<object> data)
+        {
             var result = "";
             foreach (var column in data) result += Quoter.QuoteValue(column) + ",";
+
             return result.TrimEnd(',');
         }
-        public override string Generate(CreateSequenceExpression expression) {
+
+        public override string Generate(CreateSequenceExpression expression)
+        {
             var result = new StringBuilder("CREATE SEQUENCE ");
             var seq = expression.Sequence;
             result.AppendFormat(Quoter.QuoteSequenceName(seq.Name, seq.SchemaName));
@@ -272,18 +382,27 @@ namespace libc.orm.postgres.DdlGeneration.Postgres {
             if (seq.MaxValue.HasValue) result.AppendFormat(" MAXVALUE {0}", seq.MaxValue);
             if (seq.StartWith.HasValue) result.AppendFormat(" START WITH {0}", seq.StartWith);
             const long MINIMUM_CACHE_VALUE = 2;
-            if (seq.Cache.HasValue) {
+
+            if (seq.Cache.HasValue)
+            {
                 if (seq.Cache.Value < MINIMUM_CACHE_VALUE)
                     return CompatibilityMode.HandleCompatibilty(
                         "Cache size must be greater than 1; if you intended to disable caching, set Cache to null.");
+
                 result.AppendFormat(" CACHE {0}", seq.Cache);
-            } else {
+            }
+            else
+            {
                 result.Append(" CACHE 1");
             }
+
             if (seq.Cycle) result.Append(" CYCLE");
+
             return string.Format("{0};", result);
         }
-        public override string Generate(DeleteSequenceExpression expression) {
+
+        public override string Generate(DeleteSequenceExpression expression)
+        {
             return string.Format("{0};", base.Generate(expression));
         }
     }

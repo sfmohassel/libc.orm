@@ -17,17 +17,17 @@
 #endregion
 
 using System.Collections.Generic;
-using JetBrains.Annotations;
-namespace libc.orm.DatabaseMigration.Abstractions.Validation {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Validation
+{
     /// <summary>
     ///     Provides access to child objects that have to be validated too
     /// </summary>
-    public interface IValidationChildren {
+    public interface IValidationChildren
+    {
         /// <summary>
         ///     Gets the child objects
         /// </summary>
-        
-        
         IEnumerable<object> Children { get; }
     }
 }

@@ -17,11 +17,14 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions;
-namespace libc.orm.DatabaseMigration.DdlGeneration {
+
+namespace libc.orm.DatabaseMigration.DdlGeneration
+{
     /// <summary>
     ///     Options for <see cref="IMigrationGenerator" /> implementations
     /// </summary>
-    public class GeneratorOptions {
+    public class GeneratorOptions
+    {
         /// <summary>
         ///     Gets or sets the compatibility mode
         /// </summary>

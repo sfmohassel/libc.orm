@@ -23,9 +23,13 @@ using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.sqlserver.DdlGeneration;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.sqlserver.DdlProcessing {
-    public class SqlServer2008ProcessorFactory : IProcessorFactory {
-        public IProcessor Create(ProcessorOptions options, ILogger logger) {
+
+namespace libc.orm.sqlserver.DdlProcessing
+{
+    public class SqlServer2008ProcessorFactory : IProcessorFactory
+    {
+        public IProcessor Create(ProcessorOptions options, ILogger logger)
+        {
             return new SqlServer2008Processor(logger,
                 new SqlServer2008Generator(new SqlServer2008Quoter(), new GeneratorOptions()), options);
         }

@@ -17,13 +17,19 @@
 #endregion
 
 using libc.orm.DatabaseMigration.Abstractions.Builders;
-namespace libc.orm.sqlserver.DdlGeneration {
-    public class SqlServer2008Quoter : SqlServer2005Quoter {
-        public override string FormatSystemMethods(SystemMethods value) {
-            switch (value) {
+
+namespace libc.orm.sqlserver.DdlGeneration
+{
+    public class SqlServer2008Quoter : SqlServer2005Quoter
+    {
+        public override string FormatSystemMethods(SystemMethods value)
+        {
+            switch (value)
+            {
                 case SystemMethods.CurrentDateTimeOffset:
                     return "SYSDATETIMEOFFSET()";
             }
+
             return base.FormatSystemMethods(value);
         }
     }

@@ -18,11 +18,13 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.ForeignKey {
+namespace libc.orm.DatabaseMigration.Abstractions.Builders.Create.ForeignKey
+{
     /// <summary>
     ///     Specify the foreign keys primary table
     /// </summary>
-    public interface ICreateForeignKeyToTableSyntax : IFluentSyntax {
+    public interface ICreateForeignKeyToTableSyntax : IFluentSyntax
+    {
         /// <summary>
         ///     Specify the foreign keys primary table
         /// </summary>

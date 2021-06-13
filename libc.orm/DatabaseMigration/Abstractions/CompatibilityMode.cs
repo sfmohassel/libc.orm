@@ -18,15 +18,18 @@
 
 #endregion
 
-namespace libc.orm.DatabaseMigration.Abstractions {
+namespace libc.orm.DatabaseMigration.Abstractions
+{
     /// <summary>
     ///     Sets the compatibility mode
     /// </summary>
-    public enum CompatibilityMode {
+    public enum CompatibilityMode
+    {
         /// <summary>
         ///     Ensuare that an exception gets thrown when a processor doesn't support a specific feature
         /// </summary>
         STRICT,
+
         /// <summary>
         ///     Unsupported processor features are ignored
         /// </summary>

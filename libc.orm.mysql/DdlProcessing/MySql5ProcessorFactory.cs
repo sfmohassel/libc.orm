@@ -20,12 +20,17 @@ using libc.orm.DatabaseMigration.DdlGeneration;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.mysql.DdlGeneration;
 using Microsoft.Extensions.Logging;
-namespace libc.orm.mysql.DdlProcessing {
-    public class MySql5ProcessorFactory : IProcessorFactory {
-        public IProcessor Create(ProcessorOptions options, ILogger logger) {
+
+namespace libc.orm.mysql.DdlProcessing
+{
+    public class MySql5ProcessorFactory : IProcessorFactory
+    {
+        public IProcessor Create(ProcessorOptions options, ILogger logger)
+        {
             var qutoer = new MySqlQuoter();
             var generatorOptions = new GeneratorOptions();
             var generator = new MySql5Generator(new MySqlColumn(new MySql5TypeMap(), qutoer), qutoer, generatorOptions);
+
             return new MySql5Processor(generator, logger, options);
         }
     }

@@ -25,41 +25,55 @@ using libc.orm.DatabaseMigration.Abstractions.Model;
 using libc.orm.DatabaseMigration.Abstractions.Validation;
 using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Resources;
-namespace libc.orm.DatabaseMigration.Abstractions.Expressions {
+
+namespace libc.orm.DatabaseMigration.Abstractions.Expressions
+{
     /// <summary>
     ///     The implementation of interfaces to alter a column
     /// </summary>
     public class AlterColumnExpression
         : MigrationExpressionBase,
             ISchemaExpression,
-            IValidationChildren {
+            IValidationChildren
+    {
         /// <summary>
         ///     Gets or sets the table name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Dmt), ErrorMessageResourceName = "TableNameCannotBeNullOrEmpty")]
         public virtual string TableName { get; set; }
+
         /// <summary>
         ///     Gets or sets the column definition
         /// </summary>
         public virtual ColumnDefinition Column { get; set; }
-            = new ColumnDefinition {
+            = new ColumnDefinition
+            {
                 ModificationType = ColumnModificationType.Alter
             };
+
         /// <inheritdoc />
         public virtual string SchemaName { get; set; }
+
         /// <inheritdoc />
-        IEnumerable<object> IValidationChildren.Children {
-            get {
+        IEnumerable<object> IValidationChildren.Children
+        {
+            get
+            {
                 yield return Column;
             }
         }
-        public override void ExecuteWith(IProcessor processor) {
+
+        public override void ExecuteWith(IProcessor processor)
+        {
             Column.TableName = TableName;
             processor.Process(this);
         }
+
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             var typeName = Column.Type == null ? Column.CustomType : Column.Type.ToString();
+
             return base.ToString() + TableName + " " + Column.Name + " " + typeName;
         }
     }
