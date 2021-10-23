@@ -3,11 +3,15 @@ using libc.translation;
 
 namespace libc.orm.Resources
 {
+
     internal static class Dmt
     {
-        public static readonly ILocalizer Instance = new Localizer(new LocalizationSource(
-            Assembly.GetExecutingAssembly(),
-            $"{typeof(Dmt).Namespace}.dmt.i18n.json", LocalizationSourcePropertyCaseSensitivity.CaseInsensitive));
+        public static readonly ILocalizer Instance = new Localizer(
+            new JsonLocalizationSource(
+                Assembly.GetExecutingAssembly(),
+                $"{typeof(Dmt).Namespace}.dmt.i18n.json", PropertyCaseSensitivity.CaseInsensitive
+            )
+        );
 
         public static string ColumnNameCannotBeNullOrEmpty => Instance.Get("ColumnNameCannotBeNullOrEmpty");
         public static string TableNameCannotBeNullOrEmpty => Instance.Get("TableNameCannotBeNullOrEmpty");
@@ -47,4 +51,5 @@ namespace libc.orm.Resources
         public static string ExpressionTableNameMissing => Instance.Get("ExpressionTableNameMissing");
         public static string ExpressionTableNameMissingWithHints => Instance.Get("ExpressionTableNameMissingWithHints");
     }
+
 }
