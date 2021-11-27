@@ -1,36 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>4.3.0.0</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Saeid Farahi Mohassel</Authors>
-    <Product>A micro ORM based on Dapper, a part of FluentMigrator and SqlKata. Create and migrate your databases and run queries againts them</Product>
-    <RepositoryUrl>https://github.com/saeidjoker/libc.orm</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Version>6.0.0</Version>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Saeid Farahi Mohassel</Authors>
+		<Product>A micro ORM based on Dapper, a part of FluentMigrator and SqlKata. Create and migrate your databases and run queries againts them</Product>
+		<RepositoryUrl>https://github.com/saeidjoker/libc.orm</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\out\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>..\out\</OutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Resources\dmt.i18n.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Resources\dmt.i18n.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\dmt.i18n.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\dmt.i18n.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.90" />
-    <PackageReference Include="FastMember" Version="1.5.0" />
-    <PackageReference Include="libc.translation" Version="5.1.0" />
-    <PackageReference Include="NodaTime" Version="3.0.9" />
-    <PackageReference Include="SqlKata" Version="2.3.7" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="System.Text.Json" Version="5.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.0.123" />
+		<PackageReference Include="FastMember" Version="1.5.0" />
+		<PackageReference Include="libc.translation" Version="6.0.0" />
+		<PackageReference Include="NodaTime" Version="3.0.9" />
+		<PackageReference Include="Npgsql" Version="6.0.0" />
+		<PackageReference Include="SqlKata" Version="2.3.7" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>
