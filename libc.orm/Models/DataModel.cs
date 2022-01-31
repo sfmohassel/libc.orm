@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using libc.orm.Models.Interfaces;
-using NodaTime;
 
 namespace libc.orm.Models
 {
@@ -11,7 +10,7 @@ namespace libc.orm.Models
         protected DataModel()
         {
             Id = Guid.NewGuid();
-            var now = SystemClock.Instance.GetCurrentInstant().ToUnixTimeTicks();
+            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1000;
             CreateUtc = now;
             UpdateUtc = now;
         }

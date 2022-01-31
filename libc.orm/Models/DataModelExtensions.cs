@@ -6,7 +6,6 @@ using Dapper;
 using libc.orm.Internals;
 using libc.orm.Models.Interfaces;
 using libc.orm.QueryFilters;
-using NodaTime;
 using SqlKata;
 using SqlKata.Compilers;
 
@@ -90,7 +89,7 @@ namespace libc.orm.Models
             ICollection<object> values, IData x = null)
         {
             if (cols.Contains(COLUMN)) return query.AsUpdate(cols, values);
-            var updateUtc = SystemClock.Instance.GetCurrentInstant().ToUnixTimeTicks();
+            var updateUtc = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1000;
             if (x != null) x.UpdateUtc = updateUtc;
             cols.Add(COLUMN);
             values.Add(updateUtc);
@@ -102,7 +101,7 @@ namespace libc.orm.Models
             IData x = null)
         {
             if (data.ContainsKey(COLUMN)) return query.AsUpdate(data);
-            var updateUtc = SystemClock.Instance.GetCurrentInstant().ToUnixTimeTicks();
+            var updateUtc = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1000;
             if (x != null) x.UpdateUtc = updateUtc;
             data[COLUMN] = updateUtc;
 
@@ -114,7 +113,7 @@ namespace libc.orm.Models
             var k = data.ToDictionary();
 
             if (k.ContainsKey(COLUMN)) return query.AsUpdate(data);
-            var updateUtc = SystemClock.Instance.GetCurrentInstant().ToUnixTimeTicks();
+            var updateUtc = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1000;
             if (x != null) x.UpdateUtc = updateUtc;
             k[COLUMN] = updateUtc;
 

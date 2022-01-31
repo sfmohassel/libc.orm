@@ -8,7 +8,6 @@ using libc.orm.DatabaseMigration.DdlProcessing;
 using libc.orm.Internals;
 using libc.orm.Models;
 using Microsoft.Extensions.Logging;
-using NodaTime;
 using SqlKata;
 
 namespace libc.orm.DatabaseMigration.DdlMigrationRunning
@@ -78,7 +77,7 @@ namespace libc.orm.DatabaseMigration.DdlMigrationRunning
                         {
                             MigrationVersion = migration.Version,
                             MigrationName = migration.Name,
-                            CreateUtc = SystemClock.Instance.GetCurrentInstant().ToUnixTimeTicks()
+                            CreateUtc = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 1000
                         })
                 );
             }
