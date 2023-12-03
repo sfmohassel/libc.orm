@@ -2,11 +2,11 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Version>6.0.2</Version>
+		<Version>6.1.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Authors>Saeid Farahi Mohassel</Authors>
+		<Authors>Saeed Farahi Mohassel</Authors>
 		<Product>A micro ORM based on Dapper, a part of FluentMigrator and SqlKata. Create and migrate your databases and run queries againts them</Product>
-		<RepositoryUrl>https://github.com/saeidjoker/libc.orm</RepositoryUrl>
+		<RepositoryUrl>https://github.com/sfmohassel/libc.orm</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 	</ItemGroup>
 
 </Project>
